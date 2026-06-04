@@ -22,8 +22,9 @@ export default function IndramalaBanner() {
         {/* Title with gold → white gradient */}
         <h2
           className="font-prata"
+          className="ib-title"
           style={{
-            fontSize: "56px",
+            fontSize: "clamp(36px,7vw,56px)",
             lineHeight: "130%",
             letterSpacing: "-0.02em",
             margin: "0 0 24px 0",

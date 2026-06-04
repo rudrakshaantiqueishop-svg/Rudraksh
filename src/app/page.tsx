@@ -12,6 +12,7 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import GetInspired from "@/components/GetInspired";
 import GuidanceBanner from "@/components/GuidanceBanner";
 import BlogPosts from "@/components/BlogPosts";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (

@@ -4,5 +4,164 @@
 
 @layer base {
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #FEF9F2; color: #0B0404; font-family: var(--lato), Arial, sans-serif; }
+  html { overflow-x: hidden; }
+  body { background: #FEF9F2; color: #0B0404; font-family: var(--lato), Arial, sans-serif; overflow-x: hidden; }
 }
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .section-pad   { padding: 60px 16px; }
+  @media (min-width: 768px)  { .section-pad { padding: 80px 40px; } }
+  @media (min-width: 1024px) { .section-pad { padding: 100px 70px; } }
+
+  .h-px-section { padding-left: 16px; padding-right: 16px; }
+  @media (min-width: 768px)  { .h-px-section { padding-left: 40px; padding-right: 40px; } }
+  @media (min-width: 1024px) { .h-px-section { padding-left: 70px; padding-right: 70px; } }
+
+  /* fluid title */
+  .title-fluid { font-size: clamp(24px, 5vw, 36px); }
+  .title-hero   { font-size: clamp(36px, 7vw, 72px); }
+}
+
+/* ─────────────────────────────────────
+   PER-COMPONENT RESPONSIVE OVERRIDES
+───────────────────────────────────── */
+
+/* ShopByCategory */
+@media (max-width: 767px) {
+  .sbc-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+  .sbc-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+  .sbc-img { height: 160px !important; }
+}
+
+/* WhoWeAre */
+@media (max-width: 1023px) {
+  .wwa-row { flex-direction: column !important; }
+  .wwa-img { width: 100% !important; flex: none !important; height: 320px !important; }
+  .wwa-content { padding-left: 0 !important; }
+  .wwa-features { grid-template-columns: 1fr !important; }
+}
+
+/* ShopByPurpose */
+@media (max-width: 767px) {
+  .sbp-grid { display: flex !important; overflow-x: auto !important; gap: 8px !important; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 8px; }
+  .sbp-item { flex: 0 0 80px !important; scroll-snap-align: start; }
+  .sbp-icon { width: 52px !important; height: 52px !important; }
+}
+
+/* RudrakshaBirthForm */
+@media (max-width: 767px) {
+  .rbf-form { flex-direction: column !important; width: 100% !important; }
+  .rbf-field { padding: 0 0 20px !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.25) !important; }
+  .rbf-field:last-child { border-bottom: none !important; padding-bottom: 0 !important; }
+  .rbf-input { width: 100% !important; }
+  .rbf-section { padding: 0 16px !important; }
+  .rbf-heading { font-size: clamp(28px, 7vw, 36px) !important; }
+}
+
+/* BestsellerProducts */
+@media (max-width: 767px) {
+  .bsp-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+}
+
+/* FestivalBanner */
+@media (max-width: 767px) {
+  .fb-content { text-align: center !important; align-items: center !important; }
+  .fb-title { font-size: clamp(28px, 7vw, 40px) !important; }
+}
+
+/* AuthenticityBanner */
+@media (max-width: 1023px) {
+  .ab-row { flex-direction: column !important; }
+  .ab-images { justify-content: center; flex-direction: row !important; margin-top: 40px !important; }
+  .ab-img1 { width: 48% !important; height: 280px !important; }
+  .ab-img2 { width: 48% !important; height: 280px !important; margin-top: 40px !important; }
+}
+@media (max-width: 767px) {
+  .ab-img1 { width: 47% !important; height: 220px !important; }
+  .ab-img2 { width: 47% !important; height: 220px !important; }
+}
+
+/* EnergisationProcess - vertical on mobile */
+@media (max-width: 767px) {
+  .ep-row { flex-direction: column !important; align-items: center !important; }
+  .ep-step { flex-direction: column !important; align-items: center !important; width: 100% !important; }
+  .ep-arrow { transform: rotate(90deg) !important; margin: 4px 0 !important; }
+}
+
+/* WhyChooseUs */
+@media (max-width: 1023px) {
+  .wcu-row { flex-direction: column !important; }
+  .wcu-images { width: 100% !important; height: 480px !important; margin-top: 40px !important; }
+  .wcu-content { padding-left: 0 !important; }
+}
+@media (max-width: 767px) {
+  .wcu-images { height: 360px !important; }
+}
+
+/* GetInspired */
+@media (max-width: 767px) {
+  .gi-grid { grid-template-columns: repeat(1, 1fr) !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .gi-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* GuidanceBanner */
+@media (max-width: 767px) {
+  .gb-content { padding: 0 24px !important; align-items: center !important; text-align: center !important; }
+  .gb-title { font-size: clamp(24px, 6vw, 40px) !important; }
+}
+
+/* BlogPosts */
+@media (max-width: 767px) {
+  .bp-grid { grid-template-columns: repeat(1, 1fr) !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .bp-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* IndramalaBanner */
+@media (max-width: 767px) {
+  .ib-title { font-size: clamp(36px, 9vw, 56px) !important; }
+}
+
+/* Footer responsive */
+@media (max-width: 767px) {
+  .footer-benefits { flex-direction: column !important; gap: 32px !important; padding: 40px 16px !important; }
+  .footer-mid { flex-direction: column !important; padding: 32px 16px !important; gap: 32px !important; }
+  .footer-mid-dividers { border-left: none !important; border-right: none !important; padding: 0 !important; }
+  .footer-bottom { flex-direction: column !important; gap: 24px !important; padding: 24px 16px !important; text-align: center !important; }
+  .footer-bottom-nav { justify-content: center !important; flex-wrap: wrap !important; }
+  .footer-bottom-legal { justify-content: center !important; flex-wrap: wrap !important; }
+  .footer-email-wrap { width: 100% !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .footer-benefits { padding: 40px 40px !important; }
+  .footer-mid { padding: 32px 40px !important; }
+  .footer-bottom { padding: 24px 40px !important; }
+}
+
+/* Header mobile */
+@media (max-width: 767px) {
+  .header-nav-center { display: none !important; }
+  .header-actions-desktop { display: none !important; }
+  .header-hamburger { display: flex !important; }
+  .header-actions-mobile { display: flex !important; }
+}
+@media (min-width: 768px) {
+  .header-hamburger { display: none !important; }
+  .header-actions-mobile { display: none !important; }
+}
+
+/* HeroSection */
+@media (max-width: 767px) {
+  .hero-annotation { display: none !important; }
+  .hero-nav-btns { display: none !important; }
+  .hero-title { font-size: clamp(36px, 9vw, 72px) !important; }
+  .hero-body { font-size: 14px !important; }
+  .hero-content { padding-left: 20px !important; padding-right: 20px !important; top: auto !important; bottom: 40px !important; }
+}
+

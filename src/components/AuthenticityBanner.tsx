@@ -21,11 +21,11 @@ const bullets = [
 
 export default function AuthenticityBanner() {
   return (
-    <section style={{ background: "#FEF9F2", padding: "100px 70px 0", overflow: "hidden" }}>
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+    <section className="section-pad" style={{ background: "#FEF9F2", paddingBottom: 0, overflow: "hidden" }}>
+      <div className="ab-row flex flex-col lg:flex-row items-start justify-between">
 
         {/* Left — text content */}
-        <div style={{ width: "320px", flexShrink: 0 }}>
+        <div className="w-full lg:w-[320px] lg:flex-shrink-0">
           <h2
             className="font-prata"
             style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: "0 0 20px 0" }}
@@ -75,26 +75,26 @@ export default function AuthenticityBanner() {
         </div>
 
         {/* Right — two images side by side */}
-        <div style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
+        <div className="ab-images flex w-full lg:w-auto gap-4 lg:gap-5 items-start mt-8 lg:mt-0">
 
           {/* Image 1 — starts from top */}
-          <div style={{ width: "356px", height: "560px", position: "relative", overflow: "hidden", marginTop: "0" }}>
+          <div className="ab-img1 flex-1 lg:flex-none lg:w-[356px] relative overflow-hidden h-[70vw] md:h-[40vw] lg:h-[560px]" style={{ marginTop: 0 }}>
             <Image
               src="/images/about-sacred-1.png"
               alt="Rudraksha malas"
               fill
-              sizes="356px"
+              sizes="(max-width: 1024px) 50vw, 356px"
               style={{ objectFit: "cover" }}
             />
           </div>
 
           {/* Image 2 — offset down */}
-          <div style={{ width: "356px", height: "560px", position: "relative", overflow: "hidden", marginTop: "80px" }}>
+          <div className="ab-img2 flex-1 lg:flex-none lg:w-[356px] relative overflow-hidden h-[70vw] md:h-[40vw] lg:h-[560px]" style={{ marginTop: "12%" }}>
             <Image
               src="/images/about-founding-2.png"
               alt="Sacred offering"
               fill
-              sizes="356px"
+              sizes="(max-width: 1024px) 50vw, 356px"
               style={{ objectFit: "cover" }}
             />
           </div>

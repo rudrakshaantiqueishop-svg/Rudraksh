@@ -49,12 +49,8 @@ export default function Footer() {
   return (
     <footer>
       {/* ── 1. BENEFITS BAR ── */}
-      <div style={{
+      <div className="footer-benefits h-px-section py-10 grid grid-cols-2 lg:grid-cols-4 gap-8" style={{
         background: "linear-gradient(90deg, #552912 0%, #BB5A28 100%)",
-        padding: "48px 70px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
       }}>
         {[
           { Icon: ShippingIcon, title: "Free Shipping", sub: "You will love at great low prices" },
@@ -62,7 +58,7 @@ export default function Footer() {
           { Icon: ClockIcon, title: "Customer Support", sub: "24 hours a day, 7 days a week" },
           { Icon: CardIcon, title: "Flexible Payment", sub: "Pay with multiple credit cards" },
         ].map(({ Icon, title, sub }) => (
-          <div key={title} style={{ display: "flex", alignItems: "center", gap: "16px", flex: 1 }}>
+          <div key={title} className="flex items-center gap-4">
             <Icon />
             <div>
               <p className="font-lato" style={{ fontSize: "20px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.4 }}>{title}</p>
@@ -73,15 +69,7 @@ export default function Footer() {
       </div>
 
       {/* ── 2. NEWSLETTER + CONTACT + SOCIAL ── */}
-      <div style={{
-        background: "#FFFFFF",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "32px 70px",
-        borderBottom: "1px solid #E7E5E4",
-        gap: "0",
-      }}>
+      <div className="footer-mid h-px-section py-8 flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-0 border-b border-[#E7E5E4]" style={{ background: "#FFFFFF" }}>
         {/* LEFT — Contact */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", minWidth: "160px" }}>
           <p className="font-lato" style={{ fontSize: "18px", fontWeight: 400, color: "#0B0404", letterSpacing: "0.05em", textTransform: "uppercase" }}>CONTACT US</p>
@@ -89,12 +77,7 @@ export default function Footer() {
         </div>
 
         {/* CENTER — Newsletter (bordered left+right) */}
-        <div style={{
-          flex: 1, maxWidth: "804px",
-          borderLeft: "1px solid #E7E5E4", borderRight: "1px solid #E7E5E4",
-          padding: "0 32px",
-          display: "flex", flexDirection: "column", alignItems: "center", gap: "24px",
-        }}>
+        <div className="footer-mid-dividers w-full lg:flex-1 lg:max-w-[804px] lg:border-x lg:border-[#E7E5E4] lg:px-8 flex flex-col items-center gap-6">
           <div style={{ textAlign: "center", display: "flex", flexDirection: "column", gap: "8px" }}>
             <h3 className="font-prata" style={{ fontSize: "36px", lineHeight: "129%", letterSpacing: "-0.02em", color: "#0B0404" }}>
               Let&apos;s Get In Touch!
@@ -104,7 +87,7 @@ export default function Footer() {
             </p>
           </div>
           {/* Email input row */}
-          <div style={{ position: "relative", width: "453px", height: "48px" }}>
+          <div className="footer-email-wrap relative w-full lg:w-[453px]" style={{ height: "48px" }}>
             <input
               type="email"
               placeholder="Email Address"
@@ -143,15 +126,9 @@ export default function Footer() {
       </div>
 
       {/* ── 3. BOTTOM NAV BAR ── */}
-      <div style={{
-        background: "#FFFFFF",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "24px 70px",
-      }}>
+      <div className="footer-bottom h-px-section py-6 flex flex-col lg:flex-row justify-between items-center gap-6 lg:gap-0" style={{ background: "#FFFFFF" }}>
         {/* Left nav */}
-        <div style={{ display: "flex", gap: "24px" }}>
+        <div className="footer-bottom-nav flex flex-wrap justify-center gap-5">
           {[
             { label: "HOME", href: "/" },
             { label: "ABOUT US", href: "/about" },
@@ -170,7 +147,7 @@ export default function Footer() {
         </Link>
 
         {/* Right links */}
-        <div style={{ display: "flex", gap: "24px" }}>
+        <div className="footer-bottom-legal flex flex-wrap justify-center gap-5">
           {["RETURNS", "TERMS & CONDITIONS", "PRIVACY POLICY"].map((label) => (
             <Link key={label} href="#" className="font-lato" style={{ fontSize: "16px", color: "#0B0404", textDecoration: "none", fontWeight: 400, letterSpacing: "0.03em" }}>
               {label}

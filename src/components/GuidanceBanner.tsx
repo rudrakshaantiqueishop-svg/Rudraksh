@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function GuidanceBanner() {
   return (
-    <section style={{ background: "#FEF9F2", padding: "40px 70px" }}>
+    <section className="h-px-section py-10" style={{ background: "#FEF9F2" }}>
 
       {/* Card with rounded corners */}
       <div style={{ position: "relative", borderRadius: "10px", overflow: "hidden", height: "480px" }}>
@@ -17,17 +17,8 @@ export default function GuidanceBanner() {
           priority
         />
 
-        {/* Dark overlay for text readability */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.15) 100%)" }} />
-
         {/* Content */}
-        <div
-          style={{
-            position: "absolute", inset: 0,
-            display: "flex", flexDirection: "column", justifyContent: "center",
-            padding: "0 64px",
-          }}
-        >
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-center lg:items-start lg:text-left px-5 lg:px-[64px]">
           <h2
             className="font-prata text-white"
             style={{ fontSize: "40px", lineHeight: "130%", letterSpacing: "-0.02em", margin: "0 0 20px 0", maxWidth: "560px" }}

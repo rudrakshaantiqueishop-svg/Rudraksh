@@ -24,13 +24,13 @@ const posts = [
 
 export default function BlogPosts() {
   return (
-    <section style={{ background: "#FEF9F2", padding: "70px 70px 80px" }}>
+    <section className="h-px-section py-[60px] lg:py-[80px]" style={{ background: "#FEF9F2" }}>
 
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "32px" }}>
+      <div className="flex flex-col items-start gap-4 mb-8 lg:flex-row lg:items-center lg:justify-between lg:mb-[32px]">
         <h2
-          className="font-prata"
-          style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}
+          className="font-prata text-3xl lg:text-[36px]"
+          style={{ lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}
         >
           Blog Posts
         </h2>
@@ -57,12 +57,12 @@ export default function BlogPosts() {
       </div>
 
       {/* Cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}>
+      <div className="flex lg:grid lg:grid-cols-3 gap-5 lg:gap-6 overflow-x-auto no-scrollbar pb-4 lg:pb-0 lg:overflow-x-visible" style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}>
         {posts.map((post) => (
-          <Link key={post.id} href="#" style={{ textDecoration: "none" }} className="group/post">
+          <Link key={post.id} href="#" style={{ textDecoration: "none", scrollSnapAlign: "start" }} className="group/post flex-shrink-0 w-[301px] lg:w-full lg:flex-shrink">
 
             {/* Image */}
-            <div style={{ position: "relative", height: "450px", overflow: "hidden", marginBottom: "20px" }}>
+            <div className="relative overflow-hidden mb-5 h-[65vw] md:h-[30vw] lg:h-[450px]">
               <Image
                 src={post.img}
                 alt={post.title}

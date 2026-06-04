@@ -37,15 +37,20 @@ export default function Header({ activePage }: { activePage?: string }) {
   return (
     <header className="sticky top-0 z-50 bg-[#FEF9F2]" style={{ borderBottom: activeDropdown ? "none" : "1px solid rgba(0,0,0,0.05)" }}>
       {/* Main bar */}
-      <div className="flex items-center justify-between px-[70px]" style={{ height: "88px" }}>
+      <div className="flex items-center justify-between h-px-section" style={{ height: "72px", paddingTop: 0, paddingBottom: 0 }}>
+
+        {/* Hamburger — mobile only */}
+        <button className="header-hamburger hidden items-center justify-center p-2 text-[#0B0404]" aria-label="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
 
         {/* Logo */}
         <Link href="/" className="flex-shrink-0">
-          <Image src="/images/logo.png" alt="Rudraksha Antiquei" width={212} height={40} style={{ objectFit: "contain", height: "40px", width: "212px" }} />
+          <Image src="/images/logo.png" alt="Rudraksha Antiquei" width={212} height={40} style={{ objectFit: "contain", height: "36px", width: "auto" }} />
         </Link>
 
-        {/* Nav — absolutely centred */}
-        <div className="absolute inset-x-0 h-full flex justify-center pointer-events-none">
+        {/* Nav — absolutely centred, hidden on mobile */}
+        <div className="header-nav-center absolute inset-x-0 h-full flex justify-center pointer-events-none">
           <nav className="flex items-center gap-8 pointer-events-auto h-full">
 
             <Link href="/" className={`font-lato text-base font-normal flex items-center h-full transition-colors ${currentPage === "home" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}>
@@ -103,8 +108,8 @@ export default function Header({ activePage }: { activePage?: string }) {
           </nav>
         </div>
 
-        {/* Right actions */}
-        <div className="flex items-center gap-6">
+        {/* Right actions — desktop */}
+        <div className="header-actions-desktop flex items-center gap-6">
           {[
             <svg key="search" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
             <svg key="heart" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
@@ -119,6 +124,17 @@ export default function Header({ activePage }: { activePage?: string }) {
               <path d="M1 1L7.5 7L14 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
+        </div>
+
+        {/* Right actions — mobile only (search, heart, cart) */}
+        <div className="header-actions-mobile hidden items-center gap-4">
+          {[
+            <svg key="s" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
+            <svg key="h" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+            <svg key="c" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
+          ].map((icon, i) => (
+            <button key={i} className="text-[#44403C]">{icon}</button>
+          ))}
         </div>
       </div>
 

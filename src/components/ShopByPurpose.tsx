@@ -14,7 +14,7 @@ const purposes = [
 
 export default function ShopByPurpose() {
   return (
-    <section style={{ background: "#FEF9F2", padding: "80px 70px", borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+    <section className="h-px-section py-[60px] lg:py-[80px]" style={{ background: "#FEF9F2", borderTop: "1px solid rgba(0,0,0,0.06)" }}>
 
       {/* Title */}
       <h2
@@ -25,21 +25,21 @@ export default function ShopByPurpose() {
       </h2>
 
       {/* Icons row */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+      <div className="flex lg:grid lg:grid-cols-8 gap-6 lg:gap-0 overflow-x-auto no-scrollbar pb-2 lg:pb-0 lg:overflow-x-visible" style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}>
         {purposes.map((p) => (
           <Link
             key={p.name}
             href="#"
-            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textDecoration: "none", flex: 1 }}
-            className="group/purpose"
+            className="group/purpose flex flex-col items-center gap-3 no-underline flex-shrink-0 lg:flex-shrink"
+            style={{ scrollSnapAlign: "start", minWidth: "80px", textDecoration: "none" }}
           >
             {/* Icon */}
-            <div style={{ width: "80px", height: "80px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div className="flex items-center justify-center" style={{ width: "clamp(52px,8vw,80px)", height: "clamp(52px,8vw,80px)" }}>
               <Image
                 src={p.icon}
                 alt={p.name}
-                width={80}
-                height={80}
+                width={72}
+                height={72}
                 style={{ objectFit: "contain" }}
                 className="group-hover/purpose:opacity-70 transition-opacity duration-200"
               />
@@ -47,7 +47,7 @@ export default function ShopByPurpose() {
             {/* Label */}
             <span
               className="font-lato group-hover/purpose:text-[#BB5A28] transition-colors duration-200"
-              style={{ fontSize: "16px", fontWeight: 400, lineHeight: "150%", color: "#44403C", textAlign: "center" }}
+              style={{ fontSize: "clamp(11px,1.3vw,16px)", fontWeight: 400, lineHeight: "150%", color: "#44403C", textAlign: "center" }}
             >
               {p.name}
             </span>

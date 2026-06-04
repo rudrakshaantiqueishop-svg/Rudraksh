@@ -9,15 +9,11 @@ const steps = [
   { label: "STEP 5", desc: "Delivered ready to wear or use" },
 ];
 
-const ArrowIcon = () => (
-  <svg width="34" height="34" viewBox="0 0 34 34" fill="none" style={{ flexShrink: 0, marginTop: "18px" }}>
-    <path d="M7 17h20M21 10l7 7-7 7" stroke="#BB5A28" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
+
 
 export default function EnergisationProcess() {
   return (
-    <section style={{ background: "#FEF9F2", padding: "100px 70px" }}>
+    <section className="section-pad" style={{ background: "#FEF9F2" }}>
 
       {/* Heading */}
       <h2
@@ -34,11 +30,11 @@ export default function EnergisationProcess() {
       </p>
 
       {/* Steps row */}
-      <div style={{ display: "flex", alignItems: "flex-start", marginBottom: "56px" }}>
+      <div className="flex flex-col lg:flex-row items-center lg:items-start mb-14 gap-6 lg:gap-0">
         {steps.map((s, i) => (
-          <div key={i} style={{ display: "flex", alignItems: "flex-start", flex: 1 }}>
+          <div key={i} className="flex flex-col lg:flex-row items-center lg:items-start flex-1 w-full lg:w-auto">
             {/* Step content */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", flex: 1 }}>
+            <div className="flex flex-col items-center gap-4 flex-1">
               {/* Gradient circle */}
               <div style={{
                 width: "70px", height: "70px", borderRadius: "50%",
@@ -67,7 +63,13 @@ export default function EnergisationProcess() {
             </div>
 
             {/* Arrow between steps */}
-            {i < steps.length - 1 && <ArrowIcon />}
+            {i < steps.length - 1 && (
+              <span className="flex-shrink-0 mt-4 lg:mt-[18px] transform rotate-90 lg:rotate-0">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+                  <path d="M7 17h20M21 10l7 7-7 7" stroke="#BB5A28" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+            )}
           </div>
         ))}
       </div>

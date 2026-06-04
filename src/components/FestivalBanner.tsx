@@ -16,14 +16,14 @@ export default function FestivalBanner() {
 
       {/* Content */}
       <div
-        className="absolute inset-0 flex flex-col justify-center"
-        style={{ paddingLeft: "70px", paddingRight: "70px" }}
+        className="fb-content absolute inset-0 flex flex-col justify-center h-px-section"
+        style={{ paddingTop: 0, paddingBottom: 0 }}
       >
         {/* Title — max ~680px wide */}
         <h2
-          className="font-prata"
+          className="fb-title font-prata"
           style={{
-            fontSize: "56px",
+            fontSize: "clamp(28px,5vw,56px)",
             lineHeight: "125%",
             letterSpacing: "-0.02em",
             color: "#FFFFFF",

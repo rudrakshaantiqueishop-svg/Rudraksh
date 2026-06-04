@@ -10,22 +10,11 @@ const features = [
 
 export default function WhoWeAre() {
   return (
-    <section style={{ background: "#FEF9F2", padding: "100px 70px" }}>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+    <section className="section-pad" style={{ background: "#FEF9F2" }}>
+      <div className="wwa-row flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-0">
 
-        {/* Left image */}
-        <div style={{ flex: "0 0 50%", height: "600px", overflow: "hidden", position: "relative" }}>
-          <Image
-            src="/images/who-we-are.png"
-            alt="Who are we"
-            fill
-            sizes="50vw"
-            style={{ objectFit: "cover", objectPosition: "center top" }}
-          />
-        </div>
-
-        {/* Right content */}
-        <div style={{ flex: 1, paddingLeft: "64px", display: "flex", flexDirection: "column", gap: "48px" }}>
+        {/* Right content — rendered first so it appears on top on mobile */}
+        <div className="wwa-content flex-1 flex flex-col lg:pt-0 lg:pl-16" style={{ gap: "32px" }}>
 
           {/* Text + icon list block */}
           <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
@@ -49,9 +38,9 @@ export default function WhoWeAre() {
             {/* Feature rows */}
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               {features.map((row, ri) => (
-                <div key={ri} style={{ display: "flex", flexDirection: "row", gap: "24px" }}>
+                <div key={ri} className="flex flex-col sm:flex-row gap-4">
                   {row.map((label) => (
-                    <div key={label} style={{ display: "flex", alignItems: "center", gap: "16px", width: "260px" }}>
+                    <div key={label} className="flex items-center gap-3 min-w-0">
                       <Image src="/images/icons/Star 1.svg" alt="Star" width={20} height={20} style={{ flexShrink: 0 }} />
                       <span
                         className="font-lato"
@@ -87,6 +76,17 @@ export default function WhoWeAre() {
             </svg>
           </Link>
 
+        </div>
+
+        {/* Image — below text on mobile, left on desktop */}
+        <div className="wwa-img w-full lg:flex-none lg:w-1/2 flex-shrink-0 lg:order-first" style={{ height: "clamp(260px, 55vw, 600px)", overflow: "hidden", position: "relative" }}>
+          <Image
+            src="/images/who-we-are.png"
+            alt="Who are we"
+            fill
+            sizes="50vw"
+            style={{ objectFit: "cover", objectPosition: "center top" }}
+          />
         </div>
       </div>
     </section>

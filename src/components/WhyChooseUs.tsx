@@ -17,19 +17,19 @@ const CheckIcon = () => (
 
 export default function WhyChooseUs() {
   return (
-    <section style={{ background: "#FEF9F2", padding: "100px 70px" }}>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "0" }}>
+    <section className="section-pad" style={{ background: "#FEF9F2" }}>
+      <div className="wcu-row flex flex-col lg:flex-row items-start gap-0">
 
         {/* ── Left: overlapping images + border rect ── */}
-        <div style={{ flexShrink: 0, width: "540px", height: "615px", position: "relative" }}>
+        <div className="wcu-images w-full lg:w-[540px] lg:flex-shrink-0 relative mt-10 lg:mt-0 h-[105vw] md:h-[70vw] lg:h-[570px] order-last lg:order-first">
 
           {/* Decorative border rectangle — behind images */}
           <div style={{
             position: "absolute",
-            left: "62px",
-            top: "95px",
-            width: "365px",
-            height: "370px",
+            left: "15%",
+            top: "15%",
+            width: "70%",
+            height: "70%",
             border: "3px solid #BB5A28",
             zIndex: 0,
           }} />
@@ -37,36 +37,36 @@ export default function WhyChooseUs() {
           {/* Image 1 — top-left (bracelets) */}
           <div style={{
             position: "absolute", left: 0, top: 0,
-            width: "310px", height: "325px",
+            width: "60%", height: "60%",
             overflow: "hidden", zIndex: 1,
           }}>
             <Image
               src="/images/about-sacred-2.png"
               alt="Gemstone bracelets"
               fill
-              sizes="310px"
+              sizes="(max-width: 1024px) 50vw, 310px"
               style={{ objectFit: "cover" }}
             />
           </div>
 
           {/* Image 2 — bottom-right (hand with bracelet) */}
           <div style={{
-            position: "absolute", left: "155px", top: "235px",
-            width: "328px", height: "335px",
+            position: "absolute", right: 0, bottom: 0,
+            width: "60%", height: "60%",
             overflow: "hidden", zIndex: 2,
           }}>
             <Image
               src="/images/who-we-are.png"
               alt="Rudraksha bracelet"
               fill
-              sizes="328px"
+              sizes="(max-width: 1024px) 60vw, 328px"
               style={{ objectFit: "cover" }}
             />
           </div>
         </div>
 
         {/* ── Right: text content ── */}
-        <div style={{ flex: 1, paddingLeft: "64px", display: "flex", flexDirection: "column", gap: "24px" }}>
+        <div className="wcu-content flex-1 flex flex-col gap-6 lg:pl-16 order-first lg:order-last">
 
           <h2
             className="font-prata"
