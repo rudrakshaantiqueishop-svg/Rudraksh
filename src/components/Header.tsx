@@ -54,7 +54,7 @@ export default function Header({ activePage }: { activePage?: string }) {
 
             {/* About Us trigger */}
             <div
-              className={`flex items-center gap-2 font-lato text-base font-normal h-full transition-colors cursor-pointer ${activeDropdown === "about" || currentPage === "about" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
+              className={`relative flex items-center gap-2 font-lato text-base font-normal h-full transition-colors cursor-pointer ${activeDropdown === "about" || currentPage === "about" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
               onMouseEnter={() => setActiveDropdown("about")}
               onMouseLeave={() => setActiveDropdown(null)}
             >
@@ -64,6 +64,24 @@ export default function Header({ activePage }: { activePage?: string }) {
               <svg width="15" height="8" viewBox="0 0 15 8" fill="none" className={`transition-transform duration-200 ${activeDropdown === "about" ? "rotate-180" : ""}`}>
                 <path d="M1 1L7.5 7L14 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
+
+              {/* Linear Dropdown for About Us */}
+              {activeDropdown === "about" && (
+                <div
+                  className="absolute left-1/2 -translate-x-1/2 bg-[#FEF9F2] flex flex-col min-w-[260px] py-3 rounded-b-md z-50"
+                  style={{ boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", top: "100%" }}
+                >
+                  {aboutLinks.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="px-6 py-3 font-lato font-medium text-[#44403C] hover:text-[#BB5A28] hover:bg-black/5 transition-colors whitespace-nowrap text-base"
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Products trigger */}
@@ -149,33 +167,7 @@ export default function Header({ activePage }: { activePage?: string }) {
         </div>
       )}
 
-      {/* About Us Dropdown */}
-      {activeDropdown === "about" && (
-        <div
-          className="absolute left-0 right-0 w-full bg-[#FEF9F2]"
-          style={{ boxShadow: "0px 1px 10px 0px rgba(0,0,0,0.15)", paddingTop: "40px", paddingBottom: "40px", top: "100%" }}
-          onMouseEnter={() => setActiveDropdown("about")}
-          onMouseLeave={() => setActiveDropdown(null)}
-        >
-          <div style={{ maxWidth: "1300px", margin: "0 auto", padding: "0 70px", display: "flex", gap: "80px", justifyContent: "center" }}>
-            {aboutLinks.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="group/item"
-                style={{ display: "flex", alignItems: "center", textDecoration: "none" }}
-              >
-                <span
-                  className="font-lato font-medium text-[#44403C] group-hover/item:text-[#BB5A28] transition-colors"
-                  style={{ fontSize: "16px", lineHeight: "150%" }}
-                >
-                  {item.name}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
+
     </header>
   );
 }
