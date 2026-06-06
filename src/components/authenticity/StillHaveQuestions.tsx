@@ -2,23 +2,24 @@ import Image from "next/image";
 
 export default function StillHaveQuestions() {
   return (
-    <section style={{ position: "relative", width: "100%", height: "480px", overflow: "hidden" }}>
+    <section className="shq-auth" style={{ position: "relative", width: "100%", height: "480px", overflow: "hidden" }}>
       <Image
         src="/assets/images/common/comman banner.png"
         alt="Still Have Questions?"
         fill
         sizes="100vw"
         style={{ objectFit: "cover", objectPosition: "center" }}
-        priority
+        loading="lazy"
       />
       <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.35)" }} />
-      <div style={{
+      <div className="shq-auth-content" style={{
         position: "absolute",
-        left: "70px", bottom: "64px",
-        display: "flex", flexDirection: "column", gap: "16px",
+        inset: 0, padding: "0 20px",
+        display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "16px",
+        textAlign: "center"
       }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          <h2 className="font-prata" style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#FFFFFF", margin: 0 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxWidth: "600px" }}>
+          <h2 className="font-prata shq-auth-title" style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#FFFFFF", margin: 0 }}>
             Still Have Questions?
           </h2>
           <p className="font-lato" style={{ fontSize: "14px", lineHeight: "150%", color: "rgba(255,255,255,0.85)", margin: 0 }}>

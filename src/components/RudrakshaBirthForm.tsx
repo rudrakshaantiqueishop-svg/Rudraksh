@@ -32,7 +32,7 @@ export default function RudrakshaBirthForm() {
         alt="Rudraksha journey"
         fill
         className="object-cover object-center"
-        priority
+        loading="lazy"
       />
 
       {/* Content overlay */}

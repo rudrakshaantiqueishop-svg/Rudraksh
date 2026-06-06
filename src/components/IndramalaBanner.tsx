@@ -11,7 +11,7 @@ export default function IndramalaBanner() {
         alt="Indramala"
         fill
         className="object-cover object-center"
-        priority
+        loading="lazy"
       />
 
       {/* Centered content */}

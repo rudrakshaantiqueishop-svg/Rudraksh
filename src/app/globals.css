@@ -144,6 +144,191 @@
   .footer-bottom { padding: 24px 40px !important; }
 }
 
+/* ─────────────────────────────────────
+   AUTHENTICITY PAGE RESPONSIVE
+───────────────────────────────────── */
+
+/* AuthenticityHero */
+@media (max-width: 767px) {
+  .auth-hero { height: clamp(320px, 72vw, 480px) !important; }
+  .auth-hero-content { padding: 0 20px 36px !important; max-width: 100% !important; }
+  .auth-hero-body { font-size: 14px !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .auth-hero { height: 500px !important; }
+  .auth-hero-content { padding: 0 40px 48px !important; }
+}
+
+/* WhatAuthenticityMeans */
+@media (max-width: 1023px) {
+  .wam-row { flex-direction: column-reverse !important; height: auto !important; gap: 40px !important; }
+  .wam-text { padding-left: 0 !important; padding-top: 0 !important; }
+}
+
+/* VerificationProcess */
+@media (max-width: 767px) {
+  .vp-section { padding: 40px 16px !important; }
+  .vp-container { padding: 28px 20px !important; }
+  .vp-step { flex-direction: column !important; gap: 20px !important; align-items: flex-start !important; }
+  .vp-img { width: 100% !important; height: 200px !important; flex-shrink: 0 !important; }
+  .vp-img-even { order: -1 !important; }
+  .vp-title { font-size: clamp(18px, 5vw, 24px) !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .vp-section { padding: 60px 40px !important; }
+  .vp-container { padding: 40px 48px !important; }
+  .vp-step { gap: 40px !important; }
+  .vp-title { font-size: 24px !important; }
+}
+
+/* CertificationAssurance */
+@media (max-width: 1023px) {
+  .ca-row { flex-direction: column !important; gap: 40px !important; }
+  .ca-text { padding-right: 0 !important; }
+}
+
+/* CertificationScope */
+@media (max-width: 1023px) {
+  .cs-row { flex-direction: column !important; gap: 40px !important; align-items: stretch !important; }
+  .cs-center { order: -1 !important; }
+}
+@media (max-width: 767px) {
+  .cs-row { gap: 32px !important; }
+}
+
+/* IdentifyCertification */
+@media (max-width: 767px) {
+  .ic-section { padding: 40px 16px !important; gap: 32px !important; }
+  .ic-row { flex-direction: column !important; gap: 24px !important; }
+  .ic-row-reverse { flex-direction: column-reverse !important; }
+  .ic-img-left { order: -1 !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .ic-section { padding: 60px 40px !important; }
+  .ic-row { gap: 48px !important; }
+}
+
+/* SourcingAndResponsibility */
+@media (max-width: 1023px) {
+  .sar-row { flex-direction: column !important; }
+  .sar-row-reverse { flex-direction: column-reverse !important; }
+  .sar-img { min-height: 320px !important; height: 320px !important; flex: none !important; width: 100% !important; }
+  .sar-text { padding: 40px 40px !important; flex: none !important; width: 100% !important; }
+  .sar-text-inner { margin-left: 0 !important; margin-right: 0 !important; }
+}
+@media (max-width: 767px) {
+  .sar-img { min-height: 260px !important; height: 260px !important; }
+  .sar-text { padding: 32px 16px !important; }
+}
+
+/* FAQ */
+@media (max-width: 767px) {
+  .faq-section { gap: 32px !important; }
+  .faq-card { padding: 20px 16px !important; }
+  .faq-question { font-size: clamp(17px, 5vw, 24px) !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .faq-question { font-size: 24px !important; }
+}
+
+/* StillHaveQuestions (Authenticity page) */
+@media (max-width: 767px) {
+  .shq-auth { height: 360px !important; }
+  .shq-auth-title { font-size: clamp(22px, 6vw, 32px) !important; }
+}
+
+/* ─────────────────────────────────────
+   CONTACT PAGE RESPONSIVE
+───────────────────────────────────── */
+
+/* ContinueWithClarity */
+@media (max-width: 767px) {
+  .cwc-inner { height: 300px !important; }
+  .cwc-content { padding: 0 24px !important; max-width: 100% !important; }
+  .cwc-title { font-size: clamp(22px, 6vw, 32px) !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .cwc-inner { height: 340px !important; }
+  .cwc-content { padding: 0 48px !important; }
+}
+
+/* BeyondRishikesh */
+@media (max-width: 1023px) {
+  .br-row { flex-direction: column !important; gap: 40px !important; }
+  .br-images { width: 100% !important; height: 320px !important; flex-shrink: 0 !important; }
+  .br-img1 { left: 50% !important; top: 0 !important; width: 50% !important; height: 100% !important; }
+  .br-img2 { left: 0 !important; top: 0 !important; width: 50% !important; height: 100% !important; }
+}
+@media (max-width: 767px) {
+  .br-images { height: 240px !important; }
+}
+
+/* ProductGuidanceBanner */
+@media (max-width: 767px) {
+  .pgb-section { height: 400px !important; }
+  .pgb-content { left: 20px !important; right: 20px !important; bottom: 32px !important; max-width: 100% !important; }
+  .pgb-title { font-size: clamp(24px, 7vw, 36px) !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .pgb-content { left: 40px !important; bottom: 48px !important; }
+}
+
+/* PlanYourVisit */
+@media (max-width: 1023px) {
+  .pyv-row { flex-direction: column !important; height: auto !important; gap: 40px !important; }
+  .pyv-images { width: 100% !important; height: 260px !important; flex-shrink: 0 !important; }
+  .pyv-deco { display: none !important; }
+  .pyv-img1 { left: 50% !important; top: 0 !important; width: 50% !important; height: 100% !important; }
+  .pyv-img2 { left: 0 !important; top: 0 !important; width: 50% !important; height: 100% !important; }
+  .pyv-text { padding-left: 0 !important; }
+}
+@media (max-width: 767px) {
+  .pyv-images { height: 200px !important; }
+}
+
+/* FindUsEasily */
+@media (max-width: 767px) {
+  .fue-map { height: 280px !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .fue-map { height: 360px !important; }
+}
+
+/* InsideOurSpace */
+@media (max-width: 767px) {
+  .ios-img { width: 240px !important; height: 360px !important; }
+}
+
+/* VisitOurStore */
+@media (max-width: 1023px) {
+  .vos-row { flex-direction: column !important; gap: 40px !important; }
+  .vos-img { width: 100% !important; height: 320px !important; flex-shrink: 0 !important; }
+}
+@media (max-width: 767px) {
+  .vos-img { height: 260px !important; }
+}
+
+/* GetInTouch */
+@media (max-width: 1023px) {
+  .git-row { flex-direction: column !important; align-items: stretch !important; gap: 48px !important; }
+  .git-left { width: 100% !important; }
+}
+@media (max-width: 767px) {
+  .git-img { height: 240px !important; }
+  .git-input { font-size: 14px !important; }
+}
+
+/* ContactHero */
+@media (max-width: 767px) {
+  .contact-hero { height: 360px !important; }
+  .contact-hero-title { font-size: clamp(28px, 8vw, 40px) !important; }
+  .contact-hero-body { font-size: 14px !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .contact-hero { height: 420px !important; }
+  .contact-hero-body { max-width: 520px !important; }
+}
+
 /* Header mobile */
 @media (max-width: 767px) {
   .header-nav-center { display: none !important; }

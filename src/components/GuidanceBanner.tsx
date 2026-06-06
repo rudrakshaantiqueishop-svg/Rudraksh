@@ -14,7 +14,7 @@ export default function GuidanceBanner() {
           alt="Need guidance"
           fill
           className="object-cover object-center"
-          priority
+          loading="lazy"
         />
 
         {/* Content */}

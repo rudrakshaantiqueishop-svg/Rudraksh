@@ -30,29 +30,23 @@ function CrossIcon() {
 
 export default function CertificationScope() {
   return (
-    <section style={{ background: "#FEF9F2", padding: "100px 70px", display: "flex", flexDirection: "column", gap: "48px" }}>
+    <section className="section-pad" style={{ background: "#FEF9F2", display: "flex", flexDirection: "column", gap: "48px" }}>
 
       {/* Header */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "stretch", gap: "8px" }}>
-        <h2
-          className="font-prata"
-          style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", textAlign: "center", margin: 0 }}
-        >
+        <h2 className="font-prata title-fluid" style={{ letterSpacing: "-0.02em", color: "#0B0404", textAlign: "center", margin: 0 }}>
           What Certification Does—and Does Not—Do
         </h2>
-        <p
-          className="font-lato"
-          style={{ fontSize: "16px", lineHeight: "150%", color: "#44403C", textAlign: "center", margin: 0 }}
-        >
+        <p className="font-lato" style={{ fontSize: "16px", lineHeight: "150%", color: "#44403C", textAlign: "center", margin: 0 }}>
           Certification provides clarity, not promises.
         </p>
       </div>
 
       {/* Three-column row */}
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "80px" }}>
+      <div className="cs-row" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "clamp(24px, 4vw, 80px)" }}>
 
         {/* Left — helps you */}
-        <div style={{ width: "380px", flexShrink: 0, display: "flex", flexDirection: "column", gap: "24px" }}>
+        <div className="cs-panel-left" style={{ flex: 1, display: "flex", flexDirection: "column", gap: "24px" }}>
           <span className="font-lato" style={{ fontSize: "20px", fontWeight: 500, lineHeight: "140%", color: "#44403C" }}>
             Certification helps you:
           </span>
@@ -67,31 +61,21 @@ export default function CertificationScope() {
         </div>
 
         {/* Center — image with gradient border */}
-        <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+        <div className="cs-center" style={{ flex: 1, display: "flex", justifyContent: "center" }}>
           <div style={{
-            width: "360px",
-            height: "360px",
-            padding: "20px",
+            width: "100%", maxWidth: "360px", aspectRatio: "1", padding: "5.5%",
             border: "3px solid transparent",
             backgroundImage: "linear-gradient(#FEF9F2, #FEF9F2), linear-gradient(180deg, #552912 0%, #BB5A28 100%)",
-            backgroundOrigin: "border-box",
-            backgroundClip: "padding-box, border-box",
-            flexShrink: 0,
+            backgroundOrigin: "border-box", backgroundClip: "padding-box, border-box",
           }}>
-            <div style={{ position: "relative", width: "320px", height: "320px", overflow: "hidden" }}>
-              <Image
-                src="/assets/images/common/common.png"
-                alt="Certified Rudraksha"
-                fill
-                sizes="320px"
-                style={{ objectFit: "cover" }}
-              />
+            <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
+              <Image src="/assets/images/common/common.png" alt="Certified Rudraksha" fill sizes="(max-width: 1023px) 90vw, 320px" style={{ objectFit: "cover" }} />
             </div>
           </div>
         </div>
 
         {/* Right — does not */}
-        <div style={{ width: "380px", flexShrink: 0, display: "flex", flexDirection: "column", gap: "24px" }}>
+        <div className="cs-panel-right" style={{ flex: 1, display: "flex", flexDirection: "column", gap: "24px" }}>
           <span className="font-lato" style={{ fontSize: "20px", fontWeight: 500, lineHeight: "140%", color: "#44403C" }}>
             Certification does not:
           </span>

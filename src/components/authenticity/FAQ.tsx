@@ -22,51 +22,34 @@ const faqs = [
 ];
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number>(0);
+  const [openIndex, setOpenIndex] = useState<number>(-1);
 
   return (
-    <section style={{ background: "#FEF9F2", padding: "70px", display: "flex", flexDirection: "column", gap: "48px" }}>
+    <section className="faq-section section-pad" style={{ background: "#FEF9F2", display: "flex", flexDirection: "column", gap: "48px" }}>
 
-      {/* Header */}
-      <h2
-        className="font-prata"
-        style={{ fontSize: "36px", lineHeight: "129%", letterSpacing: "-0.02em", color: "#0A0503", textAlign: "center", margin: 0 }}
-      >
+      <h2 className="font-prata title-fluid" style={{ letterSpacing: "-0.02em", color: "#0A0503", textAlign: "center", margin: 0 }}>
         Your Questions Answered
       </h2>
 
-      {/* FAQ list */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "900px", width: "100%", margin: "0 auto" }}>
         {faqs.map((faq, i) => {
           const isOpen = openIndex === i;
           return (
             <div
               key={i}
-              style={{
-                background: "#FFFFFF",
-                border: "1px solid #E7E5E4",
-                padding: "32px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-              }}
+              className="faq-card"
+              style={{ background: "#FFFFFF", border: "1px solid #E7E5E4", padding: "24px", display: "flex", flexDirection: "column", gap: "12px" }}
             >
-              {/* Question row */}
               <div
                 style={{ display: "flex", flexDirection: "row", alignItems: "center", cursor: "pointer" }}
                 onClick={() => setOpenIndex(isOpen ? -1 : i)}
               >
-                <span
-                  className="font-prata"
-                  style={{ flex: 1, fontSize: "30px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0A0503" }}
-                >
+                <span className="font-prata faq-question" style={{ flex: 1, fontSize: "24px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0A0503" }}>
                   {faq.question}
                 </span>
                 <div style={{
-                  flexShrink: 0,
-                  width: "48px", height: "48px",
-                  border: "1px solid #E7E5E4",
-                  borderRadius: "24px",
+                  flexShrink: 0, width: "48px", height: "48px",
+                  border: "1px solid #E7E5E4", borderRadius: "24px",
                   display: "flex", alignItems: "center", justifyContent: "center",
                 }}>
                   {isOpen ? (
@@ -80,13 +63,8 @@ export default function FAQ() {
                   )}
                 </div>
               </div>
-
-              {/* Answer */}
               {isOpen && (
-                <p
-                  className="font-lato"
-                  style={{ fontSize: "16px", lineHeight: "150%", color: "#44403C", margin: 0, fontWeight: 400 }}
-                >
+                <p className="font-lato" style={{ fontSize: "16px", lineHeight: "150%", color: "#44403C", margin: 0, fontWeight: 400 }}>
                   {faq.answer}
                 </p>
               )}

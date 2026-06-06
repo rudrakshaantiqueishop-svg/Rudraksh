@@ -33,7 +33,7 @@ export default function ShopByCategory() {
             style={{ scrollSnapAlign: "start" }}
           >
             <div className="relative overflow-hidden h-[200px] lg:h-[276px]">
-              <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
+              <Image src={cat.image} alt={cat.name} fill sizes="(max-width: 767px) 180px, 20vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
             </div>
             <p className="font-prata text-base lg:text-xl font-normal text-center text-dark">{cat.name}</p>
           </div>

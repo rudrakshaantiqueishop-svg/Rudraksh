@@ -11,7 +11,7 @@ export default function FestivalBanner() {
         alt="Shivratri divine blessings"
         fill
         className="object-cover object-center"
-        priority
+        loading="lazy"
       />
 
       {/* Content */}

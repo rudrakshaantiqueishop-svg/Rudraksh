@@ -1,18 +1,20 @@
+import dynamic from "next/dynamic";
 import HeroSection from "@/components/HeroSection";
 import ShopByCategory from "@/components/ShopByCategory";
-import WhoWeAre from "@/components/WhoWeAre";
-import ShopByPurpose from "@/components/ShopByPurpose";
-import RudrakshaBirthForm from "@/components/RudrakshaBirthForm";
-import BestsellerProducts from "@/components/BestsellerProducts";
-import FestivalBanner from "@/components/FestivalBanner";
-import AuthenticityBanner from "@/components/AuthenticityBanner";
-import EnergisationProcess from "@/components/EnergisationProcess";
-import IndramalaBanner from "@/components/IndramalaBanner";
-import WhyChooseUs from "@/components/WhyChooseUs";
-import GetInspired from "@/components/GetInspired";
-import GuidanceBanner from "@/components/GuidanceBanner";
-import BlogPosts from "@/components/BlogPosts";
-import Footer from "@/components/Footer";
+
+const WhoWeAre            = dynamic(() => import("@/components/WhoWeAre"));
+const ShopByPurpose       = dynamic(() => import("@/components/ShopByPurpose"));
+const RudrakshaBirthForm  = dynamic(() => import("@/components/RudrakshaBirthForm"));
+const BestsellerProducts  = dynamic(() => import("@/components/BestsellerProducts"));
+const FestivalBanner      = dynamic(() => import("@/components/FestivalBanner"));
+const AuthenticityBanner  = dynamic(() => import("@/components/AuthenticityBanner"));
+const EnergisationProcess = dynamic(() => import("@/components/EnergisationProcess"));
+const IndramalaBanner     = dynamic(() => import("@/components/IndramalaBanner"));
+const WhyChooseUs         = dynamic(() => import("@/components/WhyChooseUs"));
+const GetInspired         = dynamic(() => import("@/components/GetInspired"));
+const GuidanceBanner      = dynamic(() => import("@/components/GuidanceBanner"));
+const BlogPosts           = dynamic(() => import("@/components/BlogPosts"));
+const Footer              = dynamic(() => import("@/components/Footer"));
 
 export default function Home() {
   return (
@@ -32,6 +34,7 @@ export default function Home() {
         <GetInspired />
         <GuidanceBanner />
         <BlogPosts />
+        <Footer />
       </main>
     </div>
   );

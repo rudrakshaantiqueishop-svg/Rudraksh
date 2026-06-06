@@ -31,20 +31,14 @@ function CrossIcon() {
 
 export default function IdentifyCertification() {
   return (
-    <section style={{ background: "#FFF5E7", padding: "100px 70px", display: "flex", flexDirection: "column", gap: "48px" }}>
+    <section className="ic-section" style={{ background: "#FFF5E7", padding: "100px 70px", display: "flex", flexDirection: "column", gap: "48px" }}>
 
       {/* Header */}
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-        <h2
-          className="font-prata"
-          style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", textAlign: "center", margin: 0 }}
-        >
+        <h2 className="font-prata title-fluid" style={{ letterSpacing: "-0.02em", color: "#0B0404", textAlign: "center", margin: 0 }}>
           How to Identify Reliable Certification
         </h2>
-        <p
-          className="font-lato"
-          style={{ fontSize: "16px", lineHeight: "150%", color: "#44403C", textAlign: "center", margin: 0 }}
-        >
+        <p className="font-lato" style={{ fontSize: "16px", lineHeight: "150%", color: "#44403C", textAlign: "center", margin: 0 }}>
           A real certificate informs—it does not impress.
         </p>
       </div>
@@ -52,9 +46,8 @@ export default function IdentifyCertification() {
       {/* Rows container */}
       <div style={{ display: "flex", flexDirection: "column", gap: "48px", maxWidth: "940px", width: "100%", margin: "0 auto" }}>
 
-        {/* Row 1 — text LEFT, image RIGHT, vertically centered */}
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "100px" }}>
-
+        {/* Row 1 — text LEFT, image RIGHT */}
+        <div className="ic-row ic-row-reverse" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "clamp(32px, 6vw, 100px)" }}>
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "20px" }}>
             <span className="font-lato" style={{ fontSize: "16px", fontWeight: 500, lineHeight: "140%", color: "#44403C" }}>
               A trustworthy certification should:
@@ -68,20 +61,16 @@ export default function IdentifyCertification() {
               ))}
             </div>
           </div>
-
-          <div style={{ flexShrink: 0, width: "420px", height: "320px", position: "relative", overflow: "hidden" }}>
-            <Image src="/assets/images/common/common.png" alt="Trustworthy certification" fill sizes="420px" style={{ objectFit: "cover" }} />
+          <div className="ic-img" style={{ flex: 1, width: "100%", maxWidth: "420px", aspectRatio: "420 / 320", position: "relative", overflow: "hidden" }}>
+            <Image src="/assets/images/common/common.png" alt="Trustworthy certification" fill sizes="(max-width: 767px) 100vw, 420px" style={{ objectFit: "cover" }} />
           </div>
-
         </div>
 
-        {/* Row 2 — image LEFT, text RIGHT, center-aligned */}
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "100px" }}>
-
-          <div style={{ flexShrink: 0, width: "420px", height: "320px", position: "relative", overflow: "hidden" }}>
-            <Image src="/assets/images/common/common.png" alt="Caution certificates" fill sizes="420px" style={{ objectFit: "cover" }} />
+        {/* Row 2 — image LEFT, text RIGHT */}
+        <div className="ic-row" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "clamp(32px, 6vw, 100px)" }}>
+          <div className="ic-img ic-img-left" style={{ flex: 1, width: "100%", maxWidth: "420px", aspectRatio: "420 / 320", position: "relative", overflow: "hidden" }}>
+            <Image src="/assets/images/common/common.png" alt="Caution certificates" fill sizes="(max-width: 767px) 100vw, 420px" style={{ objectFit: "cover" }} />
           </div>
-
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "20px" }}>
             <span className="font-lato" style={{ fontSize: "16px", fontWeight: 500, lineHeight: "140%", color: "#44403C" }}>
               Be cautious of certificates that:
@@ -95,11 +84,9 @@ export default function IdentifyCertification() {
               ))}
             </div>
           </div>
-
         </div>
 
       </div>
-
     </section>
   );
 }

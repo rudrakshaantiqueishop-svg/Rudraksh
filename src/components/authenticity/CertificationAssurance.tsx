@@ -8,22 +8,20 @@ const bullets = [
 
 export default function CertificationAssurance() {
   return (
-    <section style={{ background: "#FEF9F2", padding: "100px 70px" }}>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "550px" }}>
+    <section className="section-pad" style={{ background: "#FEF9F2" }}>
+      <div className="ca-row" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "40px" }}>
 
         {/* Left — text content */}
-        <div style={{ flex: 1, minWidth: 0, paddingRight: "64px", display: "flex", flexDirection: "column" }}>
+        <div className="ca-text" style={{ flex: 1, minWidth: 0, paddingRight: "64px", display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "23px" }}>
-
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <h2 className="font-prata" style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
+              <h2 className="font-prata title-fluid" style={{ letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
                 Yes, You Will Receive Certification
               </h2>
               <p className="font-lato" style={{ fontSize: "16px", color: "#44403C", lineHeight: "150%", margin: 0 }}>
                 Every verified Rudraksha or gemstone is accompanied by certification. This certification confirms:
               </p>
             </div>
-
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               {bullets.map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -32,22 +30,19 @@ export default function CertificationAssurance() {
                 </div>
               ))}
             </div>
-
             <p className="font-lato" style={{ fontSize: "16px", color: "#44403C", lineHeight: "150%", margin: 0 }}>
               It is provided as documentation, not as a marketing add-on.
             </p>
           </div>
         </div>
 
-        {/* Right — two overlapping images, no background */}
-        <div style={{ flexShrink: 0, width: "530px", height: "560px", position: "relative" }}>
-          {/* Top-right image */}
-          <div style={{ position: "absolute", right: 0, top: 0, width: "340px", height: "300px", overflow: "hidden", zIndex: 1 }}>
-            <Image src="/assets/images/common/common.png" alt="Certification" fill sizes="340px" style={{ objectFit: "cover" }} />
+        {/* Right — two overlapping images */}
+        <div className="ca-images" style={{ flexShrink: 0, width: "100%", maxWidth: "530px", aspectRatio: "530 / 560", position: "relative" }}>
+          <div style={{ position: "absolute", right: 0, top: 0, width: "64.15%", height: "53.57%", overflow: "hidden", zIndex: 1 }}>
+            <Image src="/assets/images/common/common.png" alt="Certification" fill sizes="(max-width: 1023px) 60vw, 340px" style={{ objectFit: "cover" }} />
           </div>
-          {/* Bottom-left image — overlaps on top */}
-          <div style={{ position: "absolute", left: 0, bottom: 0, width: "340px", height: "300px", overflow: "hidden", zIndex: 2 }}>
-            <Image src="/assets/images/common/common.png" alt="Certified piece" fill sizes="340px" style={{ objectFit: "cover" }} />
+          <div style={{ position: "absolute", left: 0, bottom: 0, width: "64.15%", height: "53.57%", overflow: "hidden", zIndex: 2 }}>
+            <Image src="/assets/images/common/common.png" alt="Certified piece" fill sizes="(max-width: 1023px) 60vw, 340px" style={{ objectFit: "cover" }} />
           </div>
         </div>
 

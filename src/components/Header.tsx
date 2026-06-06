@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 
 const productColumns = [
@@ -34,8 +34,29 @@ export default function Header({ activePage }: { activePage?: string }) {
   const currentPage = activePage ?? (pathname === "/" ? "home" : pathname === "/about" ? "about" : pathname === "/contact" ? "contact" : "home");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < lastScrollY.current || currentScrollY < 50) {
+        setIsVisible(true);
+      } else if (currentScrollY > 50 && currentScrollY > lastScrollY.current) {
+        setIsVisible(false);
+        setActiveDropdown(null); // Close dropdown if scrolling down
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 bg-[#FEF9F2]" style={{ borderBottom: activeDropdown ? "none" : "1px solid rgba(0,0,0,0.05)" }}>
+    <header className={`fixed top-0 left-0 right-0 z-50 bg-[#FEF9F2] transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"}`} style={{ borderBottom: activeDropdown ? "none" : "1px solid rgba(0,0,0,0.05)" }}>
       {/* Main bar */}
       <div className="flex items-center justify-between h-px-section" style={{ height: "72px", paddingTop: 0, paddingBottom: 0 }}>
 

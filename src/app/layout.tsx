@@ -30,7 +30,9 @@ export default function RootLayout({
     <html lang="en" className={`${lato.variable} ${prata.variable}`}>
       <body>
         <Header />
-        {children}
+        <div style={{ paddingTop: "72px" }}>
+          {children}
+        </div>
         <Footer />
       </body>
     </html>
