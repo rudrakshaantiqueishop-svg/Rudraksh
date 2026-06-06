@@ -43,7 +43,7 @@ export default function AuthenticityBanner() {
           </div>
 
           <Link
-            href="#"
+            href="/authenticity"
             style={{
               display: "inline-flex", alignItems: "center", gap: "6px",
               paddingBottom: "6px", borderBottom: "1px solid #44403C",
