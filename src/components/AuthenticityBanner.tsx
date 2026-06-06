@@ -1,16 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const StarIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0 }}>
-    <path d="M10 1l2.39 6.26H19l-5.19 3.77 1.99 6.22L10 13.27l-5.8 3.98 1.99-6.22L1 7.26h6.61L10 1z" fill="url(#star-auth)" />
-    <defs>
-      <linearGradient id="star-auth" x1="10" y1="0" x2="10" y2="20" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#552912" /><stop offset="1" stopColor="#BB5A28" />
-      </linearGradient>
-    </defs>
-  </svg>
-);
 
 const bullets = [
   "Lab-certified for authenticity",
@@ -44,7 +34,7 @@ export default function AuthenticityBanner() {
           <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "40px" }}>
             {bullets.map((b) => (
               <div key={b} style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-                <StarIcon />
+                <Image src="/assets/icons/Star 1.svg" alt="Star" width={20} height={20} style={{ flexShrink: 0 }} />
                 <span className="font-lato" style={{ fontSize: "14px", lineHeight: "150%", color: "#44403C" }}>
                   {b}
                 </span>
@@ -80,7 +70,7 @@ export default function AuthenticityBanner() {
           {/* Image 1 — starts from top */}
           <div className="ab-img1 flex-1 lg:flex-none lg:w-[356px] relative overflow-hidden h-[70vw] md:h-[40vw] lg:h-[560px]" style={{ marginTop: 0 }}>
             <Image
-              src="/images/about-sacred-1.png"
+              src="/assets/images/about/about-sacred-1.png"
               alt="Rudraksha malas"
               fill
               sizes="(max-width: 1024px) 50vw, 356px"
@@ -91,7 +81,7 @@ export default function AuthenticityBanner() {
           {/* Image 2 — offset down */}
           <div className="ab-img2 flex-1 lg:flex-none lg:w-[356px] relative overflow-hidden h-[70vw] md:h-[40vw] lg:h-[560px]" style={{ marginTop: "12%" }}>
             <Image
-              src="/images/about-founding-2.png"
+              src="/assets/images/about/about-founding-2.png"
               alt="Sacred offering"
               fill
               sizes="(max-width: 1024px) 50vw, 356px"

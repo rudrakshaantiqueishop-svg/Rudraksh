@@ -42,7 +42,7 @@ export default function EnergisationProcess() {
                 display: "flex", alignItems: "center", justifyContent: "center",
                 flexShrink: 0,
               }}>
-                <Image src="/images/icons/Star.svg" alt="step" width={20} height={20} />
+                <Image src="/assets/icons/Star.svg" alt="step" width={20} height={20} />
               </div>
 
               {/* Step label */}

@@ -42,19 +42,19 @@ export default function Principles() {
     }}>
       {/* Decorative: top-left plant */}
       <div style={{ position: "absolute", left: "-28px", top: "-68px", width: "545px", height: "302px", pointerEvents: "none", zIndex: 0 }}>
-        <Image src="/images/principle-line.svg" alt="" fill sizes="545px" />
+        <Image src="/assets/images/about/principle-line.svg" alt="" fill sizes="545px" />
       </div>
       {/* Decorative: top-right plant 2 */}
       <div style={{ position: "absolute", left: "1033px", top: 0, width: "632px", height: "391px", pointerEvents: "none", zIndex: 0 }}>
-        <Image src="/images/plant 2.svg" alt="" fill sizes="632px" />
+        <Image src="/assets/images/common/plant 2.svg" alt="" fill sizes="632px" />
       </div>
       {/* Decorative: big plant left side */}
       <div style={{ position: "absolute", left: "-120px", top: "336px", width: "580px", height: "734px", pointerEvents: "none", zIndex: 0 }}>
-        <Image src="/images/big_plant.svg" alt="" fill sizes="580px" />
+        <Image src="/assets/images/common/big_plant.svg" alt="" fill sizes="580px" />
       </div>
       {/* Decorative: line bottom */}
       <div style={{ position: "absolute", left: "-22px", top: "1245px", width: "571px", height: "354px", pointerEvents: "none", zIndex: 0 }}>
-        <Image src="/images/Line-bottom.svg" alt="" fill sizes="571px" />
+        <Image src="/assets/images/common/Line-bottom.svg" alt="" fill sizes="571px" />
       </div>
 
       {/* Main content */}
@@ -73,16 +73,16 @@ export default function Principles() {
             {/* Column 1 */}
             <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "411px" }}>
               <PrincipleCard num="01" title="Authenticity Before Appearance" desc="If a bead cannot be verified, it is not listed." />
-              <FeatureImage src="/images/about-p01-3021a5.png" alt="Authenticity" />
+              <FeatureImage src="/assets/images/about/about-p01-3021a5.png" alt="Authenticity" />
               <PrincipleCard num="03" title="Guidance Before Recommendation" desc="Advice comes before selection." />
-              <FeatureImage src="/images/about-principle-3.png" alt="Guidance" />
+              <FeatureImage src="/assets/images/about/about-principle-3.png" alt="Guidance" />
             </div>
             {/* Column 2 */}
             <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "411px" }}>
               <PrincipleCard num="02" title="Transparency Over Claims" desc="We explain what a product supports — and what it does not guarantee." />
-              <FeatureImage src="/images/about-p02.png" alt="Transparency" />
+              <FeatureImage src="/assets/images/about/about-p02.png" alt="Transparency" />
               <PrincipleCard num="04" title="Choice Without Pressure" desc="Nothing is positioned as urgent or compulsory." />
-              <FeatureImage src="/images/about-p04.png" alt="Choice" />
+              <FeatureImage src="/assets/images/about/about-p04.png" alt="Choice" />
               <PrincipleCard num="05" title="Tradition with Verification" desc="We honour traditional knowledge while applying modern scientific validation." />
             </div>
           </div>

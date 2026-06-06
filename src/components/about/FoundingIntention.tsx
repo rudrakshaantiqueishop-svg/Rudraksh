@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { StarIcon } from "./shared";
+
 
 export default function FoundingIntention() {
   return (
@@ -22,7 +22,7 @@ export default function FoundingIntention() {
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               {["Verify before offering", "Guide before recommending", "Explain before promising", "Present facts without exaggeration"].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                  <StarIcon />
+                  <Image src="/assets/icons/Star 1.svg" alt="Star" width={18} height={18} style={{ flexShrink: 0, marginTop: "2px" }} />
                   <span className="font-lato" style={{ fontSize: "16px", fontWeight: 500, color: "#44403C" }}>{item}</span>
                 </div>
               ))}
@@ -51,11 +51,11 @@ export default function FoundingIntention() {
           }} />
           {/* Top-right image */}
           <div style={{ position: "absolute", left: "125px", top: 0, width: "475px", height: "258px", overflow: "hidden", zIndex: 1 }}>
-            <Image src="/images/about-founding-1.png" alt="Founding tradition" fill sizes="475px" style={{ objectFit: "cover" }} />
+            <Image src="/assets/images/about/about-founding-1.png" alt="Founding tradition" fill sizes="475px" style={{ objectFit: "cover" }} />
           </div>
           {/* Bottom-left image */}
           <div style={{ position: "absolute", left: 0, top: "292px", width: "475px", height: "258px", overflow: "hidden", zIndex: 1 }}>
-            <Image src="/images/about-founding-2.png" alt="Founding intention" fill sizes="475px" style={{ objectFit: "cover" }} />
+            <Image src="/assets/images/about/about-founding-2.png" alt="Founding intention" fill sizes="475px" style={{ objectFit: "cover" }} />
           </div>
         </div>
 

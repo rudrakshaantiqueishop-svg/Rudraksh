@@ -4,7 +4,7 @@ export default function StillHaveQuestions() {
   return (
     <section style={{ position: "relative", width: "100%", height: "600px", overflow: "hidden" }}>
       <Image
-        src="/images/still-have-questions.png"
+        src="/assets/images/about/still-have-questions.png"
         alt="Still have questions?"
         fill
         sizes="100vw"

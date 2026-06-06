@@ -41,7 +41,7 @@ export default function WhyChooseUs() {
             overflow: "hidden", zIndex: 1,
           }}>
             <Image
-              src="/images/about-sacred-2.png"
+              src="/assets/images/about/about-sacred-2.png"
               alt="Gemstone bracelets"
               fill
               sizes="(max-width: 1024px) 50vw, 310px"
@@ -56,7 +56,7 @@ export default function WhyChooseUs() {
             overflow: "hidden", zIndex: 2,
           }}>
             <Image
-              src="/images/who-we-are.png"
+              src="/assets/images/about/who-we-are.png"
               alt="Rudraksha bracelet"
               fill
               sizes="(max-width: 1024px) 60vw, 328px"

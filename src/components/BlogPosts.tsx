@@ -4,19 +4,19 @@ import Link from "next/link";
 const posts = [
   {
     id: 1,
-    img: "/images/about-founding-1.png",
+    img: "/assets/images/about/about-founding-1.png",
     title: "Understanding Rudraksha Mukhi and Their Significance",
     desc: "A simple guide to the meaning and traditional importance of different Rudraksha beads.",
   },
   {
     id: 2,
-    img: "/images/about-p04.png",
+    img: "/assets/images/about/about-p04.png",
     title: "How Gemstones Are Traditionally Energised",
     desc: "An overview of the rituals and practices used to prepare gemstones with intention.",
   },
   {
     id: 3,
-    img: "/images/about-sacred-1.png",
+    img: "/assets/images/about/about-sacred-1.png",
     title: "Choosing the Right Stone for Your Personal Journey",
     desc: "Learn how intention, lifestyle, and guidance play a role in selection.",
   },

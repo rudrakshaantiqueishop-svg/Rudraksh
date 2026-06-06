@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { StarIcon } from "./shared";
+
 
 export default function WhoWeAreFor() {
   return (
@@ -24,7 +24,7 @@ export default function WhoWeAreFor() {
         }}
       >
         <Image
-          src="/images/who_we_are_line.svg"
+          src="/assets/images/about/who_we_are_line.svg"
           alt=""
           fill
           style={{ objectFit: "contain", objectPosition: "top right" }}
@@ -50,7 +50,7 @@ export default function WhoWeAreFor() {
           }}
         >
           <Image
-            src="/images/about-who-we-are.png"
+            src="/assets/images/about/about-who-we-are.png"
             alt="Who we are for"
             fill
             sizes="50vw"
@@ -100,7 +100,7 @@ export default function WhoWeAreFor() {
                   gap: "12px",
                 }}
               >
-                <StarIcon />
+                <Image src="/assets/icons/Star 1.svg" alt="Star" width={18} height={18} style={{ flexShrink: 0, marginTop: "2px" }} />
                 <span
                   className="font-lato"
                   style={{

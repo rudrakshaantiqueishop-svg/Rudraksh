@@ -48,7 +48,7 @@ export default function WhenSacred() {
             }}
           >
             <Image
-              src="/images/about-sacred-1.png"
+              src="/assets/images/about/about-sacred-1.png"
               alt="Sacred rudraksha beads"
               fill
               sizes="584px"
@@ -145,7 +145,7 @@ export default function WhenSacred() {
             }}
           >
             <Image
-              src="/images/about-sacred-2.png"
+              src="/assets/images/about/about-sacred-2.png"
               alt="Sacred tradition"
               fill
               sizes="584px"

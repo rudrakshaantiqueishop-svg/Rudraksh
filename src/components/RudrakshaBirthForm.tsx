@@ -28,7 +28,7 @@ export default function RudrakshaBirthForm() {
 
       {/* Background image */}
       <Image
-        src="/images/Product Highlight.png"
+        src="/assets/images/products/Product Highlight.png"
         alt="Rudraksha journey"
         fill
         className="object-cover object-center"

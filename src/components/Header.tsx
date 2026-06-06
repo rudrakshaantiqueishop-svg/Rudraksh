@@ -6,19 +6,19 @@ import { usePathname } from "next/navigation";
 
 const productColumns = [
   [
-    { name: "Rudraksha",   icon: "/images/icons/icon-rudraksha.svg" },
-    { name: "Bracelets",   icon: "/images/icons/icon-bracelets.svg" },
-    { name: "Murtis",      icon: "/images/icons/icon-murtis.svg" },
+    { name: "Rudraksha",   icon: "/assets/icons/icon-rudraksha.svg" },
+    { name: "Bracelets",   icon: "/assets/icons/icon-bracelets.svg" },
+    { name: "Murtis",      icon: "/assets/icons/icon-murtis.svg" },
   ],
   [
-    { name: "Siddha Mala", icon: "/images/icons/icon-siddha-mala.svg" },
-    { name: "Gemstones",   icon: "/images/icons/icon-gemstones.svg" },
-    { name: "Antiques",    icon: "/images/icons/icon-antiques.svg" },
+    { name: "Siddha Mala", icon: "/assets/icons/icon-siddha-mala.svg" },
+    { name: "Gemstones",   icon: "/assets/icons/icon-gemstones.svg" },
+    { name: "Antiques",    icon: "/assets/icons/icon-antiques.svg" },
   ],
   [
-    { name: "Combinations",  icon: "/images/icons/icon-combinations.svg" },
-    { name: "Singing Bowls", icon: "/images/icons/icon-singing-bowls.svg" },
-    { name: "Necklaces",     icon: "/images/icons/icon-necklaces.svg" },
+    { name: "Combinations",  icon: "/assets/icons/icon-combinations.svg" },
+    { name: "Singing Bowls", icon: "/assets/icons/icon-singing-bowls.svg" },
+    { name: "Necklaces",     icon: "/assets/icons/icon-necklaces.svg" },
   ],
 ];
 
@@ -46,7 +46,7 @@ export default function Header({ activePage }: { activePage?: string }) {
 
         {/* Logo */}
         <Link href="/" className="flex-shrink-0">
-          <Image src="/images/logo.png" alt="Rudraksha Antiquei" width={212} height={40} style={{ objectFit: "contain", height: "36px", width: "auto" }} />
+          <Image src="/assets/images/common/logo.png" alt="Rudraksha Antiquei" width={212} height={40} style={{ objectFit: "contain", height: "36px", width: "auto" }} />
         </Link>
 
         {/* Nav — absolutely centred, hidden on mobile */}
@@ -173,7 +173,7 @@ export default function Header({ activePage }: { activePage?: string }) {
                     </span>
                     {/* Arrow */}
                     <div className="ml-auto flex-shrink-0">
-                      <Image src="/images/icons/icon-arrow.svg" alt="" width={24} height={24} />
+                      <Image src="/assets/icons/icon-arrow.svg" alt="" width={24} height={24} />
                     </div>
                   </Link>
                 ))}

@@ -24,7 +24,7 @@ export default function WhatHappens() {
         pointerEvents: "none", zIndex: 0,
       }}>
         <Image
-          src="/images/leaf.svg"
+          src="/assets/images/common/leaf.svg"
           alt=""
           fill
           style={{ objectFit: "contain", objectPosition: "bottom left" }}
@@ -39,7 +39,7 @@ export default function WhatHappens() {
         transform: "rotate(180deg)",
       }}>
         <Image
-          src="/images/leaf.svg"
+          src="/assets/images/common/leaf.svg"
           alt=""
           fill
           style={{ objectFit: "contain", objectPosition: "bottom left" }}
@@ -75,7 +75,7 @@ export default function WhatHappens() {
                   flexShrink: 0,
                 }}>
                   <Image
-                    src="/images/icons/Star.svg"
+                    src="/assets/icons/Star.svg"
                     alt="step"
                     width={20}
                     height={19}

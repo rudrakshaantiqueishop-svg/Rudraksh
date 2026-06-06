@@ -1,11 +1,11 @@
 import Image from "next/image";
 
 const categories = [
-  { name: "Necklace", image: "/images/category-necklace.png" },
-  { name: "Earrings", image: "/images/category-earrings.png" },
-  { name: "Bracelets", image: "/images/category-bracelets.png" },
-  { name: "Rings", image: "/images/category-rings.png" },
-  { name: "Charms", image: "/images/category-charms.png" },
+  { name: "Necklace", image: "/assets/images/products/category-necklace.png" },
+  { name: "Earrings", image: "/assets/images/products/category-earrings.png" },
+  { name: "Bracelets", image: "/assets/images/products/category-bracelets.png" },
+  { name: "Rings", image: "/assets/images/products/category-rings.png" },
+  { name: "Charms", image: "/assets/images/products/category-charms.png" },
 ];
 
 export default function ShopByCategory() {

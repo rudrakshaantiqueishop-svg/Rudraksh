@@ -7,7 +7,7 @@ export default function IndramalaBanner() {
 
       {/* Background image */}
       <Image
-        src="/images/rudraksh.png"
+        src="/assets/images/home/rudraksh.png"
         alt="Indramala"
         fill
         className="object-cover object-center"
@@ -21,8 +21,7 @@ export default function IndramalaBanner() {
       >
         {/* Title with gold → white gradient */}
         <h2
-          className="font-prata"
-          className="ib-title"
+          className="font-prata ib-title"
           style={{
             fontSize: "clamp(36px,7vw,56px)",
             lineHeight: "130%",

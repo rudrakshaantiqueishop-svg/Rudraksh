@@ -7,7 +7,7 @@ export default function FestivalBanner() {
 
       {/* Background image */}
       <Image
-        src="/images/god.png"
+        src="/assets/images/home/god.png"
         alt="Shivratri divine blessings"
         fill
         className="object-cover object-center"

@@ -41,7 +41,7 @@ export default function WhoWeAre() {
                 <div key={ri} className="flex flex-col sm:flex-row gap-4">
                   {row.map((label) => (
                     <div key={label} className="flex items-center gap-3 min-w-0">
-                      <Image src="/images/icons/Star 1.svg" alt="Star" width={20} height={20} style={{ flexShrink: 0 }} />
+                      <Image src="/assets/icons/Star 1.svg" alt="Star" width={20} height={20} style={{ flexShrink: 0 }} />
                       <span
                         className="font-lato"
                         style={{ fontSize: "16px", fontWeight: 500, lineHeight: "140%", color: "#44403C" }}
@@ -81,7 +81,7 @@ export default function WhoWeAre() {
         {/* Image — below text on mobile, left on desktop */}
         <div className="wwa-img w-full lg:flex-none lg:w-1/2 flex-shrink-0 lg:order-first" style={{ height: "clamp(260px, 55vw, 600px)", overflow: "hidden", position: "relative" }}>
           <Image
-            src="/images/who-we-are.png"
+            src="/assets/images/about/who-we-are.png"
             alt="Who are we"
             fill
             sizes="50vw"

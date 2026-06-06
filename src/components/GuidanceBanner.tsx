@@ -10,7 +10,7 @@ export default function GuidanceBanner() {
 
         {/* Background image */}
         <Image
-          src="/images/beads.png"
+          src="/assets/images/home/beads.png"
           alt="Need guidance"
           fill
           className="object-cover object-center"

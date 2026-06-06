@@ -2,14 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 const purposes = [
-  { name: "Wealth",     icon: "/images/icons/wealth.svg" },
-  { name: "Health",     icon: "/images/icons/health.svg" },
-  { name: "Love",       icon: "/images/icons/love.svg" },
-  { name: "Luck",       icon: "/images/icons/luck.svg" },
-  { name: "Protection", icon: "/images/icons/protection.svg" },
-  { name: "Peace",      icon: "/images/icons/peace.svg" },
-  { name: "Courage",    icon: "/images/icons/courage.svg" },
-  { name: "Balance",    icon: "/images/icons/balance.svg" },
+  { name: "Wealth",     icon: "/assets/icons/wealth.svg" },
+  { name: "Health",     icon: "/assets/icons/health.svg" },
+  { name: "Love",       icon: "/assets/icons/love.svg" },
+  { name: "Luck",       icon: "/assets/icons/luck.svg" },
+  { name: "Protection", icon: "/assets/icons/protection.svg" },
+  { name: "Peace",      icon: "/assets/icons/peace.svg" },
+  { name: "Courage",    icon: "/assets/icons/courage.svg" },
+  { name: "Balance",    icon: "/assets/icons/balance.svg" },
 ];
 
 export default function ShopByPurpose() {

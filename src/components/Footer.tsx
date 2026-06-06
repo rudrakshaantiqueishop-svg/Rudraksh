@@ -143,7 +143,7 @@ export default function Footer() {
 
         {/* Center logo */}
         <Link href="/" style={{ display: "flex", alignItems: "center" }}>
-          <Image src="/images/logo-25e94a.png" alt="Rudraksha Antiquei" width={212} height={40} style={{ objectFit: "contain" }} />
+          <Image src="/assets/images/common/logo-25e94a.png" alt="Rudraksha Antiquei" width={212} height={40} style={{ objectFit: "contain" }} />
         </Link>
 
         {/* Right links */}

@@ -4,7 +4,7 @@ export default function AboutHero() {
   return (
     <section style={{ position: "relative", width: "100%", height: "700px", overflow: "hidden" }}>
       <Image
-        src="/images/about-hero.png"
+        src="/assets/images/about/about-hero.png"
         alt="Rudraksha Antiquei — Rooted in Rishikesh"
         fill
         sizes="100vw"

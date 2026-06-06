@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { StarIcon } from "./shared";
+
 
 export default function DisciplineStandards() {
   return (
@@ -10,11 +10,11 @@ export default function DisciplineStandards() {
         <div style={{ flexShrink: 0, width: "541px", height: "655px", position: "relative" }}>
           {/* Top-right image */}
           <div style={{ position: "absolute", left: "151px", top: 0, width: "390px", height: "403px", overflow: "hidden" }}>
-            <Image src="/images/about-principle-1.png" alt="Discipline" fill sizes="390px" style={{ objectFit: "cover" }} />
+            <Image src="/assets/images/about/about-principle-1.png" alt="Discipline" fill sizes="390px" style={{ objectFit: "cover" }} />
           </div>
           {/* Bottom-left image */}
           <div style={{ position: "absolute", left: 0, top: "252px", width: "390px", height: "403px", overflow: "hidden" }}>
-            <Image src="/images/about-principle-2.png" alt="Standards" fill sizes="390px" style={{ objectFit: "cover" }} />
+            <Image src="/assets/images/about/about-principle-2.png" alt="Standards" fill sizes="390px" style={{ objectFit: "cover" }} />
           </div>
         </div>
 
@@ -34,7 +34,7 @@ export default function DisciplineStandards() {
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               {["Careful sourcing", "Structured verification", "Responsible communication"].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                  <StarIcon />
+                  <Image src="/assets/icons/Star 1.svg" alt="Star" width={18} height={18} style={{ flexShrink: 0, marginTop: "2px" }} />
                   <span className="font-lato" style={{ fontSize: "16px", fontWeight: 500, color: "#44403C" }}>{item}</span>
                 </div>
               ))}

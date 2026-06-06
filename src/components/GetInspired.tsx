@@ -3,12 +3,12 @@ import Image from "next/image";
 import { useState } from "react";
 
 const products = [
-  { id: 1, img: "/images/about-sacred-1.png",   name: "Lorem Ipsum", price: "$230.00", original: "$250.00" },
-  { id: 2, img: "/images/about-sacred-2.png",   name: "Lorem Ipsum", price: "$120.00", original: "$140.00" },
-  { id: 3, img: "/images/about-founding-1.png", name: "Lorem Ipsum", price: "$180.00", original: "$200.00" },
-  { id: 4, img: "/images/about-founding-2.png", name: "Lorem Ipsum", price: "$280.00", original: "$300.00" },
-  { id: 5, img: "/images/about-p02.png",        name: "Lorem Ipsum", price: "$200.00", original: "$220.00" },
-  { id: 6, img: "/images/about-p04.png",        name: "Lorem Ipsum", price: "$140.00", original: "$160.00" },
+  { id: 1, img: "/assets/images/about/about-sacred-1.png",   name: "Lorem Ipsum", price: "$230.00", original: "$250.00" },
+  { id: 2, img: "/assets/images/about/about-sacred-2.png",   name: "Lorem Ipsum", price: "$120.00", original: "$140.00" },
+  { id: 3, img: "/assets/images/about/about-founding-1.png", name: "Lorem Ipsum", price: "$180.00", original: "$200.00" },
+  { id: 4, img: "/assets/images/about/about-founding-2.png", name: "Lorem Ipsum", price: "$280.00", original: "$300.00" },
+  { id: 5, img: "/assets/images/about/about-p02.png",        name: "Lorem Ipsum", price: "$200.00", original: "$220.00" },
+  { id: 6, img: "/assets/images/about/about-p04.png",        name: "Lorem Ipsum", price: "$140.00", original: "$160.00" },
 ];
 
 const VISIBLE = 4;

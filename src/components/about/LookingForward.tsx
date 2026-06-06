@@ -5,7 +5,7 @@ export default function LookingForward() {
     <section style={{ background: "#FEF9F2", padding: "100px 70px", position: "relative", overflow: "hidden" }}>
       {/* line.svg — top left of section */}
       <div style={{ position: "absolute", top: 0, left: 0, width: "260px", height: "200px", pointerEvents: "none", zIndex: 0 }}>
-        <Image src="/images/line.svg" alt="" fill style={{ objectFit: "contain", objectPosition: "top left" }} />
+        <Image src="/assets/images/common/line.svg" alt="" fill style={{ objectFit: "contain", objectPosition: "top left" }} />
       </div>
 
       {/* Brown gradient box */}
@@ -25,7 +25,7 @@ export default function LookingForward() {
 
         {/* leaf-2.png — bottom right inside box */}
         <div style={{ position: "absolute", bottom: 0, right: 0, width: "380px", height: "320px", pointerEvents: "none", zIndex: 1 }}>
-          <Image src="/images/leaf-2.png" alt="" fill style={{ objectFit: "contain", objectPosition: "bottom right" }} />
+          <Image src="/assets/images/common/leaf-2.png" alt="" fill style={{ objectFit: "contain", objectPosition: "bottom right" }} />
         </div>
 
         {/* Text content */}

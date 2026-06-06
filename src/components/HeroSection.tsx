@@ -6,7 +6,7 @@ export default function HeroSection() {
 
       {/* Background image */}
       <Image
-        src="/images/hero-main.png"
+        src="/assets/images/home/hero-main.png"
         alt="Rudraksha necklace"
         fill
         className="object-cover object-center"
@@ -45,7 +45,7 @@ export default function HeroSection() {
           <span className="font-lato text-white" style={{ fontSize: "clamp(14px, 3vw, 16px)", fontWeight: 600, lineHeight: "150%", letterSpacing: "0.05em" }}>
             SHOP NOW
           </span>
-          <Image src="/images/icon-shopnow-arrow.svg" alt="" width={20} height={20} />
+          <Image src="/assets/icons/icon-shopnow-arrow.svg" alt="" width={20} height={20} />
         </div>
       </div>
 
@@ -78,10 +78,10 @@ export default function HeroSection() {
       {/* ── Responsive Nav arrows — hidden on small screens ── */}
       <div className="hidden lg:flex absolute gap-4 pointer-events-auto" style={{ right: "8%", bottom: "64px" }}>
         <button className="flex items-center justify-center hover:bg-white/10 transition-colors" style={{ width: "64px", height: "64px", borderRadius: "50%", border: "1px solid rgba(255,255,255,0.6)" }}>
-          <Image src="/images/icon-arrow-left.svg" alt="Previous" width={32} height={32} />
+          <Image src="/assets/icons/icon-arrow-left.svg" alt="Previous" width={32} height={32} />
         </button>
         <button className="flex items-center justify-center hover:bg-white/30 transition-colors" style={{ width: "64px", height: "64px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", border: "1px solid rgba(255,255,255,0.6)" }}>
-          <Image src="/images/icon-arrow-right.svg" alt="Next" width={32} height={32} />
+          <Image src="/assets/icons/icon-arrow-right.svg" alt="Next" width={32} height={32} />
         </button>
       </div>
 
