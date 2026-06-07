@@ -221,6 +221,19 @@
   .sar-text { padding: 32px 16px !important; }
 }
 
+/* WhatEnergisationDoesNot */
+@media (max-width: 1023px) {
+  .wedn-row { flex-direction: column !important; }
+  .wedn-row-reverse { flex-direction: column-reverse !important; }
+  .wedn-img { min-height: 320px !important; height: 320px !important; flex: none !important; width: 100% !important; }
+  .wedn-text { padding: 40px 40px !important; flex: none !important; width: 100% !important; }
+  .wedn-text-inner { margin-left: 0 !important; margin-right: 0 !important; }
+}
+@media (max-width: 767px) {
+  .wedn-img { min-height: 260px !important; height: 260px !important; }
+  .wedn-text { padding: 32px 16px !important; }
+}
+
 /* FAQ */
 @media (max-width: 767px) {
   .faq-section { gap: 32px !important; }
@@ -250,6 +263,18 @@
 @media (min-width: 768px) and (max-width: 1023px) {
   .cwc-inner { height: 340px !important; }
   .cwc-content { padding: 0 48px !important; }
+}
+
+/* ContinueWithClarity (energisation) */
+@media (max-width: 767px) {
+  .ewc-inner { height: 360px !important; }
+  .ewc-content { padding: 0 24px !important; max-width: 100% !important; gap: 12px !important; }
+  .ewc-title { font-size: clamp(22px, 6vw, 30px) !important; }
+  .ewc-content > div { gap: 16px !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .ewc-inner { height: 400px !important; }
+  .ewc-content { padding: 0 48px !important; }
 }
 
 /* BeyondRishikesh */
@@ -297,6 +322,11 @@
 /* InsideOurSpace */
 @media (max-width: 767px) {
   .ios-img { width: 240px !important; height: 360px !important; }
+}
+
+/* ExperiencesSharedByCustomers */
+@media (max-width: 767px) {
+  .esc-video { width: 240px !important; height: 360px !important; }
 }
 
 /* VisitOurStore */
@@ -348,5 +378,49 @@
   .hero-title { font-size: clamp(36px, 9vw, 72px) !important; }
   .hero-body { font-size: 14px !important; }
   .hero-content { padding-left: 20px !important; padding-right: 20px !important; top: auto !important; bottom: 40px !important; }
+}
+
+/* ─────────────────────────────────────
+   ENERGISATION PROCESS PAGE RESPONSIVE
+───────────────────────────────────── */
+
+/* EnergisationHero */
+@media (max-width: 767px) {
+  .energisation-hero { height: 460px !important; }
+  .energisation-hero-content { left: 24px !important; right: 24px !important; bottom: 32px !important; max-width: 100% !important; }
+  .energisation-hero-title { font-size: clamp(28px, 8vw, 40px) !important; }
+  .energisation-hero-body { font-size: 14px !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .energisation-hero { height: 500px !important; }
+  .energisation-hero-content { left: 40px !important; max-width: 460px !important; }
+}
+
+/* OurEnergisationProcess */
+@media (max-width: 767px) {
+  .oep-section { padding: 40px 16px !important; }
+  .oep-container { padding: 28px 20px !important; }
+  .oep-step { flex-direction: column !important; gap: 20px !important; align-items: flex-start !important; }
+  .oep-img { width: 100% !important; height: 200px !important; flex-shrink: 0 !important; }
+  .oep-img-even { order: -1 !important; }
+  .oep-title { font-size: clamp(18px, 5vw, 24px) !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .oep-section { padding: 60px 40px !important; }
+  .oep-container { padding: 40px 48px !important; }
+  .oep-step { gap: 40px !important; }
+  .oep-title { font-size: 24px !important; }
+}
+
+/* WhenEnergisationIsRecommended */
+@media (max-width: 767px) {
+  .weir-row { flex-direction: column !important; gap: 32px !important; }
+  .weir-col { max-width: 100% !important; }
+  .weir-img { order: -1 !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .weir-row { gap: 32px !important; }
+  .weir-col { max-width: 260px !important; }
+  .weir-img { width: 280px !important; height: 280px !important; }
 }
 

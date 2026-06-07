@@ -1,12 +1,14 @@
+import dynamic from "next/dynamic";
 import AboutHero from "@/components/about/AboutHero";
-import WhenSacred from "@/components/about/WhenSacred";
-import FoundingIntention from "@/components/about/FoundingIntention";
-import DisciplineStandards from "@/components/about/DisciplineStandards";
-import Principles from "@/components/about/Principles";
-import WhatHappens from "@/components/about/WhatHappens";
-import WhoWeAreFor from "@/components/about/WhoWeAreFor";
-import LookingForward from "@/components/about/LookingForward";
-import StillHaveQuestions from "@/components/about/StillHaveQuestions";
+
+const WhenSacred          = dynamic(() => import("@/components/about/WhenSacred"));
+const FoundingIntention   = dynamic(() => import("@/components/about/FoundingIntention"));
+const DisciplineStandards = dynamic(() => import("@/components/about/DisciplineStandards"));
+const Principles          = dynamic(() => import("@/components/about/Principles"));
+const WhatHappens         = dynamic(() => import("@/components/about/WhatHappens"));
+const WhoWeAreFor         = dynamic(() => import("@/components/about/WhoWeAreFor"));
+const LookingForward      = dynamic(() => import("@/components/about/LookingForward"));
+const StillHaveQuestions  = dynamic(() => import("@/components/about/StillHaveQuestions"));
 
 export default function AboutPage() {
   return (

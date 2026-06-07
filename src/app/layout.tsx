@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${lato.variable} ${prata.variable}`}>
-      <body>
+      <body suppressHydrationWarning>
         <Header />
         <div style={{ paddingTop: "72px" }}>
           {children}

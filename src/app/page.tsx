@@ -14,7 +14,6 @@ const WhyChooseUs         = dynamic(() => import("@/components/WhyChooseUs"));
 const GetInspired         = dynamic(() => import("@/components/GetInspired"));
 const GuidanceBanner      = dynamic(() => import("@/components/GuidanceBanner"));
 const BlogPosts           = dynamic(() => import("@/components/BlogPosts"));
-const Footer              = dynamic(() => import("@/components/Footer"));
 
 export default function Home() {
   return (
@@ -34,7 +33,6 @@ export default function Home() {
         <GetInspired />
         <GuidanceBanner />
         <BlogPosts />
-        <Footer />
       </main>
     </div>
   );
