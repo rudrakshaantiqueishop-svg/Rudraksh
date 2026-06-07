@@ -424,3 +424,81 @@
   .weir-img { width: 280px !important; height: 280px !important; }
 }
 
+/* ─────────────────────────────────────
+   CONSULTATION PAGE RESPONSIVE
+───────────────────────────────────── */
+
+/* ConsultationHero */
+@media (max-width: 767px) {
+  .consultation-hero { height: 520px !important; }
+  .consultation-hero-content { left: 24px !important; right: 24px !important; bottom: 32px !important; max-width: 100% !important; }
+  .consultation-hero-title { font-size: clamp(28px, 8vw, 40px) !important; }
+  .consultation-hero-body { font-size: 14px !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .consultation-hero { height: 500px !important; }
+  .consultation-hero-content { left: 40px !important; max-width: 460px !important; }
+}
+
+/* WhyConsultationMatters */
+@media (max-width: 1023px) {
+  .wcm-row { flex-direction: column !important; gap: 40px !important; }
+  .wcm-images { width: 100% !important; max-width: 390px !important; }
+}
+@media (max-width: 767px) {
+  .wcm-images { height: 380px !important; }
+  .wcm-images > div { width: 240px !important; height: 210px !important; }
+}
+
+/* WhenGuidanceBecomesHelpful */
+@media (max-width: 1023px) {
+  .wgbh-row { flex-direction: column !important; gap: 40px !important; }
+  .wgbh-images { width: 100% !important; max-width: 560px !important; height: 590px !important; transform: scale(0.7); transform-origin: left top; margin-bottom: -177px !important; }
+}
+@media (max-width: 767px) {
+  .wgbh-images { transform: scale(0.55); margin-bottom: -266px !important; }
+}
+
+/* ExperiencedAndResponsibleGuidance */
+@media (max-width: 1023px) {
+  .earg-grid { flex-direction: column !important; gap: 32px !important; }
+  .earg-img { max-width: 100% !important; height: 380px !important; }
+}
+@media (max-width: 767px) {
+  .earg-img { height: 300px !important; }
+}
+
+/* WhatTheConsultationIncludes */
+@media (max-width: 1023px) {
+  .wtci-row { flex-direction: column !important; height: auto !important; gap: 40px; }
+  .wtci-row > div:first-child { padding-right: 0 !important; }
+  .wtci-images { width: 100% !important; max-width: 600px !important; height: 480px !important; }
+  .wtci-deco { display: none !important; }
+  .wtci-images > div:nth-child(2) { width: 80% !important; height: 200px !important; }
+  .wtci-images > div:last-child { width: 80% !important; height: 200px !important; top: 240px !important; }
+}
+@media (max-width: 767px) {
+  .wtci-images { height: 380px !important; }
+  .wtci-images > div:nth-child(2) { width: 100% !important; height: 160px !important; }
+  .wtci-images > div:last-child { width: 100% !important; height: 160px !important; top: 200px !important; }
+}
+
+/* OurApproachToGuidance */
+@media (max-width: 1023px) {
+  .oatg-row { flex-direction: column !important; height: auto !important; gap: 32px !important; }
+  .oatg-img { min-height: 320px !important; flex: none !important; width: 100% !important; }
+}
+@media (max-width: 767px) {
+  .oatg-img { min-height: 240px !important; }
+}
+
+/* InPersonGuidanceAvailable / LookingForMoreGuidance */
+@media (max-width: 1023px) {
+  .lfmg-banner > div:last-child { left: 32px !important; width: calc(100% - 64px) !important; max-width: 420px !important; }
+}
+@media (max-width: 767px) {
+  .lfmg-banner { height: 420px !important; }
+  .lfmg-banner > div:last-child { left: 24px !important; width: calc(100% - 48px) !important; }
+  .lfmg-banner h2 { font-size: 24px !important; }
+}
+
