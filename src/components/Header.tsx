@@ -25,8 +25,9 @@ const productColumns = [
 const aboutLinks = [
   { name: "Authenticity & Certification", href: "/authenticity" },
   { name: "Energisation Process", href: "/energisation-process" },
-  { name: "Blogs", href: "#" },
-  { name: "Testinomial", href: "#" },
+  { name: "How to Choose", href: "/how-to-choose" },
+  { name: "Blogs", href: "/blog" },
+  { name: "Testimonial", href: "/testimonial" },
 ];
 
 export default function Header({ activePage }: { activePage?: string }) {
@@ -267,6 +268,14 @@ export default function Header({ activePage }: { activePage?: string }) {
 
             <Link href="/about" className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase" onClick={() => setIsMobileMenuOpen(false)}>
               ABOUT US
+            </Link>
+
+            <Link href="/how-to-choose" className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase pl-4" onClick={() => setIsMobileMenuOpen(false)}>
+              HOW TO CHOOSE
+            </Link>
+
+            <Link href="/blog" className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase pl-4" onClick={() => setIsMobileMenuOpen(false)}>
+              BLOGS
             </Link>
 
             <div className="flex flex-col">

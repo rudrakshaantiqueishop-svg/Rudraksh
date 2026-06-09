@@ -1,17 +1,16 @@
 import Image from "next/image";
 
-
 export default function FoundingIntention() {
   return (
-    <section style={{ background: "#FEF9F2", padding: "100px 70px" }}>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "550px" }}>
+    <section className="fi-section" style={{ background: "#FEF9F2" }}>
+      <div className="fi-row">
 
-        {/* Left column */}
-        <div style={{ flex: 1, minWidth: 0, paddingRight: "64px", display: "flex", flexDirection: "column" }}>
+        {/* Left column – text */}
+        <div className="fi-text" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "23px" }}>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <h2 className="font-prata" style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
+              <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3.5vw, 36px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
                 Our Founding Intention
               </h2>
               <p className="font-lato" style={{ fontSize: "16px", color: "#44403C", lineHeight: "150%", margin: 0 }}>
@@ -34,15 +33,13 @@ export default function FoundingIntention() {
           </div>
         </div>
 
-        {/* Right column */}
-        <div style={{ flexShrink: 0, width: "600px", height: "550px", position: "relative" }}>
+        {/* Right column – overlapping images */}
+        <div className="fi-images" style={{ flexShrink: 0, position: "relative" }}>
           {/* Decorative gradient border rectangle */}
-          <div style={{
+          <div className="fi-deco" style={{
             position: "absolute",
-            left: "92px",
-            top: "84px",
-            width: "417px",
-            height: "382px",
+            left: "15.33%", top: "15.27%",
+            width: "69.5%", height: "69.45%",
             border: "3px solid transparent",
             backgroundImage: "linear-gradient(#FEF9F2, #FEF9F2), linear-gradient(180deg, #552912 0%, #BB5A28 100%)",
             backgroundOrigin: "border-box",
@@ -50,12 +47,12 @@ export default function FoundingIntention() {
             zIndex: 0,
           }} />
           {/* Top-right image */}
-          <div style={{ position: "absolute", left: "125px", top: 0, width: "475px", height: "258px", overflow: "hidden", zIndex: 1 }}>
-            <Image src="/assets/images/about/about-founding-1.png" alt="Founding tradition" fill sizes="475px" style={{ objectFit: "cover" }} />
+          <div className="fi-img-top" style={{ position: "absolute", left: "20.83%", top: 0, width: "79.16%", height: "46.9%", overflow: "hidden", zIndex: 1 }}>
+            <Image src="/assets/images/about/about-founding-1.png" alt="Founding tradition" fill sizes="(max-width: 767px) 100vw, 475px" style={{ objectFit: "cover" }} />
           </div>
           {/* Bottom-left image */}
-          <div style={{ position: "absolute", left: 0, top: "292px", width: "475px", height: "258px", overflow: "hidden", zIndex: 1 }}>
-            <Image src="/assets/images/about/about-founding-2.png" alt="Founding intention" fill sizes="475px" style={{ objectFit: "cover" }} />
+          <div className="fi-img-bot" style={{ position: "absolute", left: 0, top: "53.09%", width: "79.16%", height: "46.9%", overflow: "hidden", zIndex: 1 }}>
+            <Image src="/assets/images/about/about-founding-2.png" alt="Founding intention" fill sizes="(max-width: 767px) 100vw, 475px" style={{ objectFit: "cover" }} />
           </div>
         </div>
 

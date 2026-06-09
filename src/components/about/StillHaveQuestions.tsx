@@ -2,26 +2,22 @@ import Image from "next/image";
 
 export default function StillHaveQuestions() {
   return (
-    <section style={{ position: "relative", width: "100%", height: "600px", overflow: "hidden" }}>
+    <section className="shq-banner" style={{ position: "relative", width: "100%", overflow: "hidden" }}>
       <Image
         src="/assets/images/about/still-have-questions.png"
         alt="Still have questions?"
         fill
         sizes="100vw"
-        style={{ objectFit: "fill", objectPosition: "center 40%" }}
+        style={{ objectFit: "cover", objectPosition: "center 40%" }}
+        loading="lazy"
       />
       <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)" }} />
-      <div style={{
-        position: "absolute",
-        left: "64px", top: "50%", transform: "translateY(-50%)",
-        width: "650px",
-        display: "flex", flexDirection: "column", gap: "32px",
-      }}>
+      <div className="shq-content">
         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          <h2 className="font-prata" style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#FFFFFF" }}>
+          <h2 className="font-prata" style={{ fontSize: "clamp(24px, 4vw, 36px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#FFFFFF" }}>
             Still Have Questions?
           </h2>
-          <p className="font-lato" style={{ fontSize: "16px", lineHeight: "150%", color: "#E7E5E4" }}>
+          <p className="font-lato" style={{ fontSize: "clamp(14px, 1.8vw, 16px)", lineHeight: "150%", color: "#E7E5E4" }}>
             If you would like guidance before choosing a Rudraksha or gemstone, our team is available — without pressure.
           </p>
         </div>

@@ -26,7 +26,7 @@ export default function ContinueWithClarity() {
             We believe sacred objects require clarity, not urgency. If you have questions, we encourage you to ask. We are here to guide — not to persuade.
           </p>
           <a
-            href="#"
+            href="/how-to-choose"
             className="font-lato"
             style={{
               display: "inline-flex", alignItems: "center", gap: "6px",
