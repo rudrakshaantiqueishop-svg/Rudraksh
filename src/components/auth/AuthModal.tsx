@@ -13,6 +13,8 @@ import {
 import FormField from "@/components/auth/FormField";
 import PasswordField from "@/components/auth/PasswordField";
 import SubmitButton from "@/components/auth/SubmitButton";
+import GoogleSignInSection from "@/components/auth/GoogleSignInSection";
+import EmailOtpForm from "@/components/auth/EmailOtpForm";
 
 interface AuthModalProps {
   open: boolean;
@@ -20,7 +22,7 @@ interface AuthModalProps {
 }
 
 export default function AuthModal({ open, onOpenChange }: AuthModalProps) {
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<"login" | "signup" | "otp">("login");
   const [loginState, loginAction] = useActionState(login, undefined);
   const [signupState, signupAction] = useActionState(signup, undefined);
 
@@ -74,6 +76,20 @@ export default function AuthModal({ open, onOpenChange }: AuthModalProps) {
               <SubmitButton>Sign In</SubmitButton>
             </form>
 
+            <p className="font-lato text-sm text-gray-text mt-4 text-center">
+              <button
+                type="button"
+                onClick={() => setMode("otp")}
+                className="text-accent underline-offset-4 hover:underline"
+              >
+                Sign in with email code instead
+              </button>
+            </p>
+
+            <div className="mt-6">
+              <GoogleSignInSection />
+            </div>
+
             <p className="font-lato text-sm text-gray-text mt-6 text-center">
               Don&apos;t have an account?{" "}
               <button
@@ -82,6 +98,27 @@ export default function AuthModal({ open, onOpenChange }: AuthModalProps) {
                 className="text-accent underline-offset-4 hover:underline"
               >
                 Sign up
+              </button>
+            </p>
+          </>
+        ) : mode === "otp" ? (
+          <>
+            <DialogHeader>
+              <DialogTitle>Sign In with Email Code</DialogTitle>
+              <DialogDescription>
+                We&apos;ll email you a 6-digit code to sign in — no password needed.
+              </DialogDescription>
+            </DialogHeader>
+
+            <EmailOtpForm />
+
+            <p className="font-lato text-sm text-gray-text mt-6 text-center">
+              <button
+                type="button"
+                onClick={() => setMode("login")}
+                className="text-accent underline-offset-4 hover:underline"
+              >
+                Back to password sign-in
               </button>
             </p>
           </>
@@ -124,6 +161,10 @@ export default function AuthModal({ open, onOpenChange }: AuthModalProps) {
 
               <SubmitButton>Create Account</SubmitButton>
             </form>
+
+            <div className="mt-6">
+              <GoogleSignInSection />
+            </div>
 
             <p className="font-lato text-sm text-gray-text mt-6 text-center">
               Already have an account?{" "}

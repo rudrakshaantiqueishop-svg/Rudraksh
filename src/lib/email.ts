@@ -34,6 +34,24 @@ export async function sendVerificationEmail(email: string, token: string) {
   });
 }
 
+export async function sendLoginOtpEmail(email: string, code: string) {
+  if (!process.env.RESEND_API_KEY) {
+    console.log(`[email] Sign-in code for ${email}: ${code}`);
+    return;
+  }
+
+  await getResend().emails.send({
+    from,
+    to: email,
+    subject: "Your Rudraksh sign-in code",
+    html: `
+      <p>Use the code below to sign in to Rudraksh:</p>
+      <p style="font-size: 28px; font-weight: bold; letter-spacing: 4px;">${code}</p>
+      <p>This code will expire in 10 minutes. If you didn't request this, you can safely ignore this email.</p>
+    `,
+  });
+}
+
 export async function sendPasswordResetEmail(email: string, token: string) {
   const url = `${appUrl}/reset-password?token=${token}`;
 

@@ -6,6 +6,8 @@ import { requireUser } from "@/lib/dal";
 import {
   phoneSchema,
   addressSchema,
+  nameSchema,
+  emailSchema,
   MAX_ADDRESSES,
   PHONE_COUNTRY_CODE,
 } from "@/lib/validations/account";
@@ -40,6 +42,56 @@ export async function updatePhone(
   revalidatePath("/account");
 
   return { message: "Phone number saved.", success: true };
+}
+
+export async function updateName(
+  _prevState: AccountFormState,
+  formData: FormData
+): Promise<AccountFormState> {
+  const user = await requireUser();
+
+  const parsed = nameSchema.safeParse({ name: formData.get("name") });
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { name: parsed.data.name },
+  });
+  revalidatePath("/account");
+
+  return { message: "Name saved.", success: true };
+}
+
+export async function updateEmail(
+  _prevState: AccountFormState,
+  formData: FormData
+): Promise<AccountFormState> {
+  const user = await requireUser();
+
+  const parsed = emailSchema.safeParse({ email: formData.get("email") });
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+
+  const existing = await prisma.user.findUnique({ where: { email: parsed.data.email } });
+  if (existing && existing.id !== user.id) {
+    return { message: "This email address is already taken." };
+  }
+
+  await prisma.user.update({
+    where: { id: user.id },
+    // If the user changes their email, we reset emailVerified to null
+    // You would typically send a new verification email here as well
+    data: { 
+      email: parsed.data.email,
+      emailVerified: parsed.data.email === user.email ? user.emailVerified : null 
+    },
+  });
+  revalidatePath("/account");
+
+  return { message: "Email saved.", success: true };
 }
 
 export async function addAddress(

@@ -4,25 +4,30 @@ import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
-import { generateToken, hashToken } from "@/lib/tokens";
-import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email";
+import { generateToken, generateOtp, hashToken } from "@/lib/tokens";
+import { sendVerificationEmail, sendPasswordResetEmail, sendLoginOtpEmail } from "@/lib/email";
 import { signIn, signOut } from "@/lib/auth";
 import {
   signupSchema,
   loginSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
+  otpRequestSchema,
+  otpVerifySchema,
 } from "@/lib/validations/auth";
 
 export type AuthFormState =
   | {
       errors?: Record<string, string[] | undefined>;
       message?: string;
+      success?: boolean;
     }
   | undefined;
 
 const EMAIL_VERIFY_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 const PASSWORD_RESET_EXPIRY_MS = 60 * 60 * 1000; // 1 hour
+const LOGIN_OTP_EXPIRY_MS = 10 * 60 * 1000; // 10 minutes
+const LOGIN_OTP_RESEND_INTERVAL_MS = 60 * 1000; // 1 minute
 
 export async function signup(
   _prevState: AuthFormState,
@@ -214,4 +219,68 @@ export async function resetPassword(
 
 export async function logout() {
   await signOut({ redirectTo: "/" });
+}
+
+export async function requestLoginOtp(
+  _prevState: AuthFormState,
+  formData: FormData
+): Promise<AuthFormState> {
+  const parsed = otpRequestSchema.safeParse({
+    email: formData.get("email"),
+  });
+
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+
+  const { email } = parsed.data;
+
+  const recent = await prisma.verificationToken.findFirst({
+    where: { identifier: email, type: "LOGIN_OTP", consumedAt: null },
+    orderBy: { createdAt: "desc" },
+  });
+
+  if (recent && Date.now() - recent.createdAt.getTime() < LOGIN_OTP_RESEND_INTERVAL_MS) {
+    return { message: "Please wait a moment before requesting another code." };
+  }
+
+  const code = generateOtp();
+  await prisma.verificationToken.create({
+    data: {
+      identifier: email,
+      token: hashToken(code),
+      type: "LOGIN_OTP",
+      expiresAt: new Date(Date.now() + LOGIN_OTP_EXPIRY_MS),
+    },
+  });
+
+  await sendLoginOtpEmail(email, code);
+
+  return { success: true, message: "We've sent a 6-digit code to your email." };
+}
+
+export async function verifyLoginOtp(
+  _prevState: AuthFormState,
+  formData: FormData
+): Promise<AuthFormState> {
+  const parsed = otpVerifySchema.safeParse({
+    email: formData.get("email"),
+    code: formData.get("code"),
+  });
+
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+
+  try {
+    await signIn("email-otp", {
+      ...parsed.data,
+      redirectTo: "/account",
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return { message: "Invalid or expired code. Please try again." };
+    }
+    throw error;
+  }
 }

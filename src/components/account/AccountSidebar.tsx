@@ -27,7 +27,7 @@ export default function AccountSidebar({
         <p className="mt-1 truncate font-lato text-sm text-gray-text">{name ?? email}</p>
       </div>
 
-      <div className="fixed bottom-6 left-1/2 z-50 flex w-[90%] max-w-[400px] -translate-x-1/2 flex-row items-center justify-around rounded-full bg-white px-4 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.12)] md:static md:flex-1 md:w-auto md:max-w-none md:translate-x-0 md:flex-col md:items-stretch md:rounded-none md:bg-transparent md:px-0 md:py-0 md:shadow-none">
+      <div className="fixed bottom-6 left-1/2 z-50 flex w-[90%] max-w-[400px] -translate-x-1/2 flex-row items-center justify-around rounded-full bg-white px-4 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.12)] md:static md:z-auto md:flex-1 md:w-auto md:max-w-none md:translate-x-0 md:flex-col md:items-stretch md:rounded-none md:bg-transparent md:px-0 md:py-0 md:shadow-none">
         <nav className="flex flex-1 justify-around md:flex-none md:justify-start md:flex-col md:gap-1">
           {navItems.map(({ href, label, icon: Icon }) => {
             const isActive = pathname === href;

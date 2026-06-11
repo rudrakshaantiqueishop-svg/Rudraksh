@@ -1,5 +1,7 @@
 import { requireUser } from "@/lib/dal";
 import PhoneForm from "@/components/account/PhoneForm";
+import NameForm from "@/components/account/NameForm";
+import EmailForm from "@/components/account/EmailForm";
 
 export default async function AccountProfilePage() {
   const user = await requireUser();
@@ -16,17 +18,16 @@ export default async function AccountProfilePage() {
         </div>
       )}
 
-      <div className="border border-border p-6">
-        <dl className="flex flex-col gap-3 font-lato text-base text-gray-text">
-          <div>
-            <dt className="inline font-bold text-dark">Name: </dt>
-            <dd className="inline">{user.name ?? "—"}</dd>
-          </div>
-          <div>
-            <dt className="inline font-bold text-dark">Email: </dt>
-            <dd className="inline">{user.email}</dd>
-          </div>
-        </dl>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="border border-border p-6">
+          <h3 className="mb-4 font-prata text-lg text-dark">Name</h3>
+          <NameForm name={user.name} />
+        </div>
+
+        <div className="border border-border p-6">
+          <h3 className="mb-4 font-prata text-lg text-dark">Email</h3>
+          <EmailForm email={user.email} />
+        </div>
       </div>
 
       <div className="border border-border p-6">

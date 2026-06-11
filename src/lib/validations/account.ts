@@ -38,3 +38,11 @@ export const addressSchema = z.object({
 });
 
 export type AddressInput = z.infer<typeof addressSchema>;
+
+export const nameSchema = z.object({
+  name: z.string().trim().min(2, { error: "Name must be at least 2 characters." }),
+});
+
+export const emailSchema = z.object({
+  email: z.string().trim().email({ error: "Please enter a valid email address." }),
+});

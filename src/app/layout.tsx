@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
+import GoogleOneTap from "@/components/auth/GoogleOneTap";
 
 const lato = Lato({
   variable: "--lato",
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" className={`${lato.variable} ${prata.variable}`}>
       <body suppressHydrationWarning>
         <SessionProviderWrapper>
+          <GoogleOneTap />
           <Header />
           <div style={{ paddingTop: "72px" }}>
             {children}

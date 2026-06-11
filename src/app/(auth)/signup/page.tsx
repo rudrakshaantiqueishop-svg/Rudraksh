@@ -6,6 +6,7 @@ import { signup } from "@/app/actions/auth";
 import FormField from "@/components/auth/FormField";
 import PasswordField from "@/components/auth/PasswordField";
 import SubmitButton from "@/components/auth/SubmitButton";
+import GoogleSignInSection from "@/components/auth/GoogleSignInSection";
 
 export default function SignupPage() {
   const [state, action] = useActionState(signup, undefined);
@@ -53,6 +54,10 @@ export default function SignupPage() {
 
         <SubmitButton>Create Account</SubmitButton>
       </form>
+
+      <div style={{ marginTop: "24px" }}>
+        <GoogleSignInSection />
+      </div>
 
       <p className="font-lato" style={{ fontSize: "14px", color: "#44403C", marginTop: "24px", textAlign: "center" }}>
         Already have an account?{" "}
