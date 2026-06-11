@@ -38,7 +38,7 @@ export default function Header({ activePage }: { activePage?: string }) {
   const { status } = useSession();
   const isLoggedIn = status === "authenticated";
   const accountHref = isLoggedIn ? "/account" : "/login";
-  const currentPage = activePage ?? (pathname === "/" ? "home" : pathname === "/about" ? "about" : pathname === "/contact" ? "contact" : "home");
+  const currentPage = activePage ?? (pathname === "/" ? "home" : pathname === "/about" ? "about" : pathname === "/contact" ? "contact" : pathname?.startsWith("/products") ? "products" : "home");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false); // Default open in mobile as per image
@@ -139,18 +139,20 @@ export default function Header({ activePage }: { activePage?: string }) {
             </div>
 
             {/* Products trigger */}
-            <button
-              className={`flex items-center gap-2 font-lato text-base font-normal h-full transition-colors ${activeDropdown === "products" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
+            <div
+              className={`relative flex items-center gap-2 font-lato text-base font-normal h-full transition-colors cursor-pointer ${activeDropdown === "products" || currentPage === "products" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
               onMouseEnter={() => setActiveDropdown("products")}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              PRODUCTS
+              <Link href="/products" className="flex items-center h-full">
+                PRODUCTS
+              </Link>
               <ChevronDown
                 size={15}
                 strokeWidth={1.5}
                 className={`transition-transform duration-200 ${activeDropdown === "products" ? "rotate-180" : ""}`}
               />
-            </button>
+            </div>
 
             <Link href="/contact" className={`font-lato text-base font-normal flex items-center h-full uppercase transition-colors ${currentPage === "contact" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}>
               CONTACT US
@@ -312,17 +314,21 @@ export default function Header({ activePage }: { activePage?: string }) {
             </Link>
 
             <div className="flex flex-col">
-              <button 
-                className="flex justify-between items-center font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase"
-                onClick={() => setIsMobileProductsOpen(!isMobileProductsOpen)}
-              >
-                PRODUCTS
-                {isMobileProductsOpen ? (
-                  <Minus size={16} strokeWidth={1.5} />
-                ) : (
-                  <Plus size={16} strokeWidth={1.5} />
-                )}
-              </button>
+              <div className="flex justify-between items-center font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase">
+                <Link href="/products" onClick={() => setIsMobileMenuOpen(false)}>
+                  PRODUCTS
+                </Link>
+                <button
+                  aria-label="Toggle products menu"
+                  onClick={() => setIsMobileProductsOpen(!isMobileProductsOpen)}
+                >
+                  {isMobileProductsOpen ? (
+                    <Minus size={16} strokeWidth={1.5} />
+                  ) : (
+                    <Plus size={16} strokeWidth={1.5} />
+                  )}
+                </button>
+              </div>
 
               {isMobileProductsOpen && (
                 <div className="flex flex-col gap-6 mt-6 pl-4">

@@ -2764,3 +2764,28 @@
     height: 320px;
   }
 }
+
+/* ── ProductsHero (ph) ── */
+.ph-section { position: relative; width: 100%; overflow: hidden; height: 480px; }
+.ph-content {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 20px; padding: 0 70px; text-align: center;
+}
+.ph-heading {
+  font-size: clamp(36px, 5.5vw, 60px); line-height: 120%;
+  letter-spacing: -0.02em; color: #FFFFFF; margin: 0;
+}
+.ph-body {
+  font-size: 16px; line-height: 160%;
+  color: rgba(255,255,255,0.88); margin: 0;
+  max-width: 620px;
+}
+@media (max-width: 767px) {
+  .ph-section { height: 360px !important; }
+  .ph-content { padding: 0 24px; gap: 16px; }
+  .ph-body { font-size: 14px; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .ph-section { height: 420px !important; }
+}
