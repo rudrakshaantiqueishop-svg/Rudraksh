@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { Search, Heart, ShoppingCart, User, Menu, X, ChevronDown, Plus, Minus } from "lucide-react";
+import AuthModal from "@/components/auth/AuthModal";
 
 const productColumns = [
   [
@@ -32,12 +35,16 @@ const aboutLinks = [
 
 export default function Header({ activePage }: { activePage?: string }) {
   const pathname = usePathname();
+  const { status } = useSession();
+  const isLoggedIn = status === "authenticated";
+  const accountHref = isLoggedIn ? "/account" : "/login";
   const currentPage = activePage ?? (pathname === "/" ? "home" : pathname === "/about" ? "about" : pathname === "/contact" ? "contact" : "home");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false); // Default open in mobile as per image
 
   const [isVisible, setIsVisible] = useState(true);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
@@ -76,12 +83,12 @@ export default function Header({ activePage }: { activePage?: string }) {
       <div className="flex items-center justify-between h-px-section" style={{ height: "72px", paddingTop: 0, paddingBottom: 0 }}>
 
         {/* Hamburger — mobile only */}
-        <button 
-          className="header-hamburger hidden items-center justify-center p-2 -ml-2 text-[#0B0404]" 
+        <button
+          className="header-hamburger hidden items-center justify-center p-2 -ml-2 text-[#0B0404]"
           aria-label="Menu"
           onClick={() => setIsMobileMenuOpen(true)}
         >
-          <Image src="/assets/icons/hamburg.svg" alt="Menu" width={28} height={28} />
+          <Menu size={28} strokeWidth={1.5} />
         </button>
 
         {/* Logo */}
@@ -106,9 +113,11 @@ export default function Header({ activePage }: { activePage?: string }) {
               <Link href="/about" className="flex items-center h-full">
                 ABOUT US
               </Link>
-              <svg width="15" height="8" viewBox="0 0 15 8" fill="none" className={`transition-transform duration-200 ${activeDropdown === "about" ? "rotate-180" : ""}`}>
-                <path d="M1 1L7.5 7L14 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <ChevronDown
+                size={15}
+                strokeWidth={1.5}
+                className={`transition-transform duration-200 ${activeDropdown === "about" ? "rotate-180" : ""}`}
+              />
 
               {/* Linear Dropdown for About Us */}
               {activeDropdown === "about" && (
@@ -136,9 +145,11 @@ export default function Header({ activePage }: { activePage?: string }) {
               onMouseLeave={() => setActiveDropdown(null)}
             >
               PRODUCTS
-              <svg width="15" height="8" viewBox="0 0 15 8" fill="none" className={`transition-transform duration-200 ${activeDropdown === "products" ? "rotate-180" : ""}`}>
-                <path d="M1 1L7.5 7L14 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <ChevronDown
+                size={15}
+                strokeWidth={1.5}
+                className={`transition-transform duration-200 ${activeDropdown === "products" ? "rotate-180" : ""}`}
+              />
             </button>
 
             <Link href="/contact" className={`font-lato text-base font-normal flex items-center h-full uppercase transition-colors ${currentPage === "contact" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}>
@@ -151,27 +162,37 @@ export default function Header({ activePage }: { activePage?: string }) {
         {/* Right actions — desktop */}
         <div className="header-actions-desktop flex items-center gap-6">
           {[
-            <svg key="search" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
-            <svg key="heart" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
-            <svg key="user" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
-            <svg key="cart" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
+            <Search key="search" size={24} strokeWidth={1.5} />,
+            <Heart key="heart" size={24} strokeWidth={1.5} />,
+            <ShoppingCart key="cart" size={24} strokeWidth={1.5} />,
           ].map((icon, i) => (
             <button key={i} className="text-[#44403C] hover:text-[#BB5A28] transition-colors">{icon}</button>
           ))}
+          {isLoggedIn ? (
+            <Link href={accountHref} className="text-[#44403C] hover:text-[#BB5A28] transition-colors" aria-label="My Account">
+              <User size={24} strokeWidth={1.5} />
+            </Link>
+          ) : (
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="text-[#44403C] hover:text-[#BB5A28] transition-colors"
+              aria-label="Sign in"
+            >
+              <User size={24} strokeWidth={1.5} />
+            </button>
+          )}
           <div className="flex items-center gap-1 font-lato text-base text-[#44403C] cursor-pointer hover:text-[#BB5A28] transition-colors">
             <span>USD</span>
-            <svg width="15" height="8" viewBox="0 0 15 8" fill="none">
-              <path d="M1 1L7.5 7L14 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <ChevronDown size={15} strokeWidth={1.5} />
           </div>
         </div>
 
         {/* Right actions — mobile only (search, heart, cart) */}
         <div className="header-actions-mobile hidden items-center gap-4">
           {[
-            <svg key="s" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
-            <svg key="h" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
-            <svg key="c" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
+            <Search key="s" size={20} strokeWidth={1.5} />,
+            <Heart key="h" size={20} strokeWidth={1.5} />,
+            <ShoppingCart key="c" size={20} strokeWidth={1.5} />,
           ].map((icon, i) => (
             <button key={i} className="text-[#44403C]">{icon}</button>
           ))}
@@ -231,7 +252,7 @@ export default function Header({ activePage }: { activePage?: string }) {
           <div className="flex items-center justify-between px-4 border-b border-black/5" style={{ height: "72px" }}>
             <div className="flex items-center gap-4">
               <button onClick={() => setIsMobileMenuOpen(false)} className="p-1 -ml-1 text-[#0B0404]" aria-label="Close menu">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                <X size={22} strokeWidth={1.5} />
               </button>
               <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
                 <Image src="/assets/images/common/logo.png" alt="Rudraksha Antiquei" width={160} height={30} style={{ objectFit: "contain", height: "28px", width: "auto" }} />
@@ -240,9 +261,9 @@ export default function Header({ activePage }: { activePage?: string }) {
 
             <div className="flex items-center gap-4">
               {[
-                <svg key="s" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
-                <svg key="h" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
-                <svg key="c" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
+                <Search key="s" size={20} strokeWidth={1.5} />,
+                <Heart key="h" size={20} strokeWidth={1.5} />,
+                <ShoppingCart key="c" size={20} strokeWidth={1.5} />,
               ].map((icon, i) => (
                 <button key={i} className="text-[#0B0404]">{icon}</button>
               ))}
@@ -254,14 +275,26 @@ export default function Header({ activePage }: { activePage?: string }) {
               <span>CURRENCY</span>
               <div className="flex items-center gap-1 text-[#0B0404] font-medium">
                 <span>USD</span>
-                <svg width="12" height="7" viewBox="0 0 12 7" fill="none"><path d="M1 1.5L6 5.5L11 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <ChevronDown size={12} strokeWidth={1.5} />
               </div>
             </div>
 
-            <Link href="#" className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase" onClick={() => setIsMobileMenuOpen(false)}>
-              PROFILE
-            </Link>
-            
+            {isLoggedIn ? (
+              <Link href={accountHref} className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase" onClick={() => setIsMobileMenuOpen(false)}>
+                PROFILE
+              </Link>
+            ) : (
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  setIsAuthModalOpen(true);
+                }}
+                className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase text-left"
+              >
+                SIGN IN
+              </button>
+            )}
+
             <Link href="/" className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase" onClick={() => setIsMobileMenuOpen(false)}>
               HOME
             </Link>
@@ -285,9 +318,9 @@ export default function Header({ activePage }: { activePage?: string }) {
               >
                 PRODUCTS
                 {isMobileProductsOpen ? (
-                  <svg width="16" height="2" viewBox="0 0 16 2" fill="none"><path d="M1 1H15" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                  <Minus size={16} strokeWidth={1.5} />
                 ) : (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1V15M1 8H15" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                  <Plus size={16} strokeWidth={1.5} />
                 )}
               </button>
 
@@ -321,6 +354,8 @@ export default function Header({ activePage }: { activePage?: string }) {
           </div>
         </div>
       )}
+
+      <AuthModal open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen} />
     </>
   );
 }

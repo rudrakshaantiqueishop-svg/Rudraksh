@@ -3,6 +3,7 @@ import { Lato, Prata } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 
 const lato = Lato({
   variable: "--lato",
@@ -29,11 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${lato.variable} ${prata.variable}`}>
       <body suppressHydrationWarning>
-        <Header />
-        <div style={{ paddingTop: "72px" }}>
-          {children}
-        </div>
-        <Footer />
+        <SessionProviderWrapper>
+          <Header />
+          <div style={{ paddingTop: "72px" }}>
+            {children}
+          </div>
+          <Footer />
+        </SessionProviderWrapper>
       </body>
     </html>
   );
