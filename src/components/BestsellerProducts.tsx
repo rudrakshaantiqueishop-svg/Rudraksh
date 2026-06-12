@@ -6,7 +6,7 @@ import Link from "next/link";
 type Product = { id: number; img: string; name: string; price: string; original: string };
 
 const ProductCard = ({ p }: { p: Product }) => (
-  <div className="group/card cursor-pointer">
+  <Link href="/products/4-mukhi-regular-rudraksha" className="group/card cursor-pointer block">
     <div className="relative overflow-hidden mb-3" style={{ height: "370px" }}>
       <Image src={p.img} alt={p.name} fill sizes="25vw" style={{ objectFit: "cover", transition: "transform 0.4s ease" }} className="group-hover/card:scale-105" />
       <div className="absolute bottom-0 left-0 right-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-stretch" style={{ height: "48px" }}>
@@ -25,7 +25,7 @@ const ProductCard = ({ p }: { p: Product }) => (
       <span className="font-lato" style={{ fontSize: "14px", fontWeight: 500, color: "#0B0404" }}>{p.price}</span>
       <span className="font-lato" style={{ fontSize: "12px", color: "#A8A29E", textDecoration: "line-through" }}>{p.original}</span>
     </div>
-  </div>
+  </Link>
 );
 
 const products: Product[] = [

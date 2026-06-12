@@ -70,7 +70,7 @@ export default function ProductListing() {
       {/* Product grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
         {products.map((p, i) => (
-          <div key={i} className="flex flex-col gap-3 group">
+          <Link key={i} href="/products/4-mukhi-regular-rudraksha" className="flex flex-col gap-3 group">
             <div className="relative aspect-square overflow-hidden bg-[#F0E8DD]">
               <Image
                 src={p.image}
@@ -79,10 +79,10 @@ export default function ProductListing() {
                 sizes="(max-width: 1024px) 50vw, 33vw"
                 className="object-cover"
               />
-              <button className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <button onClick={(e) => e.preventDefault()} className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <Heart size={16} className="text-dark" />
               </button>
-              <button className="absolute bottom-3 left-3 right-3 bg-brown text-white font-lato text-xs font-bold tracking-[0.8px] py-3 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button onClick={(e) => e.preventDefault()} className="absolute bottom-3 left-3 right-3 bg-brown text-white font-lato text-xs font-bold tracking-[0.8px] py-3 opacity-0 group-hover:opacity-100 transition-opacity">
                 ADD TO CART
               </button>
             </div>
@@ -93,7 +93,7 @@ export default function ProductListing() {
                 <span className="text-gray-text line-through">${p.oldPrice.toFixed(2)}</span>
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
