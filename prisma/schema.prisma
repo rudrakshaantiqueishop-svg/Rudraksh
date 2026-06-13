@@ -36,6 +36,7 @@ model User {
 
   accounts  Account[]
   addresses Address[]
+  reviews   Review[]
 
   @@map("users")
 }
@@ -96,4 +97,155 @@ model VerificationToken {
 
   @@index([identifier, type])
   @@map("verification_tokens")
+}
+
+// ---------------------------------------------------------------------
+// Product catalog
+// ---------------------------------------------------------------------
+
+// Primary product category — drives the Header "Products" mega-menu and
+// the /products/category/[slug] listing page (hero, intro, checklist,
+// and fit-check sections all come from `pageContent`).
+model Category {
+  id          String @id @default(uuid())
+  name        String
+  slug        String @unique
+  image       String
+  sortOrder   Int    @default(0)
+
+  // Shape: { heroTitle, heroSubtitle, introHeading, introDescription,
+  // introImage, checklistHeading, checklist: string[5], checklistImages: [string, string],
+  // fitCheckRightLabel, fitCheckRightItems: string[3],
+  // fitCheckWrongLabel, fitCheckWrongItems: string[3], fitCheckImage }
+  pageContent Json
+
+  products Product[]
+
+  @@map("categories")
+}
+
+// "Shop By Purpose" tags (Wealth, Health, Love, ...) — a many-to-many
+// "sub category" on top of the primary Category.
+model Collection {
+  id        String @id @default(uuid())
+  name      String
+  slug      String @unique
+  icon      String
+  sortOrder Int    @default(0)
+
+  products Product[]
+
+  @@map("collections")
+}
+
+model Product {
+  id              String @id @default(uuid())
+  slug            String @unique
+  name            String
+  breadcrumbLabel String
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  description   String @db.Text
+  shippingInfo  String @db.Text
+  packagingInfo String @db.Text
+  returnsInfo   String @db.Text
+
+  priceCents          Int
+  compareAtPriceCents Int?
+
+  stockCount   Int     @default(0)
+  ratingAvg    Float   @default(0)
+  ratingCount  Int     @default(0)
+  isBestseller Boolean @default(false)
+
+  images      ProductImage[]
+  variants    ProductVariant[]
+  addOns      ProductAddOn[]
+  sizes       ProductSize[]
+  reviews     Review[]
+  collections Collection[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([isBestseller])
+  @@map("products")
+}
+
+enum ProductImageRole {
+  MAIN
+  GALLERY_LEFT
+  GALLERY_TOP_RIGHT
+  GALLERY_BOTTOM_RIGHT
+  EXTRA
+}
+
+model ProductImage {
+  id        String           @id @default(uuid())
+  productId String
+  product   Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String
+  role      ProductImageRole
+  sortOrder Int              @default(0)
+
+  @@index([productId])
+  @@map("product_images")
+}
+
+// "Select Your Design" options (Loose Bead, Silver Capped, ...)
+model ProductVariant {
+  id              String  @id @default(uuid())
+  productId       String
+  product         Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  label           String
+  priceDeltaCents Int     @default(0)
+  image           String
+  sortOrder       Int     @default(0)
+
+  @@index([productId])
+  @@map("product_variants")
+}
+
+// "Select Energization" options
+model ProductAddOn {
+  id              String  @id @default(uuid())
+  productId       String
+  product         Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  label           String
+  priceDeltaCents Int     @default(0)
+  sortOrder       Int     @default(0)
+
+  @@index([productId])
+  @@map("product_addons")
+}
+
+model ProductSize {
+  id        String  @id @default(uuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  label     String
+  sortOrder Int     @default(0)
+
+  @@index([productId])
+  @@map("product_sizes")
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  authorName String
+  title      String
+  body       String   @db.Text
+  rating     Int
+  createdAt  DateTime @default(now())
+
+  @@index([productId])
+  @@map("reviews")
 }

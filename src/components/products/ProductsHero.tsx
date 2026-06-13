@@ -1,11 +1,12 @@
 import Image from "next/image";
+import type { CategoryPageContent } from "@/lib/product-utils";
 
-export default function ProductsHero() {
+export default function ProductsHero({ pageContent }: { pageContent: CategoryPageContent }) {
   return (
     <section className="ph-section">
       <Image
         src="/assets/images/common/comman banner.png"
-        alt="Authentic Rudraksha, Chosen with Care"
+        alt={pageContent.heroTitle}
         fill
         sizes="100vw"
         style={{ objectFit: "cover", objectPosition: "center" }}
@@ -16,10 +17,10 @@ export default function ProductsHero() {
 
       <div className="ph-content">
         <h1 className="font-prata ph-heading">
-          Authentic Rudraksha, Chosen with Care
+          {pageContent.heroTitle}
         </h1>
         <p className="font-lato ph-body">
-          Every Rudraksha listed here is physically examined, scientifically verified, and handled with traditional respect—so you can explore with confidence, not confusion.
+          {pageContent.heroSubtitle}
         </p>
       </div>
     </section>

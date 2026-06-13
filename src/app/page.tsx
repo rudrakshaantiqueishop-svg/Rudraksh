@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import HeroSection from "@/components/HeroSection";
 import ShopByCategory from "@/components/ShopByCategory";
+import { getBestsellerProducts } from "@/lib/products";
 
 const WhoWeAre            = dynamic(() => import("@/components/WhoWeAre"));
 const ShopByPurpose       = dynamic(() => import("@/components/ShopByPurpose"));
@@ -15,7 +16,9 @@ const GetInspired         = dynamic(() => import("@/components/GetInspired"));
 const GuidanceBanner      = dynamic(() => import("@/components/GuidanceBanner"));
 const BlogPosts           = dynamic(() => import("@/components/BlogPosts"));
 
-export default function Home() {
+export default async function Home() {
+  const bestsellers = await getBestsellerProducts(8);
+
   return (
     <div className="min-h-screen bg-cream">
       <main>
@@ -24,7 +27,7 @@ export default function Home() {
         <WhoWeAre />
         <ShopByPurpose />
         <RudrakshaBirthForm />
-        <BestsellerProducts />
+        <BestsellerProducts products={bestsellers} />
         <FestivalBanner />
         <AuthenticityBanner />
         <EnergisationProcess />

@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+import { getProductBySlug, getSimilarProducts } from "@/lib/products";
 import ProductDetailMain from "@/components/products/detail/ProductDetailMain";
 import ProductReviews from "@/components/products/detail/ProductReviews";
 import TraditionalSupport from "@/components/products/detail/TraditionalSupport";
@@ -10,11 +12,20 @@ import ExpertRecommendedCombinations from "@/components/products/detail/ExpertRe
 import ProductFAQ from "@/components/products/detail/ProductFAQ";
 import SimilarProducts from "@/components/products/detail/SimilarProducts";
 
-export default function ProductDetailPage() {
+export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+
+  if (!product) {
+    notFound();
+  }
+
+  const similarProducts = await getSimilarProducts(product.categoryId, product.id, 4);
+
   return (
     <div style={{ background: "#FEF9F2", overflowX: "hidden" }}>
-      <ProductDetailMain />
-      <ProductReviews />
+      <ProductDetailMain product={product} />
+      <ProductReviews reviews={product.reviews} />
       <TraditionalSupport />
       <IsThisRightForYou />
       <AuthenticityCertification />
@@ -23,7 +34,7 @@ export default function ProductDetailPage() {
       <NeedGuidance />
       <ExpertRecommendedCombinations />
       <ProductFAQ />
-      <SimilarProducts />
+      <SimilarProducts products={similarProducts} categorySlug={product.category.slug} />
     </div>
   );
 }

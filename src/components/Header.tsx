@@ -6,6 +6,10 @@ import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Search, Heart, ShoppingCart, User, Menu, X, ChevronDown, Plus, Minus } from "lucide-react";
 import AuthModal from "@/components/auth/AuthModal";
+import { useCurrency } from "@/components/CurrencyProvider";
+import { CurrencyCode } from "@/lib/currency";
+
+const CURRENCY_OPTIONS: CurrencyCode[] = ["USD", "INR"];
 
 const productColumns = [
   [
@@ -45,7 +49,10 @@ export default function Header({ activePage }: { activePage?: string }) {
 
   const [isVisible, setIsVisible] = useState(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
+  const [isMobileCurrencyOpen, setIsMobileCurrencyOpen] = useState(false);
   const lastScrollY = useRef(0);
+  const { currency, setCurrency } = useCurrency();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -183,9 +190,33 @@ export default function Header({ activePage }: { activePage?: string }) {
               <User size={24} strokeWidth={1.5} />
             </button>
           )}
-          <div className="flex items-center gap-1 font-lato text-base text-[#44403C] cursor-pointer hover:text-[#BB5A28] transition-colors">
-            <span>USD</span>
-            <ChevronDown size={15} strokeWidth={1.5} />
+          <div
+            className="relative flex items-center gap-1 font-lato text-base text-[#44403C] cursor-pointer hover:text-[#BB5A28] transition-colors"
+            onMouseEnter={() => setIsCurrencyOpen(true)}
+            onMouseLeave={() => setIsCurrencyOpen(false)}
+          >
+            <span>{currency}</span>
+            <ChevronDown size={15} strokeWidth={1.5} className={`transition-transform duration-200 ${isCurrencyOpen ? "rotate-180" : ""}`} />
+
+            {isCurrencyOpen && (
+              <div
+                className="absolute right-0 top-full bg-[#FEF9F2] flex flex-col min-w-[80px] py-2 rounded-md z-50"
+                style={{ boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)" }}
+              >
+                {CURRENCY_OPTIONS.map((code) => (
+                  <button
+                    key={code}
+                    onClick={() => {
+                      setCurrency(code);
+                      setIsCurrencyOpen(false);
+                    }}
+                    className={`px-4 py-2 text-left font-lato text-sm transition-colors hover:bg-black/5 hover:text-[#BB5A28] ${currency === code ? "text-[#BB5A28] font-medium" : "text-[#44403C]"}`}
+                  >
+                    {code}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -273,12 +304,34 @@ export default function Header({ activePage }: { activePage?: string }) {
           </div>
 
           <div className="px-6 py-6 flex flex-col gap-8">
-            <div className="flex justify-between items-center text-[#78716C] font-lato text-[13px] tracking-wide">
-              <span>CURRENCY</span>
-              <div className="flex items-center gap-1 text-[#0B0404] font-medium">
-                <span>USD</span>
-                <ChevronDown size={12} strokeWidth={1.5} />
+            <div className="flex flex-col gap-3 text-[#78716C] font-lato text-[13px] tracking-wide">
+              <div className="flex justify-between items-center">
+                <span>CURRENCY</span>
+                <button
+                  className="flex items-center gap-1 text-[#0B0404] font-medium"
+                  onClick={() => setIsMobileCurrencyOpen((open) => !open)}
+                >
+                  <span>{currency}</span>
+                  <ChevronDown size={12} strokeWidth={1.5} className={`transition-transform duration-200 ${isMobileCurrencyOpen ? "rotate-180" : ""}`} />
+                </button>
               </div>
+
+              {isMobileCurrencyOpen && (
+                <div className="flex gap-3 self-end">
+                  {CURRENCY_OPTIONS.map((code) => (
+                    <button
+                      key={code}
+                      onClick={() => {
+                        setCurrency(code);
+                        setIsMobileCurrencyOpen(false);
+                      }}
+                      className={`px-3 py-1 rounded-full border font-lato text-[13px] transition-colors ${currency === code ? "border-[#BB5A28] text-[#BB5A28]" : "border-black/10 text-[#44403C]"}`}
+                    >
+                      {code}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {isLoggedIn ? (

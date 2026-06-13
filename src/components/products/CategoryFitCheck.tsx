@@ -1,16 +1,5 @@
 import Image from "next/image";
-
-const rightFor = [
-  "You value authenticity over appearance",
-  "You're seeking grounding, focus, or spiritual discipline",
-  "You want traditional guidance, not exaggerated claims",
-];
-
-const notRightFor = [
-  "You're looking for instant or guaranteed outcomes",
-  "You prefer decorative jewelry with no traditional context",
-  "You're unsure and don't want guidance",
-];
+import type { CategoryPageContent } from "@/lib/product-utils";
 
 function CheckIcon() {
   return (
@@ -28,7 +17,7 @@ function CrossIcon() {
   );
 }
 
-export default function CategoryFitCheck() {
+export default function CategoryFitCheck({ pageContent }: { pageContent: CategoryPageContent }) {
   return (
     <section className="section-pad" style={{ background: "#FEF9F2", display: "flex", flexDirection: "column", gap: "48px" }}>
 
@@ -43,10 +32,10 @@ export default function CategoryFitCheck() {
         {/* Left — right for you */}
         <div className="cs-panel-left" style={{ flex: 1, display: "flex", flexDirection: "column", gap: "24px" }}>
           <span className="font-lato" style={{ fontSize: "20px", fontWeight: 500, lineHeight: "140%", color: "#44403C" }}>
-            Rudraksha May Be Right for You If:
+            {pageContent.fitCheckRightLabel}
           </span>
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {rightFor.map((item) => (
+            {pageContent.fitCheckRightItems.map((item) => (
               <div key={item} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <CheckIcon />
                 <span className="font-lato" style={{ fontSize: "16px", fontWeight: 500, lineHeight: "160%", color: "#44403C" }}>{item}</span>
@@ -64,7 +53,7 @@ export default function CategoryFitCheck() {
             backgroundOrigin: "border-box", backgroundClip: "padding-box, border-box",
           }}>
             <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
-              <Image src="/assets/images/home/rudraksh.png" alt="Rudraksha mala" fill sizes="(max-width: 1023px) 90vw, 320px" style={{ objectFit: "cover" }} />
+              <Image src={pageContent.fitCheckImage} alt="Category fit check" fill sizes="(max-width: 1023px) 90vw, 320px" style={{ objectFit: "cover" }} />
             </div>
           </div>
         </div>
@@ -72,10 +61,10 @@ export default function CategoryFitCheck() {
         {/* Right — not right for you */}
         <div className="cs-panel-right" style={{ flex: 1, display: "flex", flexDirection: "column", gap: "24px" }}>
           <span className="font-lato" style={{ fontSize: "20px", fontWeight: 500, lineHeight: "140%", color: "#44403C" }}>
-            Rudraksha May Not Be Right for You If:
+            {pageContent.fitCheckWrongLabel}
           </span>
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {notRightFor.map((item) => (
+            {pageContent.fitCheckWrongItems.map((item) => (
               <div key={item} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <CrossIcon />
                 <span className="font-lato" style={{ fontSize: "16px", fontWeight: 500, lineHeight: "160%", color: "#44403C" }}>{item}</span>

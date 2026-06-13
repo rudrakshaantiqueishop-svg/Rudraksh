@@ -4,31 +4,43 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, LayoutGrid, List, SlidersHorizontal, ChevronUp, ChevronDown, Check, X } from "lucide-react";
+import { useCurrency } from "@/components/CurrencyProvider";
+import { getMainImage } from "@/lib/product-utils";
+import type { ProductImageLite } from "@/lib/product-utils";
 
-const categories = [
-  { label: "Lorem Ipsum", count: 120, checked: true },
-  { label: "Lorem Ipsum", count: 240, checked: false },
-  { label: "Lorem Ipsum", count: 175, checked: false },
-  { label: "Lorem Ipsum", count: 120, checked: false },
-];
+type Product = {
+  id: string;
+  slug: string;
+  name: string;
+  priceCents: number;
+  compareAtPriceCents: number | null;
+  images: ProductImageLite[];
+};
 
-const sizes = [
-  { label: "<18mm", count: 120 },
-  { label: "<20mm", count: 240 },
-  { label: "<24mm", count: 175 },
-  { label: "<28mm", count: 120 },
-];
+type CategoryOption = {
+  id: string;
+  name: string;
+  slug: string;
+  _count: { products: number };
+};
 
-const products = [
-  { name: "Lorem Ipsum", price: 120, oldPrice: 130, image: "/assets/images/products/category-bracelets.png" },
-  { name: "Lorem Ipsum", price: 230, oldPrice: 250, image: "/assets/images/products/category-necklace.png" },
-  { name: "Lorem Ipsum", price: 180, oldPrice: 200, image: "/assets/images/products/category-rings.png" },
-  { name: "Lorem Ipsum", price: 150, oldPrice: 175, image: "/assets/images/products/category-charms.png" },
-  { name: "Lorem Ipsum", price: 95, oldPrice: 120, image: "/assets/images/products/category-earrings.png" },
-];
+type SizeCount = { label: string; count: number };
 
-export default function ProductListing() {
+export default function ProductListing({
+  products,
+  categories,
+  currentCategorySlug,
+  categoryName,
+  sizeCounts,
+}: {
+  products: Product[];
+  categories: CategoryOption[];
+  currentCategorySlug: string;
+  categoryName: string;
+  sizeCounts: SizeCount[];
+}) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { formatPrice } = useCurrency();
 
   return (
     <section className="h-px-section py-8 lg:py-10" style={{ background: "#FEF9F2" }}>
@@ -38,7 +50,7 @@ export default function ProductListing() {
           Home
         </Link>
         <span>›</span>
-        <span className="text-dark font-semibold">Rudraksha Beads</span>
+        <span className="text-dark font-semibold">{categoryName}</span>
       </div>
 
       {/* Toolbar */}
@@ -50,7 +62,9 @@ export default function ProductListing() {
           <div className="flex items-center justify-center w-8 h-8 border border-[#E7DFD6] text-gray-text">
             <List size={15} />
           </div>
-          <span className="font-lato text-sm text-gray-text">Showing 1–10 of 60 results</span>
+          <span className="font-lato text-sm text-gray-text">
+            {products.length > 0 ? `Showing 1–${products.length} of ${products.length} results` : "No products found"}
+          </span>
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <button
@@ -69,32 +83,39 @@ export default function ProductListing() {
 
       {/* Product grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
-        {products.map((p, i) => (
-          <Link key={i} href="/products/4-mukhi-regular-rudraksha" className="flex flex-col gap-3 group">
-            <div className="relative aspect-square overflow-hidden bg-[#F0E8DD]">
-              <Image
-                src={p.image}
-                alt={p.name}
-                fill
-                sizes="(max-width: 1024px) 50vw, 33vw"
-                className="object-cover"
-              />
-              <button onClick={(e) => e.preventDefault()} className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <Heart size={16} className="text-dark" />
-              </button>
-              <button onClick={(e) => e.preventDefault()} className="absolute bottom-3 left-3 right-3 bg-brown text-white font-lato text-xs font-bold tracking-[0.8px] py-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                ADD TO CART
-              </button>
-            </div>
-            <div className="flex flex-col gap-1">
-              <p className="font-lato text-sm text-dark m-0">{p.name}</p>
-              <p className="font-lato text-sm m-0 flex items-center gap-2">
-                <span className="font-bold text-dark">${p.price.toFixed(2)}</span>
-                <span className="text-gray-text line-through">${p.oldPrice.toFixed(2)}</span>
-              </p>
-            </div>
-          </Link>
-        ))}
+        {products.map((p) => {
+          const image = getMainImage(p.images);
+          return (
+            <Link key={p.id} href={`/products/${p.slug}`} className="flex flex-col gap-3 group">
+              <div className="relative aspect-square overflow-hidden bg-[#F0E8DD]">
+                {image && (
+                  <Image
+                    src={image.url}
+                    alt={image.alt}
+                    fill
+                    sizes="(max-width: 1024px) 50vw, 33vw"
+                    className="object-cover"
+                  />
+                )}
+                <button onClick={(e) => e.preventDefault()} className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Heart size={16} className="text-dark" />
+                </button>
+                <button onClick={(e) => e.preventDefault()} className="absolute bottom-3 left-3 right-3 bg-brown text-white font-lato text-xs font-bold tracking-[0.8px] py-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  ADD TO CART
+                </button>
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="font-lato text-sm text-dark m-0">{p.name}</p>
+                <p className="font-lato text-sm m-0 flex items-center gap-2">
+                  <span className="font-bold text-dark">{formatPrice(p.priceCents)}</span>
+                  {p.compareAtPriceCents != null && (
+                    <span className="text-gray-text line-through">{formatPrice(p.compareAtPriceCents)}</span>
+                  )}
+                </p>
+              </div>
+            </Link>
+          );
+        })}
       </div>
 
       {/* Filter backdrop */}
@@ -125,21 +146,24 @@ export default function ProductListing() {
             <ChevronUp size={16} className="text-dark" />
           </div>
           <div className="flex flex-col gap-3">
-            {categories.map((cat, i) => (
-              <label key={i} className="flex items-center justify-between cursor-pointer">
-                <span className="flex items-center gap-2.5">
-                  <span
-                    className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
-                      cat.checked ? "bg-brown border-brown" : "border-[#D6CFC4]"
-                    }`}
-                  >
-                    {cat.checked && <Check size={12} className="text-white" strokeWidth={3} />}
+            {categories.map((cat) => {
+              const checked = cat.slug === currentCategorySlug;
+              return (
+                <Link key={cat.id} href={`/products/category/${cat.slug}`} className="flex items-center justify-between cursor-pointer">
+                  <span className="flex items-center gap-2.5">
+                    <span
+                      className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
+                        checked ? "bg-brown border-brown" : "border-[#D6CFC4]"
+                      }`}
+                    >
+                      {checked && <Check size={12} className="text-white" strokeWidth={3} />}
+                    </span>
+                    <span className="font-lato text-sm text-gray-text">{cat.name}</span>
                   </span>
-                  <span className="font-lato text-sm text-gray-text">{cat.label}</span>
-                </span>
-                <span className="font-lato text-sm text-gray-text">({cat.count})</span>
-              </label>
-            ))}
+                  <span className="font-lato text-sm text-gray-text">({cat._count.products})</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
 
@@ -158,23 +182,25 @@ export default function ProductListing() {
         </div>
 
         {/* Size */}
-        <div className="flex flex-col gap-4 pt-7 border-t border-[#E7DFD6]">
-          <div className="flex items-center justify-between">
-            <h3 className="font-lato text-base font-semibold text-dark m-0">Size</h3>
-            <ChevronUp size={16} className="text-dark" />
+        {sizeCounts.length > 0 && (
+          <div className="flex flex-col gap-4 pt-7 border-t border-[#E7DFD6]">
+            <div className="flex items-center justify-between">
+              <h3 className="font-lato text-base font-semibold text-dark m-0">Size</h3>
+              <ChevronUp size={16} className="text-dark" />
+            </div>
+            <div className="flex flex-col gap-3">
+              {sizeCounts.map((sz) => (
+                <label key={sz.label} className="flex items-center justify-between cursor-pointer">
+                  <span className="flex items-center gap-2.5">
+                    <span className="w-4 h-4 border border-[#D6CFC4] shrink-0" />
+                    <span className="font-lato text-sm text-gray-text">{sz.label}</span>
+                  </span>
+                  <span className="font-lato text-sm text-gray-text">({sz.count})</span>
+                </label>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-col gap-3">
-            {sizes.map((sz, i) => (
-              <label key={i} className="flex items-center justify-between cursor-pointer">
-                <span className="flex items-center gap-2.5">
-                  <span className="w-4 h-4 border border-[#D6CFC4] shrink-0" />
-                  <span className="font-lato text-sm text-gray-text">{sz.label}</span>
-                </span>
-                <span className="font-lato text-sm text-gray-text">({sz.count})</span>
-              </label>
-            ))}
-          </div>
-        </div>
+        )}
       </aside>
     </section>
   );

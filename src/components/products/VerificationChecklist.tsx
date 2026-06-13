@@ -1,14 +1,7 @@
 import Image from "next/image";
+import type { CategoryPageContent } from "@/lib/product-utils";
 
-const checks = [
-  "Physically examined for natural structure",
-  "Scientifically tested using non-destructive methods",
-  "Mukhi confirmed manually and technically",
-  "Provided with certification",
-  "Final-checked before dispatch",
-];
-
-export default function VerificationChecklist() {
+export default function VerificationChecklist({ pageContent }: { pageContent: CategoryPageContent }) {
   return (
     <section className="fi-section" style={{ background: "#FEF9F2" }}>
       <div className="fi-row">
@@ -18,11 +11,11 @@ export default function VerificationChecklist() {
           <div style={{ display: "flex", flexDirection: "column", gap: "23px" }}>
 
             <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3.5vw, 36px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
-              Every Rudraksha You See Here Is
+              {pageContent.checklistHeading}
             </h2>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              {checks.map((item) => (
+              {pageContent.checklist.map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                   <Image src="/assets/icons/Star 1.svg" alt="Star" width={18} height={18} style={{ flexShrink: 0, marginTop: "2px" }} />
                   <span className="font-lato" style={{ fontSize: "16px", fontWeight: 500, color: "#44403C" }}>{item}</span>
@@ -53,10 +46,10 @@ export default function VerificationChecklist() {
             zIndex: 0,
           }} />
           <div className="fi-img-top" style={{ position: "absolute", left: "20.83%", top: 0, width: "79.16%", height: "46.9%", overflow: "hidden", zIndex: 1 }}>
-            <Image src="/assets/images/about/about-sacred-1.png" alt="Verified Rudraksha mala" fill sizes="(max-width: 767px) 100vw, 475px" style={{ objectFit: "cover" }} />
+            <Image src={pageContent.checklistImages[0]} alt="Verification process" fill sizes="(max-width: 767px) 100vw, 475px" style={{ objectFit: "cover" }} />
           </div>
           <div className="fi-img-bot" style={{ position: "absolute", left: 0, top: "53.09%", width: "79.16%", height: "46.9%", overflow: "hidden", zIndex: 1 }}>
-            <Image src="/assets/images/about/about-sacred-2.png" alt="Rudraksha verification process" fill sizes="(max-width: 767px) 100vw, 475px" style={{ objectFit: "cover" }} />
+            <Image src={pageContent.checklistImages[1]} alt="Verification process" fill sizes="(max-width: 767px) 100vw, 475px" style={{ objectFit: "cover" }} />
           </div>
         </div>
 

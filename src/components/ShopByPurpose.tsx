@@ -1,18 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getCollections } from "@/lib/products";
 
-const purposes = [
-  { name: "Wealth",     icon: "/assets/icons/wealth.svg" },
-  { name: "Health",     icon: "/assets/icons/health.svg" },
-  { name: "Love",       icon: "/assets/icons/love.svg" },
-  { name: "Luck",       icon: "/assets/icons/luck.svg" },
-  { name: "Protection", icon: "/assets/icons/protection.svg" },
-  { name: "Peace",      icon: "/assets/icons/peace.svg" },
-  { name: "Courage",    icon: "/assets/icons/courage.svg" },
-  { name: "Balance",    icon: "/assets/icons/balance.svg" },
-];
+export default async function ShopByPurpose() {
+  const collections = await getCollections();
 
-export default function ShopByPurpose() {
   return (
     <section className="h-px-section py-[60px] lg:py-[80px]" style={{ background: "#FEF9F2", borderTop: "1px solid rgba(0,0,0,0.06)" }}>
 
@@ -26,18 +18,18 @@ export default function ShopByPurpose() {
 
       {/* Icons row */}
       <div className="flex lg:grid lg:grid-cols-8 gap-6 lg:gap-0 overflow-x-auto no-scrollbar pb-2 lg:pb-0 lg:overflow-x-visible" style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}>
-        {purposes.map((p) => (
+        {collections.map((c) => (
           <Link
-            key={p.name}
-            href="#"
+            key={c.id}
+            href={`/products/collection/${c.slug}`}
             className="group/purpose flex flex-col items-center gap-3 no-underline flex-shrink-0 lg:flex-shrink"
             style={{ scrollSnapAlign: "start", minWidth: "80px", textDecoration: "none" }}
           >
             {/* Icon */}
             <div className="flex items-center justify-center" style={{ width: "clamp(52px,8vw,80px)", height: "clamp(52px,8vw,80px)" }}>
               <Image
-                src={p.icon}
-                alt={p.name}
+                src={c.icon}
+                alt={c.name}
                 width={72}
                 height={72}
                 style={{ objectFit: "contain" }}
@@ -49,7 +41,7 @@ export default function ShopByPurpose() {
               className="font-lato group-hover/purpose:text-[#BB5A28] transition-colors duration-200"
               style={{ fontSize: "clamp(11px,1.3vw,16px)", fontWeight: 400, lineHeight: "150%", color: "#44403C", textAlign: "center" }}
             >
-              {p.name}
+              {c.name}
             </span>
           </Link>
         ))}

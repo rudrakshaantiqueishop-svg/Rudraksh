@@ -2,44 +2,52 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useCurrency } from "@/components/CurrencyProvider";
+import { getMainImage } from "@/lib/product-utils";
+import type { ProductImageLite } from "@/lib/product-utils";
 
-type Product = { id: number; img: string; name: string; price: string; original: string };
+type Product = {
+  id: string;
+  slug: string;
+  name: string;
+  priceCents: number;
+  compareAtPriceCents: number | null;
+  images: ProductImageLite[];
+};
 
-const ProductCard = ({ p }: { p: Product }) => (
-  <Link href="/products/4-mukhi-regular-rudraksha" className="group/card cursor-pointer block">
-    <div className="relative overflow-hidden mb-3" style={{ height: "370px" }}>
-      <Image src={p.img} alt={p.name} fill sizes="25vw" style={{ objectFit: "cover", transition: "transform 0.4s ease" }} className="group-hover/card:scale-105" />
-      <div className="absolute bottom-0 left-0 right-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-stretch" style={{ height: "48px" }}>
-        <button onClick={(e) => e.stopPropagation()} style={{ width: "50px", flexShrink: 0, background: "white", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#552912" strokeWidth="1.5">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-        </button>
-        <button onClick={(e) => e.stopPropagation()} style={{ flex: 1, background: "#552912", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <span className="font-lato text-white" style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.06em" }}>ADD TO CART</span>
-        </button>
+const ProductCard = ({ p }: { p: Product }) => {
+  const { formatPrice } = useCurrency();
+  const image = getMainImage(p.images);
+
+  return (
+    <Link href={`/products/${p.slug}`} className="group/card cursor-pointer block">
+      <div className="relative overflow-hidden mb-3" style={{ height: "370px" }}>
+        {image && <Image src={image.url} alt={image.alt} fill sizes="25vw" style={{ objectFit: "cover", transition: "transform 0.4s ease" }} className="group-hover/card:scale-105" />}
+        <div className="absolute bottom-0 left-0 right-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-stretch" style={{ height: "48px" }}>
+          <button onClick={(e) => e.stopPropagation()} style={{ width: "50px", flexShrink: 0, background: "white", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#552912" strokeWidth="1.5">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+          <button onClick={(e) => e.stopPropagation()} style={{ flex: 1, background: "#552912", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span className="font-lato text-white" style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.06em" }}>ADD TO CART</span>
+          </button>
+        </div>
       </div>
-    </div>
-    <p className="font-prata" style={{ fontSize: "15px", lineHeight: "140%", color: "#0B0404", margin: "0 0 5px 0" }}>{p.name}</p>
-    <div className="flex items-center gap-2">
-      <span className="font-lato" style={{ fontSize: "14px", fontWeight: 500, color: "#0B0404" }}>{p.price}</span>
-      <span className="font-lato" style={{ fontSize: "12px", color: "#A8A29E", textDecoration: "line-through" }}>{p.original}</span>
-    </div>
-  </Link>
-);
+      <p className="font-prata" style={{ fontSize: "15px", lineHeight: "140%", color: "#0B0404", margin: "0 0 5px 0" }}>{p.name}</p>
+      <div className="flex items-center gap-2">
+        <span className="font-lato" style={{ fontSize: "14px", fontWeight: 500, color: "#0B0404" }}>{formatPrice(p.priceCents)}</span>
+        {p.compareAtPriceCents != null && (
+          <span className="font-lato" style={{ fontSize: "12px", color: "#A8A29E", textDecoration: "line-through" }}>{formatPrice(p.compareAtPriceCents)}</span>
+        )}
+      </div>
+    </Link>
+  );
+};
 
-const products: Product[] = [
-  { id: 1,  img: "/assets/images/about/about-sacred-1.png",     name: "Lorem Ipsum", price: "$230.00", original: "$250.00" },
-  { id: 2,  img: "/assets/images/about/about-sacred-2.png",     name: "Lorem Ipsum", price: "$120.00", original: "$130.00" },
-  { id: 3,  img: "/assets/images/about/about-founding-1.png",   name: "Lorem Ipsum", price: "$180.00", original: "$200.00" },
-  { id: 4,  img: "/assets/images/about/about-founding-2.png",   name: "Lorem Ipsum", price: "$280.00", original: "$300.00" },
-  { id: 5,  img: "/assets/images/about/about-p02.png",          name: "Lorem Ipsum", price: "$200.00", original: "$220.00" },
-  { id: 6,  img: "/assets/images/about/about-principle-3.png",  name: "Lorem Ipsum", price: "$240.00", original: "$250.00" },
-  { id: 7,  img: "/assets/images/about/about-p04.png",          name: "Lorem Ipsum", price: "$140.00", original: "$150.00" },
-  { id: 8,  img: "/assets/images/about/about-p01-3021a5.png",   name: "Lorem Ipsum", price: "$160.00", original: "$170.00" },
-];
+export default function BestsellerProducts({ products }: { products: Product[] }) {
+  if (products.length === 0) return null;
 
-export default function BestsellerProducts() {
   return (
     <section className="h-px-section py-[60px] lg:py-[80px]" style={{ background: "#FEF9F2" }}>
 
@@ -52,7 +60,7 @@ export default function BestsellerProducts() {
           Bestseller Products
         </h2>
         <Link
-          href="#"
+          href="/products"
           style={{
             display: "inline-flex", alignItems: "center", gap: "6px",
             paddingBottom: "6px", borderBottom: "1px solid #44403C",
@@ -82,7 +90,7 @@ export default function BestsellerProducts() {
 
       {/* Mobile: 2 scroll rows */}
       <div className="flex flex-col gap-4 lg:hidden">
-        {[products.slice(0, 4), products.slice(4, 8)].map((row, ri) => (
+        {[products.slice(0, 4), products.slice(4, 8)].filter((row) => row.length > 0).map((row, ri) => (
           <div
             key={ri}
             className="flex gap-3 overflow-x-auto no-scrollbar pb-2"
