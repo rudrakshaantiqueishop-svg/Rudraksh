@@ -1,10 +1,12 @@
+import dynamic from "next/dynamic";
 import TestimonialHero from "@/components/testimonial/TestimonialHero";
-import TestimonialStatsAndCards from "@/components/testimonial/TestimonialStatsAndCards";
-import TestimonialProductFeedback from "@/components/testimonial/TestimonialProductFeedback";
-import TestimonialPlatformReviews from "@/components/testimonial/TestimonialPlatformReviews";
-import TestimonialVideoGrid from "@/components/testimonial/TestimonialVideoGrid";
-import TestimonialClarityBanner from "@/components/testimonial/TestimonialClarityBanner";
-import TestimonialTrustBanner from "@/components/testimonial/TestimonialTrustBanner";
+
+const TestimonialStatsAndCards = dynamic(() => import("@/components/testimonial/TestimonialStatsAndCards"));
+const TestimonialProductFeedback = dynamic(() => import("@/components/testimonial/TestimonialProductFeedback"));
+const TestimonialPlatformReviews = dynamic(() => import("@/components/testimonial/TestimonialPlatformReviews"));
+const TestimonialVideoGrid = dynamic(() => import("@/components/testimonial/TestimonialVideoGrid"));
+const TestimonialClarityBanner = dynamic(() => import("@/components/testimonial/TestimonialClarityBanner"));
+const TestimonialTrustBanner = dynamic(() => import("@/components/testimonial/TestimonialTrustBanner"));
 
 export default function TestimonialPage() {
   return (

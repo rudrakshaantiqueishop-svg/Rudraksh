@@ -37,6 +37,7 @@ model User {
   accounts  Account[]
   addresses Address[]
   reviews   Review[]
+  cart      Cart?
 
   @@map("users")
 }
@@ -166,6 +167,7 @@ model Product {
   sizes       ProductSize[]
   reviews     Review[]
   collections Collection[]
+  cartItems   CartItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -206,6 +208,8 @@ model ProductVariant {
   image           String
   sortOrder       Int     @default(0)
 
+  cartItems CartItem[]
+
   @@index([productId])
   @@map("product_variants")
 }
@@ -219,6 +223,8 @@ model ProductAddOn {
   priceDeltaCents Int     @default(0)
   sortOrder       Int     @default(0)
 
+  cartItems CartItem[]
+
   @@index([productId])
   @@map("product_addons")
 }
@@ -229,6 +235,8 @@ model ProductSize {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   label     String
   sortOrder Int     @default(0)
+
+  cartItems CartItem[]
 
   @@index([productId])
   @@map("product_sizes")
@@ -248,4 +256,47 @@ model Review {
 
   @@index([productId])
   @@map("reviews")
+}
+
+// ---------------------------------------------------------------------
+// Cart
+// ---------------------------------------------------------------------
+
+model Cart {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  items CartItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("carts")
+}
+
+model CartItem {
+  id     String @id @default(uuid())
+  cartId String
+  cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  variantId String?
+  variant   ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  addOnId String?
+  addOn   ProductAddOn? @relation(fields: [addOnId], references: [id], onDelete: SetNull)
+
+  sizeId String?
+  size   ProductSize? @relation(fields: [sizeId], references: [id], onDelete: SetNull)
+
+  quantity Int @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([cartId])
+  @@map("cart_items")
 }

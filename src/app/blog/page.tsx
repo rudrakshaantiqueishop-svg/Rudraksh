@@ -1,6 +1,8 @@
+import dynamic from "next/dynamic";
 import BlogHero from "@/components/blog/BlogHero";
-import BlogListing from "@/components/blog/BlogListing";
-import BlogStillUnsure from "@/components/blog/BlogStillUnsure";
+
+const BlogListing = dynamic(() => import("@/components/blog/BlogListing"));
+const BlogStillUnsure = dynamic(() => import("@/components/blog/BlogStillUnsure"));
 
 export default function BlogPage() {
   return (

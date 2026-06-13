@@ -1,16 +1,18 @@
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { getProductBySlug, getSimilarProducts } from "@/lib/products";
 import ProductDetailMain from "@/components/products/detail/ProductDetailMain";
-import ProductReviews from "@/components/products/detail/ProductReviews";
-import TraditionalSupport from "@/components/products/detail/TraditionalSupport";
-import IsThisRightForYou from "@/components/products/detail/IsThisRightForYou";
-import AuthenticityCertification from "@/components/products/detail/AuthenticityCertification";
-import OriginSourcing from "@/components/products/detail/OriginSourcing";
-import HowToWearCare from "@/components/products/detail/HowToWearCare";
-import NeedGuidance from "@/components/products/detail/NeedGuidance";
-import ExpertRecommendedCombinations from "@/components/products/detail/ExpertRecommendedCombinations";
-import ProductFAQ from "@/components/products/detail/ProductFAQ";
-import SimilarProducts from "@/components/products/detail/SimilarProducts";
+
+const ProductReviews = dynamic(() => import("@/components/products/detail/ProductReviews"));
+const TraditionalSupport = dynamic(() => import("@/components/products/detail/TraditionalSupport"));
+const IsThisRightForYou = dynamic(() => import("@/components/products/detail/IsThisRightForYou"));
+const AuthenticityCertification = dynamic(() => import("@/components/products/detail/AuthenticityCertification"));
+const OriginSourcing = dynamic(() => import("@/components/products/detail/OriginSourcing"));
+const HowToWearCare = dynamic(() => import("@/components/products/detail/HowToWearCare"));
+const NeedGuidance = dynamic(() => import("@/components/products/detail/NeedGuidance"));
+const ExpertRecommendedCombinations = dynamic(() => import("@/components/products/detail/ExpertRecommendedCombinations"));
+const ProductFAQ = dynamic(() => import("@/components/products/detail/ProductFAQ"));
+const SimilarProducts = dynamic(() => import("@/components/products/detail/SimilarProducts"));
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

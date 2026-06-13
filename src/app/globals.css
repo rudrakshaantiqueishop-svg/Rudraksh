@@ -2786,6 +2786,38 @@
   .ph-content { padding: 0 24px; gap: 16px; }
   .ph-body { font-size: 14px; }
 }
+/* Dual-thumb price range slider (ProductListing filter) */
+.range-thumb {
+  height: 16px;
+}
+.range-thumb::-webkit-slider-thumb {
+  pointer-events: auto;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #BB5A28;
+  border: 2px solid #FEF9F2;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+.range-thumb::-moz-range-thumb {
+  pointer-events: auto;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #BB5A28;
+  border: 2px solid #FEF9F2;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+.range-thumb::-webkit-slider-runnable-track {
+  background: transparent;
+}
+.range-thumb::-moz-range-track {
+  background: transparent;
+}
+
 @media (min-width: 768px) and (max-width: 1023px) {
   .ph-section { height: 420px !important; }
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
-const protectedRoutes = ["/account"];
+const protectedRoutes = ["/account", "/checkout"];
 const authRoutes = ["/login", "/signup"];
 
 export default auth((req) => {

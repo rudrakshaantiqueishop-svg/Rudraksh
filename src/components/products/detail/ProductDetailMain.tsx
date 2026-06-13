@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Star, Eye, Heart, ShieldCheck, Lock, Award, Truck, Mail, ChevronDown, Plus, Minus } from "lucide-react";
 import { useCurrency } from "@/components/CurrencyProvider";
+import { useCart } from "@/components/CartProvider";
 import { getMainImage } from "@/lib/product-utils";
 import type { getProductBySlug } from "@/lib/products";
 
@@ -12,6 +13,7 @@ type Product = NonNullable<Awaited<ReturnType<typeof getProductBySlug>>>;
 
 export default function ProductDetailMain({ product }: { product: Product }) {
   const { formatPrice } = useCurrency();
+  const { addItem } = useCart();
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [selectedAddOn, setSelectedAddOn] = useState(0);
   const [selectedSize, setSelectedSize] = useState(0);
@@ -29,6 +31,31 @@ export default function ProductDetailMain({ product }: { product: Product }) {
   const displayCompareAtCents = product.compareAtPriceCents != null ? product.compareAtPriceCents + variantDelta : null;
 
   const stockBarWidth = Math.min(100, (product.stockCount / 10) * 100);
+
+  const handleAddToCart = () => {
+    const variant = product.variants[selectedVariant];
+    const addOn = product.addOns[selectedAddOn];
+    const size = product.sizes[selectedSize];
+    const addOnDelta = addOn?.priceDeltaCents ?? 0;
+
+    addItem(
+      {
+        id: [product.id, variant?.id, addOn?.id, size?.id].filter(Boolean).join("::"),
+        productId: product.id,
+        slug: product.slug,
+        name: product.name,
+        image: variant?.image ?? mainImage?.url ?? "",
+        unitPriceCents: displayPriceCents + addOnDelta,
+        variantId: variant?.id,
+        variantLabel: variant?.label,
+        sizeId: size?.id,
+        sizeLabel: size?.label,
+        addOnId: addOn?.id,
+        addOnLabel: addOn?.label,
+      },
+      quantity
+    );
+  };
 
   const accordionSections = [
     { title: "DESCRIPTION", content: product.description },
@@ -222,7 +249,7 @@ export default function ProductDetailMain({ product }: { product: Product }) {
                 <Plus size={14} />
               </button>
             </div>
-            <button className="flex-1 bg-brown text-white font-lato text-sm font-bold tracking-[0.5px] py-3.5">
+            <button onClick={handleAddToCart} className="flex-1 bg-brown text-white font-lato text-sm font-bold tracking-[0.5px] py-3.5">
               ADD TO CART
             </button>
             <button className="border border-[#E7DFD6] p-3.5 shrink-0" aria-label="Add to wishlist">

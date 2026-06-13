@@ -4,6 +4,12 @@ export function getMainImage(images: ProductImageLite[]): ProductImageLite | und
   return images.find((i) => i.role === "MAIN") ?? images[0];
 }
 
+export type ExploreDesignItem = {
+  title: string;
+  description: string;
+  image: string;
+};
+
 export type CategoryPageContent = {
   heroTitle: string;
   heroSubtitle: string;
@@ -18,6 +24,11 @@ export type CategoryPageContent = {
   fitCheckWrongLabel: string;
   fitCheckWrongItems: string[];
   fitCheckImage: string;
+  exploreDesigns: {
+    heading: string;
+    description: string;
+    items: ExploreDesignItem[];
+  };
 };
 
 export function getPageContent(category: { pageContent: unknown }): CategoryPageContent {
@@ -32,4 +43,15 @@ export function getSizeCounts(products: { sizes: { label: string }[] }[]): { lab
     }
   }
   return Array.from(counts.entries()).map(([label, count]) => ({ label, count }));
+}
+
+export function getPriceBounds(products: { priceCents: number }[]): { min: number; max: number } {
+  if (products.length === 0) return { min: 0, max: 0 };
+  let min = products[0].priceCents;
+  let max = products[0].priceCents;
+  for (const p of products) {
+    if (p.priceCents < min) min = p.priceCents;
+    if (p.priceCents > max) max = p.priceCents;
+  }
+  return { min, max };
 }

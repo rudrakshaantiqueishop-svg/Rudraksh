@@ -6,26 +6,28 @@ import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Search, Heart, ShoppingCart, User, Menu, X, ChevronDown, Plus, Minus } from "lucide-react";
 import AuthModal from "@/components/auth/AuthModal";
+import CartDrawer from "@/components/CartDrawer";
 import { useCurrency } from "@/components/CurrencyProvider";
+import { useCart } from "@/components/CartProvider";
 import { CurrencyCode } from "@/lib/currency";
 
 const CURRENCY_OPTIONS: CurrencyCode[] = ["USD", "INR"];
 
 const productColumns = [
   [
-    { name: "Rudraksha",   icon: "/assets/icons/icon-rudraksha.svg" },
-    { name: "Bracelets",   icon: "/assets/icons/icon-bracelets.svg" },
-    { name: "Murtis",      icon: "/assets/icons/icon-murtis.svg" },
+    { name: "Rudraksha",   slug: "rudraksha",     icon: "/assets/icons/icon-rudraksha.svg" },
+    { name: "Bracelets",   slug: "bracelets",     icon: "/assets/icons/icon-bracelets.svg" },
+    { name: "Murtis",      slug: "murtis",        icon: "/assets/icons/icon-murtis.svg" },
   ],
   [
-    { name: "Siddha Mala", icon: "/assets/icons/icon-siddha-mala.svg" },
-    { name: "Gemstones",   icon: "/assets/icons/icon-gemstones.svg" },
-    { name: "Antiques",    icon: "/assets/icons/icon-antiques.svg" },
+    { name: "Siddha Mala", slug: "siddha-mala",   icon: "/assets/icons/icon-siddha-mala.svg" },
+    { name: "Gemstones",   slug: "gemstones",     icon: "/assets/icons/icon-gemstones.svg" },
+    { name: "Antiques",    slug: "antiques",      icon: "/assets/icons/icon-antiques.svg" },
   ],
   [
-    { name: "Combinations",  icon: "/assets/icons/icon-combinations.svg" },
-    { name: "Singing Bowls", icon: "/assets/icons/icon-singing-bowls.svg" },
-    { name: "Necklaces",     icon: "/assets/icons/icon-necklaces.svg" },
+    { name: "Combinations",  slug: "combinations",  icon: "/assets/icons/icon-combinations.svg" },
+    { name: "Singing Bowls", slug: "singing-bowls", icon: "/assets/icons/icon-singing-bowls.svg" },
+    { name: "Necklaces",     slug: "necklaces",     icon: "/assets/icons/icon-necklaces.svg" },
   ],
 ];
 
@@ -53,6 +55,7 @@ export default function Header({ activePage }: { activePage?: string }) {
   const [isMobileCurrencyOpen, setIsMobileCurrencyOpen] = useState(false);
   const lastScrollY = useRef(0);
   const { currency, setCurrency } = useCurrency();
+  const { itemCount, openCart } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -100,7 +103,7 @@ export default function Header({ activePage }: { activePage?: string }) {
 
         {/* Logo */}
         <Link href="/" className="flex-shrink-0">
-          <Image src="/assets/images/common/logo.png" alt="Rudraksha Antiquei" width={212} height={40} style={{ objectFit: "contain", height: "36px", width: "auto" }} />
+          <Image src="/assets/images/common/logo.png" alt="Rudraksha Antiquei" width={212} height={40} priority style={{ objectFit: "contain", height: "36px", width: "auto" }} />
         </Link>
 
         {/* Nav — absolutely centred, hidden on mobile */}
@@ -170,13 +173,20 @@ export default function Header({ activePage }: { activePage?: string }) {
 
         {/* Right actions — desktop */}
         <div className="header-actions-desktop flex items-center gap-6">
-          {[
-            <Search key="search" size={24} strokeWidth={1.5} />,
-            <Heart key="heart" size={24} strokeWidth={1.5} />,
-            <ShoppingCart key="cart" size={24} strokeWidth={1.5} />,
-          ].map((icon, i) => (
-            <button key={i} className="text-[#44403C] hover:text-[#BB5A28] transition-colors">{icon}</button>
-          ))}
+          <button className="text-[#44403C] hover:text-[#BB5A28] transition-colors">
+            <Search size={24} strokeWidth={1.5} />
+          </button>
+          <button className="text-[#44403C] hover:text-[#BB5A28] transition-colors">
+            <Heart size={24} strokeWidth={1.5} />
+          </button>
+          <button onClick={openCart} aria-label="Open cart" className="relative text-[#44403C] hover:text-[#BB5A28] transition-colors">
+            <ShoppingCart size={24} strokeWidth={1.5} />
+            {itemCount > 0 && (
+              <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#BB5A28] text-white font-lato text-[10px] font-bold leading-none">
+                {itemCount > 99 ? "99+" : itemCount}
+              </span>
+            )}
+          </button>
           {isLoggedIn ? (
             <Link href={accountHref} className="text-[#44403C] hover:text-[#BB5A28] transition-colors" aria-label="My Account">
               <User size={24} strokeWidth={1.5} />
@@ -222,13 +232,20 @@ export default function Header({ activePage }: { activePage?: string }) {
 
         {/* Right actions — mobile only (search, heart, cart) */}
         <div className="header-actions-mobile hidden items-center gap-4">
-          {[
-            <Search key="s" size={20} strokeWidth={1.5} />,
-            <Heart key="h" size={20} strokeWidth={1.5} />,
-            <ShoppingCart key="c" size={20} strokeWidth={1.5} />,
-          ].map((icon, i) => (
-            <button key={i} className="text-[#44403C]">{icon}</button>
-          ))}
+          <button className="text-[#44403C]">
+            <Search size={20} strokeWidth={1.5} />
+          </button>
+          <button className="text-[#44403C]">
+            <Heart size={20} strokeWidth={1.5} />
+          </button>
+          <button onClick={openCart} aria-label="Open cart" className="relative text-[#44403C]">
+            <ShoppingCart size={20} strokeWidth={1.5} />
+            {itemCount > 0 && (
+              <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[16px] h-[16px] px-1 rounded-full bg-[#BB5A28] text-white font-lato text-[9px] font-bold leading-none">
+                {itemCount > 99 ? "99+" : itemCount}
+              </span>
+            )}
+          </button>
         </div>
       </div>
 
@@ -246,8 +263,9 @@ export default function Header({ activePage }: { activePage?: string }) {
                 {col.map((item) => (
                   <Link
                     key={item.name}
-                    href="#"
+                    href={`/products/category/${item.slug}`}
                     className="group/item"
+                    onClick={() => setActiveDropdown(null)}
                     style={{ display: "flex", alignItems: "center", gap: "16px", textDecoration: "none" }}
                   >
                     {/* Icon circle */}
@@ -293,13 +311,20 @@ export default function Header({ activePage }: { activePage?: string }) {
             </div>
 
             <div className="flex items-center gap-4">
-              {[
-                <Search key="s" size={20} strokeWidth={1.5} />,
-                <Heart key="h" size={20} strokeWidth={1.5} />,
-                <ShoppingCart key="c" size={20} strokeWidth={1.5} />,
-              ].map((icon, i) => (
-                <button key={i} className="text-[#0B0404]">{icon}</button>
-              ))}
+              <button className="text-[#0B0404]">
+                <Search size={20} strokeWidth={1.5} />
+              </button>
+              <button className="text-[#0B0404]">
+                <Heart size={20} strokeWidth={1.5} />
+              </button>
+              <button onClick={openCart} aria-label="Open cart" className="relative text-[#0B0404]">
+                <ShoppingCart size={20} strokeWidth={1.5} />
+                {itemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[16px] h-[16px] px-1 rounded-full bg-[#BB5A28] text-white font-lato text-[9px] font-bold leading-none">
+                    {itemCount > 99 ? "99+" : itemCount}
+                  </span>
+                )}
+              </button>
             </div>
           </div>
 
@@ -388,7 +413,7 @@ export default function Header({ activePage }: { activePage?: string }) {
                   {productColumns.flat().map((item) => (
                     <Link
                       key={item.name}
-                      href="#"
+                      href={`/products/category/${item.slug}`}
                       className="flex items-center gap-4 text-decoration-none group"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
@@ -415,6 +440,7 @@ export default function Header({ activePage }: { activePage?: string }) {
       )}
 
       <AuthModal open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen} />
+      <CartDrawer />
     </>
   );
 }

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCurrency } from "@/components/CurrencyProvider";
+import { useCart } from "@/components/CartProvider";
 import { getMainImage } from "@/lib/product-utils";
 import type { ProductImageLite } from "@/lib/product-utils";
 
@@ -17,6 +18,7 @@ type Product = {
 
 const ProductCard = ({ p }: { p: Product }) => {
   const { formatPrice } = useCurrency();
+  const { addItem } = useCart();
   const image = getMainImage(p.images);
 
   return (
@@ -29,7 +31,21 @@ const ProductCard = ({ p }: { p: Product }) => {
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
             </svg>
           </button>
-          <button onClick={(e) => e.stopPropagation()} style={{ flex: 1, background: "#552912", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              addItem({
+                id: p.id,
+                productId: p.id,
+                slug: p.slug,
+                name: p.name,
+                image: image?.url ?? "",
+                unitPriceCents: p.priceCents,
+              });
+            }}
+            style={{ flex: 1, background: "#552912", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+          >
             <span className="font-lato text-white" style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.06em" }}>ADD TO CART</span>
           </button>
         </div>

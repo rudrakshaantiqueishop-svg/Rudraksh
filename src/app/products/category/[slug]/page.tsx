@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import {
   getCategoryBySlug,
@@ -8,14 +9,15 @@ import {
 } from "@/lib/products";
 import ProductsHero from "@/components/products/ProductsHero";
 import CategoryIntro from "@/components/products/CategoryIntro";
-import ProductListing from "@/components/products/ProductListing";
-import ExploreDesigns from "@/components/products/ExploreDesigns";
-import VerificationChecklist from "@/components/products/VerificationChecklist";
-import CategoryFitCheck from "@/components/products/CategoryFitCheck";
-import JourneyHighlights from "@/components/products/JourneyHighlights";
-import GetMoreInsights from "@/components/products/GetMoreInsights";
-import ProductsFAQ from "@/components/products/ProductsFAQ";
-import BlogStillUnsure from "@/components/blog/BlogStillUnsure";
+
+const ProductListing = dynamic(() => import("@/components/products/ProductListing"));
+const ExploreDesigns = dynamic(() => import("@/components/products/ExploreDesigns"));
+const VerificationChecklist = dynamic(() => import("@/components/products/VerificationChecklist"));
+const CategoryFitCheck = dynamic(() => import("@/components/products/CategoryFitCheck"));
+const JourneyHighlights = dynamic(() => import("@/components/products/JourneyHighlights"));
+const GetMoreInsights = dynamic(() => import("@/components/products/GetMoreInsights"));
+const ProductsFAQ = dynamic(() => import("@/components/products/ProductsFAQ"));
+const BlogStillUnsure = dynamic(() => import("@/components/blog/BlogStillUnsure"));
 
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -44,7 +46,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         categoryName={category.name}
         sizeCounts={sizeCounts}
       />
-      <ExploreDesigns />
+      <ExploreDesigns pageContent={pageContent} />
       <VerificationChecklist pageContent={pageContent} />
       <CategoryFitCheck pageContent={pageContent} />
       <JourneyHighlights />

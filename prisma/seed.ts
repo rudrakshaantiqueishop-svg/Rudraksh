@@ -52,6 +52,16 @@ const categories = [
         "You're unsure and don't want guidance",
       ],
       fitCheckImage: "/assets/images/home/rudraksh.png",
+      exploreDesigns: {
+        heading: "Explore Our Designs",
+        description: "Rudraksha beads are available in multiple forms depending on how you prefer to wear them.",
+        items: [
+          { title: "Loose Beads", description: "For traditional threading or personal customization.", image: "/assets/images/home/beads.png" },
+          { title: "Silver Capped", description: "A protective silver cap for durability and daily wear.", image: "/assets/images/products/category-bracelets.png" },
+          { title: "Silver Chain", description: "Minimal, ready-to-wear designs with a refined finish.", image: "/assets/images/products/category-necklace.png" },
+          { title: "Rudraksha Chain", description: "Traditionally strung chains for regular spiritual use.", image: "/assets/images/products/Product Highlight.png" },
+        ],
+      },
     },
   },
   {
@@ -89,6 +99,16 @@ const categories = [
         "You want something precisely adjustable without resizing",
       ],
       fitCheckImage: "/assets/images/products/category-bracelets.png",
+      exploreDesigns: {
+        heading: "Explore Our Designs",
+        description: "Bracelets are strung in a few different styles depending on how many beads you want to wear and how they're finished.",
+        items: [
+          { title: "Single Mukhi", description: "One bead style, strung for everyday simplicity.", image: "/assets/images/products/category-bracelets.png" },
+          { title: "Multi-Bead", description: "Several beads strung together on durable elastic.", image: "/assets/images/about/about-founding-1.png" },
+          { title: "Gemstone Combination", description: "Nine traditional gemstones set on an adjustable cord.", image: "/assets/images/about/about-principle-1.png" },
+          { title: "Elastic Cord", description: "Stretch-fit cords sized for a comfortable daily fit.", image: "/assets/images/about/about-founding-2.png" },
+        ],
+      },
     },
   },
   {
@@ -126,6 +146,16 @@ const categories = [
         "You want a custom deity or pose not listed here",
       ],
       fitCheckImage: "/assets/images/home/god.png",
+      exploreDesigns: {
+        heading: "Explore Our Designs",
+        description: "Murtis are available in a few finishes, chosen for the look and feel you want on your altar.",
+        items: [
+          { title: "Brass", description: "Solid brass with hand-detailing on the crown and base.", image: "/assets/images/home/god.png" },
+          { title: "Marble Finish", description: "A marble-dust composite, hand-painted for a stone-like look.", image: "/assets/images/about/about-founding-1.png" },
+          { title: "Resin", description: "Lightweight resin castings suited for travel and gifting.", image: "/assets/images/about/about-founding-2.png" },
+          { title: "Table-Sized", description: "Compact sizing for study tables and small altars.", image: "/assets/images/about/about-p04.png" },
+        ],
+      },
     },
   },
   {
@@ -163,6 +193,16 @@ const categories = [
         "You prefer machine-knotted, mass-produced strands",
       ],
       fitCheckImage: "/assets/images/about/about-sacred-2.png",
+      exploreDesigns: {
+        heading: "Explore Our Designs",
+        description: "Siddha Malas are strung from different bead materials, each suited to a particular practice.",
+        items: [
+          { title: "Rudraksha Mala", description: "108 Rudraksha beads, hand-knotted for durability.", image: "/assets/images/about/about-sacred-1.png" },
+          { title: "Tulsi Mala", description: "108 Tulsi wood beads, traditional for Vaishnav practice.", image: "/assets/images/about/about-sacred-2.png" },
+          { title: "Guru Bead & Tassel", description: "Every mala is finished with a guru bead and cotton tassel.", image: "/assets/images/about/about-p03.png" },
+          { title: "Wearable Length", description: "Strung to a length suited for both wear and counting.", image: "/assets/images/about/about-principle-2.png" },
+        ],
+      },
     },
   },
   {
@@ -200,6 +240,16 @@ const categories = [
         "You need formal gemological certification included by default",
       ],
       fitCheckImage: "/assets/images/about/about-p01-3021a5.png",
+      exploreDesigns: {
+        heading: "Explore Our Designs",
+        description: "Gemstones are set in a few different ways depending on how you plan to wear them.",
+        items: [
+          { title: "Rings", description: "Natural stones set in simple panchadhatu or silver mounts.", image: "/assets/images/products/category-rings.png" },
+          { title: "Yellow Sapphire", description: "Pukhraj, traditionally worn to strengthen Jupiter.", image: "/assets/images/about/about-p01-3021a5.png" },
+          { title: "Red Coral", description: "Moonga, traditionally worn to strengthen Mars.", image: "/assets/images/about/about-p04.png" },
+          { title: "Pendants", description: "Stones set in pendants for those who prefer not to wear rings.", image: "/assets/images/about/about-principle-3.png" },
+        ],
+      },
     },
   },
   {
@@ -237,6 +287,16 @@ const categories = [
         "You're looking for formal antique authentication paperwork",
       ],
       fitCheckImage: "/assets/images/about/about-founding-1.png",
+      exploreDesigns: {
+        heading: "Explore Our Designs",
+        description: "Our antique pieces span a few categories of devotional and decorative items.",
+        items: [
+          { title: "Boxes", description: "Hand-engraved brass boxes, originally used to store malas.", image: "/assets/images/about/about-founding-2.png" },
+          { title: "Temple Bells", description: "Brass bells with carved handles, rung at the start of puja.", image: "/assets/images/about/about-founding-1.png" },
+          { title: "Figurines", description: "Small devotional figurines sourced for craftsmanship and history.", image: "/assets/images/about/about-principle-1.png" },
+          { title: "Pendants", description: "Older pendants and ritual items, photographed as-is.", image: "/assets/images/about/about-principle-2.png" },
+        ],
+      },
     },
   },
   {
@@ -274,6 +334,16 @@ const categories = [
         "You're new to Rudraksha and unsure which combination suits you",
       ],
       fitCheckImage: "/assets/images/about/about-principle-1.png",
+      exploreDesigns: {
+        heading: "Explore Our Designs",
+        description: "Combination pieces pair specific mukhis together for a particular intention.",
+        items: [
+          { title: "5+7 Mukhi", description: "Pairs discipline (5 Mukhi) with prosperity (7 Mukhi).", image: "/assets/images/about/about-principle-3.png" },
+          { title: "1+4+7 Mukhi", description: "Combines clarity, communication, and obstacle removal.", image: "/assets/images/about/about-principle-2.png" },
+          { title: "Bracelets", description: "Combination beads strung on a durable elastic cord.", image: "/assets/images/about/about-principle-1.png" },
+          { title: "Pendants", description: "Combination beads set together in a single silver cap.", image: "/assets/images/about/about-founding-2.png" },
+        ],
+      },
     },
   },
   {
@@ -311,6 +381,16 @@ const categories = [
         "You're looking for a decorative piece only and don't plan to play it",
       ],
       fitCheckImage: "/assets/images/about/about-p02.png",
+      exploreDesigns: {
+        heading: "Explore Our Designs",
+        description: "Singing bowls come in a few sizes and metal blends, each suited to a different use.",
+        items: [
+          { title: "Medium Bowls", description: "Hand-hammered, suited for individual sound meditation.", image: "/assets/images/about/about-p04.png" },
+          { title: "Large Bowls", description: "Deeper, sustained tones suited for group meditation.", image: "/assets/images/about/about-p02.png" },
+          { title: "Seven Metal", description: "Cast from a traditional seven-metal alloy for a richer tone.", image: "/assets/images/about/about-p01-3021a5.png" },
+          { title: "Wooden Striker", description: "Every bowl includes a matching striker and cushion.", image: "/assets/images/about/about-founding-1.png" },
+        ],
+      },
     },
   },
   {
@@ -348,6 +428,16 @@ const categories = [
         "You prefer wrist-worn pieces over neck-worn ones (see Bracelets)",
       ],
       fitCheckImage: "/assets/images/products/category-necklace.png",
+      exploreDesigns: {
+        heading: "Explore Our Designs",
+        description: "Necklaces are finished in a few different ways depending on how you like to wear your Rudraksha.",
+        items: [
+          { title: "Silver Capped", description: "A single bead, silver-capped and strung on an adjustable cord.", image: "/assets/images/products/category-necklace.png" },
+          { title: "Pendant Style", description: "A bead set in a simple pendant on a fine chain.", image: "/assets/images/about/about-p03.png" },
+          { title: "Multi-Bead", description: "Several beads strung together for a fuller look.", image: "/assets/images/products/Product Highlight.png" },
+          { title: "Adjustable Cord", description: "Cord lengths that adjust to sit comfortably under or over clothing.", image: "/assets/images/about/about-p02.png" },
+        ],
+      },
     },
   },
 ];

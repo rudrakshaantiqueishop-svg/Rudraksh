@@ -1,13 +1,15 @@
-import HowToChooseAuthenticityTransparency from "@/components/how-to-choose/HowToChooseAuthenticityTransparency";
-import HowToChooseConfusion from "@/components/how-to-choose/HowToChooseConfusion";
-import HowToChooseExploreByPurpose from "@/components/how-to-choose/HowToChooseExploreByPurpose";
-import HowToChooseGuidanceBanner from "@/components/how-to-choose/HowToChooseGuidanceBanner";
+import dynamic from "next/dynamic";
 import HowToChooseHero from "@/components/how-to-choose/HowToChooseHero";
-import HowToChooseIsThisRight from "@/components/how-to-choose/HowToChooseIsThisRight";
-import HowToChoosePhilosophy from "@/components/how-to-choose/HowToChoosePhilosophy";
-import HowToChooseSteps from "@/components/how-to-choose/HowToChooseSteps";
-import HowToChooseStillUnsure from "@/components/how-to-choose/HowToChooseStillUnsure";
-import HowToChooseWhenNotToBuy from "@/components/how-to-choose/HowToChooseWhenNotToBuy";
+
+const HowToChooseAuthenticityTransparency = dynamic(() => import("@/components/how-to-choose/HowToChooseAuthenticityTransparency"));
+const HowToChooseConfusion = dynamic(() => import("@/components/how-to-choose/HowToChooseConfusion"));
+const HowToChooseExploreByPurpose = dynamic(() => import("@/components/how-to-choose/HowToChooseExploreByPurpose"));
+const HowToChooseGuidanceBanner = dynamic(() => import("@/components/how-to-choose/HowToChooseGuidanceBanner"));
+const HowToChooseIsThisRight = dynamic(() => import("@/components/how-to-choose/HowToChooseIsThisRight"));
+const HowToChoosePhilosophy = dynamic(() => import("@/components/how-to-choose/HowToChoosePhilosophy"));
+const HowToChooseSteps = dynamic(() => import("@/components/how-to-choose/HowToChooseSteps"));
+const HowToChooseStillUnsure = dynamic(() => import("@/components/how-to-choose/HowToChooseStillUnsure"));
+const HowToChooseWhenNotToBuy = dynamic(() => import("@/components/how-to-choose/HowToChooseWhenNotToBuy"));
 
 export default function HowToChoosePage() {
   return (
