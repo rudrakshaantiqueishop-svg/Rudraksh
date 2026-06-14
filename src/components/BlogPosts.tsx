@@ -35,7 +35,7 @@ export default function BlogPosts() {
           Blog Posts
         </h2>
         <Link
-          href="#"
+          href="/blog"
           style={{
             display: "inline-flex", alignItems: "center", gap: "6px",
             paddingBottom: "6px", borderBottom: "1px solid #44403C",

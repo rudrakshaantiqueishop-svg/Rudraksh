@@ -7,6 +7,8 @@ import { useSession } from "next-auth/react";
 import { Search, Heart, ShoppingCart, User, Menu, X, ChevronDown, Plus, Minus } from "lucide-react";
 import AuthModal from "@/components/auth/AuthModal";
 import CartDrawer from "@/components/CartDrawer";
+import SearchOverlay from "@/components/SearchOverlay";
+import DesktopSearch from "@/components/DesktopSearch";
 import { useCurrency } from "@/components/CurrencyProvider";
 import { useCart } from "@/components/CartProvider";
 import { CurrencyCode } from "@/lib/currency";
@@ -51,8 +53,10 @@ export default function Header({ activePage }: { activePage?: string }) {
 
   const [isVisible, setIsVisible] = useState(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
   const [isMobileCurrencyOpen, setIsMobileCurrencyOpen] = useState(false);
+  const [isDesktopSearchOpen, setIsDesktopSearchOpen] = useState(false);
   const lastScrollY = useRef(0);
   const { currency, setCurrency } = useCurrency();
   const { itemCount, openCart } = useCart();
@@ -108,7 +112,7 @@ export default function Header({ activePage }: { activePage?: string }) {
 
         {/* Nav — absolutely centred, hidden on mobile */}
         <div className="header-nav-center absolute inset-x-0 h-full flex justify-center pointer-events-none">
-          <nav className="flex items-center gap-8 pointer-events-auto h-full">
+          <nav className={`flex items-center gap-8 h-full transition-opacity duration-300 ${isDesktopSearchOpen ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"}`}>
 
             <Link href="/" className={`font-lato text-base font-normal flex items-center h-full transition-colors ${currentPage === "home" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}>
               HOME
@@ -173,9 +177,7 @@ export default function Header({ activePage }: { activePage?: string }) {
 
         {/* Right actions — desktop */}
         <div className="header-actions-desktop flex items-center gap-6">
-          <button className="text-[#44403C] hover:text-[#BB5A28] transition-colors">
-            <Search size={24} strokeWidth={1.5} />
-          </button>
+          <DesktopSearch onToggle={setIsDesktopSearchOpen} />
           <button className="text-[#44403C] hover:text-[#BB5A28] transition-colors">
             <Heart size={24} strokeWidth={1.5} />
           </button>
@@ -232,7 +234,7 @@ export default function Header({ activePage }: { activePage?: string }) {
 
         {/* Right actions — mobile only (search, heart, cart) */}
         <div className="header-actions-mobile hidden items-center gap-4">
-          <button className="text-[#44403C]">
+          <button onClick={() => setIsSearchOpen(true)} aria-label="Open search" className="text-[#44403C]">
             <Search size={20} strokeWidth={1.5} />
           </button>
           <button className="text-[#44403C]">
@@ -311,7 +313,14 @@ export default function Header({ activePage }: { activePage?: string }) {
             </div>
 
             <div className="flex items-center gap-4">
-              <button className="text-[#0B0404]">
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  setIsSearchOpen(true);
+                }}
+                aria-label="Open search"
+                className="text-[#0B0404]"
+              >
                 <Search size={20} strokeWidth={1.5} />
               </button>
               <button className="text-[#0B0404]">
@@ -441,6 +450,7 @@ export default function Header({ activePage }: { activePage?: string }) {
 
       <AuthModal open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen} />
       <CartDrawer />
+      <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
 }

@@ -8,6 +8,7 @@ import { useCurrency } from "@/components/CurrencyProvider";
 import { useCart } from "@/components/CartProvider";
 import { getMainImage, getPriceBounds } from "@/lib/product-utils";
 import type { ProductImageLite } from "@/lib/product-utils";
+import ProductCard from "@/components/ui/ProductCard";
 
 type Product = {
   id: string;
@@ -179,47 +180,7 @@ export default function ProductListing({
         {visibleProducts.map((p) => {
           const image = getMainImage(p.images);
           return (
-            <Link key={p.id} href={`/products/${p.slug}`} className="flex flex-col gap-3 group">
-              <div className="relative aspect-square overflow-hidden bg-[#F0E8DD]">
-                {image && (
-                  <Image
-                    src={image.url}
-                    alt={image.alt}
-                    fill
-                    sizes="(max-width: 1024px) 50vw, 33vw"
-                    className="object-cover"
-                  />
-                )}
-                <button onClick={(e) => e.preventDefault()} className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Heart size={16} className="text-dark" />
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    addItem({
-                      id: p.id,
-                      productId: p.id,
-                      slug: p.slug,
-                      name: p.name,
-                      image: image?.url ?? "",
-                      unitPriceCents: p.priceCents,
-                    });
-                  }}
-                  className="absolute bottom-3 left-3 right-3 bg-brown text-white font-lato text-xs font-bold tracking-[0.8px] py-3 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  ADD TO CART
-                </button>
-              </div>
-              <div className="flex flex-col gap-1">
-                <p className="font-lato text-sm text-dark m-0">{p.name}</p>
-                <p className="font-lato text-sm m-0 flex items-center gap-2">
-                  <span className="font-bold text-dark">{formatPrice(p.priceCents)}</span>
-                  {p.compareAtPriceCents != null && (
-                    <span className="text-gray-text line-through">{formatPrice(p.compareAtPriceCents)}</span>
-                  )}
-                </p>
-              </div>
-            </Link>
+            <ProductCard key={p.id} product={p} imageClassName="aspect-square" />
           );
         })}
       </div>

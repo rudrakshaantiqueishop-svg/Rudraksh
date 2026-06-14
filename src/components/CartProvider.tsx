@@ -167,7 +167,20 @@ export default function CartProvider({ children }: { children: React.ReactNode }
 export function useCart() {
   const ctx = useContext(CartContext);
   if (!ctx) {
-    throw new Error("useCart must be used within a CartProvider");
+    console.warn("useCart is being called outside of a CartProvider. Using fallback.");
+    return {
+      items: [],
+      itemCount: 0,
+      subtotalCents: 0,
+      isOpen: false,
+      isLoading: false,
+      openCart: () => {},
+      closeCart: () => {},
+      addItem: () => {},
+      removeItem: () => {},
+      updateQuantity: () => {},
+      clearCart: () => {},
+    };
   }
   return ctx;
 }

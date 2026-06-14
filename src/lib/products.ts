@@ -43,7 +43,10 @@ export async function getProductBySlug(slug: string) {
       variants: { orderBy: { sortOrder: "asc" } },
       addOns: { orderBy: { sortOrder: "asc" } },
       sizes: { orderBy: { sortOrder: "asc" } },
-      reviews: { orderBy: { createdAt: "desc" } },
+      reviews: {
+        orderBy: { createdAt: "desc" },
+        include: { user: { select: { image: true } } },
+      },
       category: true,
     },
   });
@@ -72,4 +75,20 @@ export async function getCategoriesWithProductCounts() {
     include: { _count: { select: { products: true } } },
   });
   return categories;
+}
+
+export async function searchProducts(query: string, limit = 6) {
+  const term = query.trim();
+  if (!term) return [];
+
+  return prisma.product.findMany({
+    where: {
+      OR: [
+        { name: { contains: term, mode: "insensitive" } },
+        { description: { contains: term, mode: "insensitive" } },
+      ],
+    },
+    take: limit,
+    include: { images: { where: { role: "MAIN" }, take: 1 } },
+  });
 }

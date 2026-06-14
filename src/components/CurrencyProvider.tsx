@@ -40,7 +40,12 @@ export default function CurrencyProvider({ children }: { children: React.ReactNo
 export function useCurrency() {
   const ctx = useContext(CurrencyContext);
   if (!ctx) {
-    throw new Error("useCurrency must be used within a CurrencyProvider");
+    console.warn("useCurrency is being called outside of a CurrencyProvider. Using fallback.");
+    return {
+      currency: "USD" as CurrencyCode,
+      setCurrency: () => {},
+      formatPrice: (cents: number) => `$${(cents / 100).toFixed(2)}`,
+    };
   }
   return ctx;
 }

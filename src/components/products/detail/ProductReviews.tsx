@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Star } from "lucide-react";
+import WriteReviewForm from "@/components/products/detail/WriteReviewForm";
 
 type Review = {
   id: string;
@@ -8,20 +9,27 @@ type Review = {
   body: string;
   rating: number;
   createdAt: Date;
+  user?: { image: string | null } | null;
 };
 
 function formatDate(date: Date) {
   return new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
-export default function ProductReviews({ reviews }: { reviews: Review[] }) {
+export default function ProductReviews({
+  reviews,
+  productId,
+  slug,
+}: {
+  reviews: Review[];
+  productId: string;
+  slug: string;
+}) {
   return (
     <section className="h-px-section py-8 lg:py-10" style={{ background: "#FEF9F2" }}>
       <div className="flex items-center justify-between gap-4 mb-8 lg:mb-10">
         <h2 className="font-prata text-3xl lg:text-[36px] text-dark m-0">Reviews</h2>
-        <button className="bg-brown text-white font-lato text-sm font-bold tracking-[0.5px] px-6 py-3.5 whitespace-nowrap">
-          WRITE A REVIEW
-        </button>
+        <WriteReviewForm productId={productId} slug={slug} />
       </div>
 
       <div className="flex flex-col">
@@ -39,7 +47,13 @@ export default function ProductReviews({ reviews }: { reviews: Review[] }) {
             </div>
             <div className="flex items-center gap-3">
               <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
-                <Image src="/assets/images/testimonial/client-avatar.png" alt={r.authorName} fill sizes="40px" className="object-cover" />
+                <Image
+                  src={r.user?.image || "/assets/images/testimonial/client-avatar.png"}
+                  alt={r.authorName}
+                  fill
+                  sizes="40px"
+                  className="object-cover"
+                />
               </div>
               <div className="flex flex-col gap-1.5">
                 <span className="font-lato text-sm font-semibold text-dark">{r.authorName}</span>

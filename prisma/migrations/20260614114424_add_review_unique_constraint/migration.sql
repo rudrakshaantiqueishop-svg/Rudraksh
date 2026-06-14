@@ -1,0 +1,2 @@
+-- CreateIndex
+CREATE UNIQUE INDEX "reviews_userId_productId_key" ON "reviews"("userId", "productId");

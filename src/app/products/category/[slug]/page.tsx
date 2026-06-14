@@ -50,7 +50,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       <VerificationChecklist pageContent={pageContent} />
       <CategoryFitCheck pageContent={pageContent} />
       <JourneyHighlights />
-      <GetMoreInsights />
+      <GetMoreInsights categoryId={category.id} />
       <ProductsFAQ />
       <BlogStillUnsure />
     </div>

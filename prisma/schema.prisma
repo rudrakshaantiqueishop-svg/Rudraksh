@@ -121,6 +121,7 @@ model Category {
   pageContent Json
 
   products Product[]
+  blogs    Blog[]
 
   @@map("categories")
 }
@@ -254,8 +255,35 @@ model Review {
   rating     Int
   createdAt  DateTime @default(now())
 
+  @@unique([userId, productId])
   @@index([productId])
   @@map("reviews")
+}
+
+// ---------------------------------------------------------------------
+// Blog
+// ---------------------------------------------------------------------
+
+model Blog {
+  id              String   @id @default(uuid())
+  slug            String   @unique
+  title           String
+  excerpt         String   @db.Text
+  body            String   @db.Text
+  coverImage      String
+  author          String   @default("Rudraksha Antiquei")
+  readTimeMinutes Int      @default(5)
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([publishedAt])
+  @@map("blogs")
 }
 
 // ---------------------------------------------------------------------

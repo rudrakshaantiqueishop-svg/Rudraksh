@@ -1,10 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useCurrency } from "@/components/CurrencyProvider";
-import { useCart } from "@/components/CartProvider";
-import { getMainImage } from "@/lib/product-utils";
+
 import type { ProductImageLite } from "@/lib/product-utils";
 
 type Product = {
@@ -16,50 +13,7 @@ type Product = {
   images: ProductImageLite[];
 };
 
-const ProductCard = ({ p }: { p: Product }) => {
-  const { formatPrice } = useCurrency();
-  const { addItem } = useCart();
-  const image = getMainImage(p.images);
-
-  return (
-    <Link href={`/products/${p.slug}`} className="group/card cursor-pointer block">
-      <div className="relative overflow-hidden mb-3" style={{ height: "370px" }}>
-        {image && <Image src={image.url} alt={image.alt} fill sizes="25vw" style={{ objectFit: "cover", transition: "transform 0.4s ease" }} className="group-hover/card:scale-105" />}
-        <div className="absolute bottom-0 left-0 right-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-stretch" style={{ height: "48px" }}>
-          <button onClick={(e) => e.stopPropagation()} style={{ width: "50px", flexShrink: 0, background: "white", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#552912" strokeWidth="1.5">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              addItem({
-                id: p.id,
-                productId: p.id,
-                slug: p.slug,
-                name: p.name,
-                image: image?.url ?? "",
-                unitPriceCents: p.priceCents,
-              });
-            }}
-            style={{ flex: 1, background: "#552912", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
-          >
-            <span className="font-lato text-white" style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.06em" }}>ADD TO CART</span>
-          </button>
-        </div>
-      </div>
-      <p className="font-prata" style={{ fontSize: "15px", lineHeight: "140%", color: "#0B0404", margin: "0 0 5px 0" }}>{p.name}</p>
-      <div className="flex items-center gap-2">
-        <span className="font-lato" style={{ fontSize: "14px", fontWeight: 500, color: "#0B0404" }}>{formatPrice(p.priceCents)}</span>
-        {p.compareAtPriceCents != null && (
-          <span className="font-lato" style={{ fontSize: "12px", color: "#A8A29E", textDecoration: "line-through" }}>{formatPrice(p.compareAtPriceCents)}</span>
-        )}
-      </div>
-    </Link>
-  );
-};
+import ProductCard from "@/components/ui/ProductCard";
 
 export default function BestsellerProducts({ products }: { products: Product[] }) {
   if (products.length === 0) return null;
@@ -101,7 +55,7 @@ export default function BestsellerProducts({ products }: { products: Product[] }
 
       {/* Desktop grid */}
       <div className="hidden lg:grid lg:grid-cols-4 gap-6">
-        {products.map((p) => <ProductCard key={p.id} p={p} />)}
+        {products.map((p) => <ProductCard key={p.id} product={p} />)}
       </div>
 
       {/* Mobile: 2 scroll rows */}
@@ -118,7 +72,7 @@ export default function BestsellerProducts({ products }: { products: Product[] }
                 className="flex-shrink-0"
                 style={{ width: "301px", scrollSnapAlign: "start" }}
               >
-                <ProductCard p={p} />
+                <ProductCard product={p} />
               </div>
             ))}
           </div>

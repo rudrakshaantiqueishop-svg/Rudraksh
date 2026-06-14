@@ -27,7 +27,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   return (
     <div style={{ background: "#FEF9F2", overflowX: "hidden" }}>
       <ProductDetailMain product={product} />
-      <ProductReviews reviews={product.reviews} />
+      <ProductReviews reviews={product.reviews} productId={product.id} slug={product.slug} />
       <TraditionalSupport />
       <IsThisRightForYou />
       <AuthenticityCertification />

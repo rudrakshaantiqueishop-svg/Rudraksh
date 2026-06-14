@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useCurrency } from "@/components/CurrencyProvider";
 import { getMainImage } from "@/lib/product-utils";
 import type { ProductImageLite } from "@/lib/product-utils";
+import ProductCard from "@/components/ui/ProductCard";
 
 type Product = {
   id: string;
@@ -56,24 +57,12 @@ export default function SimilarProducts({ products, categorySlug }: { products: 
         {products.map((p) => {
           const image = getMainImage(p.images);
           return (
-            <Link
-              key={p.id}
-              href={`/products/${p.slug}`}
-              className="flex flex-col gap-3 group flex-shrink-0 w-[calc(50%-12px)] lg:w-[calc(25%-18px)]"
-            >
-              <div className="relative aspect-square overflow-hidden rounded-lg">
-                {image && <Image src={image.url} alt={image.alt} fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover" />}
-              </div>
-              <div className="flex flex-col gap-1">
-                <p className="font-lato text-sm text-dark m-0">{p.name}</p>
-                <p className="font-lato text-sm m-0 flex items-center gap-2">
-                  <span className="font-bold text-dark">{formatPrice(p.priceCents)}</span>
-                  {p.compareAtPriceCents != null && (
-                    <span className="text-gray-text line-through">{formatPrice(p.compareAtPriceCents)}</span>
-                  )}
-                </p>
-              </div>
-            </Link>
+            <ProductCard 
+              key={p.id} 
+              product={p} 
+              className="flex-shrink-0 w-[calc(50%-12px)] lg:w-[calc(25%-18px)]" 
+              imageClassName="aspect-square rounded-lg"
+            />
           );
         })}
       </div>
