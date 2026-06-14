@@ -54,7 +54,7 @@ export default function AccountSidebar({
             aria-label="Sign Out"
           >
             <LogOut size={22} strokeWidth={1.5} className="md:h-[18px] md:w-[18px]" />
-            <span className="hidden whitespace-nowrap md:inline">Sign</span>
+            <span className="hidden whitespace-nowrap md:inline">Sign Out</span>
           </button>
         </form>
       </div>
