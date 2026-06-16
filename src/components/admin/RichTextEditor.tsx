@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import {
   Bold,
@@ -16,6 +17,7 @@ import {
   Quote,
   Link as LinkIcon,
   Unlink,
+  ImageIcon,
   Undo,
   Redo,
 } from "lucide-react";
@@ -30,6 +32,21 @@ interface RichTextEditorProps {
   errors?: string[];
   helperText?: string;
 }
+
+// Module-level constants — stable references, never recreated between renders.
+// This prevents Tiptap from calling setOptions/updateState on every keystroke,
+// which was causing heading toggles to land on the wrong paragraph.
+const EDITOR_EXTENSIONS = [
+  StarterKit.configure({
+    link: { openOnClick: false, autolink: true },
+  }),
+  Image.configure({ HTMLAttributes: { class: "max-w-full rounded-lg" } }),
+  Placeholder.configure({ placeholder: "Write your post here..." }),
+];
+
+const EDITOR_PROPS = {
+  attributes: { class: "tiptap-editor" },
+};
 
 function ToolbarButton({
   onClick,
@@ -53,8 +70,8 @@ function ToolbarButton({
       aria-pressed={active}
       title={label}
       className={cn(
-        "flex size-8 items-center justify-center border border-transparent text-gray-text transition-colors hover:border-border hover:text-dark disabled:pointer-events-none disabled:opacity-40",
-        active && "border-border bg-brown text-cream hover:text-cream"
+        "flex size-8 items-center justify-center rounded border border-transparent text-gray-text transition-colors hover:border-border hover:bg-secondary hover:text-dark disabled:pointer-events-none disabled:opacity-40",
+        active && "border-border bg-brown text-cream hover:bg-brown hover:text-cream"
       )}
     >
       {children}
@@ -62,10 +79,14 @@ function ToolbarButton({
   );
 }
 
+function Divider() {
+  return <span className="mx-0.5 h-5 w-px shrink-0 bg-border" />;
+}
+
 function Toolbar({ editor }: { editor: Editor }) {
   const setLink = useCallback(() => {
-    const previousUrl = editor.getAttributes("link").href as string | undefined;
-    const url = window.prompt("Enter URL", previousUrl ?? "https://");
+    const previous = editor.getAttributes("link").href as string | undefined;
+    const url = window.prompt("Enter URL", previous ?? "https://");
     if (url === null) return;
     if (url === "") {
       editor.chain().focus().extendMarkRange("link").unsetLink().run();
@@ -74,132 +95,97 @@ function Toolbar({ editor }: { editor: Editor }) {
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
   }, [editor]);
 
+  const addImage = useCallback(() => {
+    const url = window.prompt("Image URL or path", "/assets/images/");
+    if (!url) return;
+    editor.chain().focus().setImage({ src: url }).run();
+  }, [editor]);
+
   return (
-    <div className="flex flex-wrap items-center gap-1 border-b border-input bg-secondary/40 p-1.5">
-      <ToolbarButton
-        label="Bold"
-        active={editor.isActive("bold")}
-        onClick={() => editor.chain().focus().toggleBold().run()}
-      >
-        <Bold size={16} strokeWidth={1.5} />
+    <div className="flex flex-wrap items-center gap-0.5 border-b border-input bg-secondary/50 px-2 py-1.5">
+      {/* Text formatting */}
+      <ToolbarButton label="Bold" active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()}>
+        <Bold size={15} strokeWidth={2} />
       </ToolbarButton>
-      <ToolbarButton
-        label="Italic"
-        active={editor.isActive("italic")}
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-      >
-        <Italic size={16} strokeWidth={1.5} />
+      <ToolbarButton label="Italic" active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()}>
+        <Italic size={15} strokeWidth={1.5} />
       </ToolbarButton>
-      <ToolbarButton
-        label="Underline"
-        active={editor.isActive("underline")}
-        onClick={() => editor.chain().focus().toggleUnderline().run()}
-      >
-        <UnderlineIcon size={16} strokeWidth={1.5} />
+      <ToolbarButton label="Underline" active={editor.isActive("underline")} onClick={() => editor.chain().focus().toggleUnderline().run()}>
+        <UnderlineIcon size={15} strokeWidth={1.5} />
       </ToolbarButton>
-      <ToolbarButton
-        label="Strikethrough"
-        active={editor.isActive("strike")}
-        onClick={() => editor.chain().focus().toggleStrike().run()}
-      >
-        <Strikethrough size={16} strokeWidth={1.5} />
+      <ToolbarButton label="Strikethrough" active={editor.isActive("strike")} onClick={() => editor.chain().focus().toggleStrike().run()}>
+        <Strikethrough size={15} strokeWidth={1.5} />
       </ToolbarButton>
-      <span className="mx-1 h-5 w-px bg-border" />
-      <ToolbarButton
-        label="Heading 2"
-        active={editor.isActive("heading", { level: 2 })}
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-      >
-        <Heading2 size={16} strokeWidth={1.5} />
+
+      <Divider />
+
+      {/* Headings */}
+      <ToolbarButton label="Heading 2 (large section title)" active={editor.isActive("heading", { level: 2 })} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
+        <Heading2 size={15} strokeWidth={1.5} />
       </ToolbarButton>
-      <ToolbarButton
-        label="Heading 3"
-        active={editor.isActive("heading", { level: 3 })}
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-      >
-        <Heading3 size={16} strokeWidth={1.5} />
+      <ToolbarButton label="Heading 3 (sub-section title)" active={editor.isActive("heading", { level: 3 })} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
+        <Heading3 size={15} strokeWidth={1.5} />
       </ToolbarButton>
-      <span className="mx-1 h-5 w-px bg-border" />
-      <ToolbarButton
-        label="Bullet List"
-        active={editor.isActive("bulletList")}
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-      >
-        <List size={16} strokeWidth={1.5} />
+
+      <Divider />
+
+      {/* Lists & quote */}
+      <ToolbarButton label="Bullet list" active={editor.isActive("bulletList")} onClick={() => editor.chain().focus().toggleBulletList().run()}>
+        <List size={15} strokeWidth={1.5} />
       </ToolbarButton>
-      <ToolbarButton
-        label="Numbered List"
-        active={editor.isActive("orderedList")}
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-      >
-        <ListOrdered size={16} strokeWidth={1.5} />
+      <ToolbarButton label="Numbered list" active={editor.isActive("orderedList")} onClick={() => editor.chain().focus().toggleOrderedList().run()}>
+        <ListOrdered size={15} strokeWidth={1.5} />
       </ToolbarButton>
-      <ToolbarButton
-        label="Quote"
-        active={editor.isActive("blockquote")}
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-      >
-        <Quote size={16} strokeWidth={1.5} />
+      <ToolbarButton label="Blockquote" active={editor.isActive("blockquote")} onClick={() => editor.chain().focus().toggleBlockquote().run()}>
+        <Quote size={15} strokeWidth={1.5} />
       </ToolbarButton>
-      <span className="mx-1 h-5 w-px bg-border" />
-      <ToolbarButton label="Add Link" active={editor.isActive("link")} onClick={setLink}>
-        <LinkIcon size={16} strokeWidth={1.5} />
+
+      <Divider />
+
+      {/* Link & image */}
+      <ToolbarButton label="Add / edit link" active={editor.isActive("link")} onClick={setLink}>
+        <LinkIcon size={15} strokeWidth={1.5} />
       </ToolbarButton>
-      <ToolbarButton
-        label="Remove Link"
-        disabled={!editor.isActive("link")}
-        onClick={() => editor.chain().focus().unsetLink().run()}
-      >
-        <Unlink size={16} strokeWidth={1.5} />
+      <ToolbarButton label="Remove link" disabled={!editor.isActive("link")} onClick={() => editor.chain().focus().unsetLink().run()}>
+        <Unlink size={15} strokeWidth={1.5} />
       </ToolbarButton>
-      <span className="mx-1 h-5 w-px bg-border" />
-      <ToolbarButton
-        label="Undo"
-        disabled={!editor.can().undo()}
-        onClick={() => editor.chain().focus().undo().run()}
-      >
-        <Undo size={16} strokeWidth={1.5} />
+      <ToolbarButton label="Insert image" onClick={addImage}>
+        <ImageIcon size={15} strokeWidth={1.5} />
       </ToolbarButton>
-      <ToolbarButton
-        label="Redo"
-        disabled={!editor.can().redo()}
-        onClick={() => editor.chain().focus().redo().run()}
-      >
-        <Redo size={16} strokeWidth={1.5} />
+
+      <Divider />
+
+      {/* History */}
+      <ToolbarButton label="Undo" disabled={!editor.can().undo()} onClick={() => editor.chain().focus().undo().run()}>
+        <Undo size={15} strokeWidth={1.5} />
+      </ToolbarButton>
+      <ToolbarButton label="Redo" disabled={!editor.can().redo()} onClick={() => editor.chain().focus().redo().run()}>
+        <Redo size={15} strokeWidth={1.5} />
       </ToolbarButton>
     </div>
   );
 }
 
-export default function RichTextEditor({
-  label,
-  name,
-  defaultValue,
-  errors,
-  helperText,
-}: RichTextEditorProps) {
-  const [html, setHtml] = useState(() => toEditorHtml(defaultValue));
+export default function RichTextEditor({ label, name, defaultValue, errors, helperText }: RichTextEditorProps) {
+  const [initialContent] = useState(() => toEditorHtml(defaultValue));
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Placeholder.configure({ placeholder: "Write your post..." }),
-    ],
-    content: html,
+    extensions: EDITOR_EXTENSIONS,
+    content: initialContent,
     immediatelyRender: false,
-    onUpdate: ({ editor }) => setHtml(editor.getHTML()),
-    editorProps: {
-      attributes: {
-        class:
-          "min-h-[260px] max-w-none px-3 py-2 font-lato text-sm text-dark focus:outline-none [&_p]:my-2 [&_h2]:font-prata [&_h2]:text-xl [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:font-prata [&_h3]:text-lg [&_h3]:mt-3 [&_h3]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_blockquote]:border-l-2 [&_blockquote]:border-brown [&_blockquote]:pl-3 [&_blockquote]:text-gray-text [&_a]:text-brown [&_a]:underline",
-      },
+    onUpdate: ({ editor }) => {
+      if (hiddenInputRef.current) {
+        hiddenInputRef.current.value = editor.getHTML();
+      }
     },
+    editorProps: EDITOR_PROPS,
   });
 
   return (
     <div className="flex flex-col gap-1.5">
       <Label>{label}</Label>
-      <div className="rounded-lg border border-input bg-transparent">
+      <div className="overflow-hidden rounded-lg border border-input bg-transparent">
         {editor ? (
           <>
             <Toolbar editor={editor} />
@@ -209,12 +195,10 @@ export default function RichTextEditor({
           <div className="min-h-[300px]" />
         )}
       </div>
-      <input type="hidden" name={name} value={html} />
+      <input ref={hiddenInputRef} type="hidden" name={name} defaultValue={initialContent} />
       {helperText && <p className="font-lato text-xs text-gray-text">{helperText}</p>}
-      {errors?.map((message) => (
-        <span key={message} className="font-lato text-[13px] text-destructive">
-          {message}
-        </span>
+      {errors?.map((msg) => (
+        <span key={msg} className="font-lato text-[13px] text-destructive">{msg}</span>
       ))}
     </div>
   );

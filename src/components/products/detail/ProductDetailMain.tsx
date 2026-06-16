@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import SmartImage from "@/components/ui/SmartImage";
 import Link from "next/link";
 import { Star, Eye, Heart, ShieldCheck, Lock, Award, Truck, Mail, ChevronDown, Plus, Minus } from "lucide-react";
 import { useCurrency } from "@/components/CurrencyProvider";
@@ -83,20 +83,20 @@ export default function ProductDetailMain({ product }: { product: Product }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
         {/* Gallery */}
         <div className="flex flex-col gap-3">
-          <div className="relative aspect-square overflow-hidden">
+          <div className="relative aspect-square overflow-hidden bg-secondary">
             {mainImage && (
-              <Image src={mainImage.url} alt={mainImage.alt} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+              <SmartImage src={mainImage.url} alt={mainImage.alt} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" priority />
             )}
           </div>
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-[330px_1fr] lg:grid-rows-2 lg:h-[576px]">
-            <div className="order-1 relative overflow-hidden aspect-square lg:aspect-auto lg:row-span-2">
-              {leftImage && <Image src={leftImage.url} alt={leftImage.alt} fill sizes="(max-width: 1024px) 50vw, 330px" className="object-cover" />}
+            <div className="order-1 relative overflow-hidden aspect-square lg:aspect-auto lg:row-span-2 bg-secondary">
+              {leftImage && <SmartImage src={leftImage.url} alt={leftImage.alt} fill sizes="(max-width: 1024px) 50vw, 330px" className="object-cover" />}
             </div>
-            <div className="order-3 col-span-2 relative overflow-hidden aspect-[16/9] lg:order-2 lg:col-span-1 lg:aspect-auto">
-              {topRightImage && <Image src={topRightImage.url} alt={topRightImage.alt} fill sizes="(max-width: 1024px) 100vw, 25vw" className="object-cover" />}
+            <div className="order-3 col-span-2 relative overflow-hidden aspect-[16/9] lg:order-2 lg:col-span-1 lg:aspect-auto bg-secondary">
+              {topRightImage && <SmartImage src={topRightImage.url} alt={topRightImage.alt} fill sizes="(max-width: 1024px) 100vw, 25vw" className="object-cover" />}
             </div>
-            <div className="order-2 relative overflow-hidden aspect-square lg:order-3 lg:aspect-auto">
-              {bottomRightImage && <Image src={bottomRightImage.url} alt={bottomRightImage.alt} fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover" />}
+            <div className="order-2 relative overflow-hidden aspect-square lg:order-3 lg:aspect-auto bg-secondary">
+              {bottomRightImage && <SmartImage src={bottomRightImage.url} alt={bottomRightImage.alt} fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover" />}
             </div>
           </div>
 
@@ -179,11 +179,11 @@ export default function ProductDetailMain({ product }: { product: Product }) {
                     key={v.id}
                     onClick={() => setSelectedVariant(i)}
                     aria-label={v.label}
-                    className={`relative w-12 h-12 rounded-full overflow-hidden border-2 transition-colors ${
+                    className={`relative w-12 h-12 rounded-full overflow-hidden border-2 transition-colors bg-secondary ${
                       selectedVariant === i ? "border-brown" : "border-transparent"
                     }`}
                   >
-                    <Image src={v.image} alt={v.label} fill sizes="48px" className="object-cover" />
+                    {v.image && <SmartImage src={v.image} alt={v.label} fill sizes="48px" className="object-cover" />}
                   </button>
                 ))}
               </div>

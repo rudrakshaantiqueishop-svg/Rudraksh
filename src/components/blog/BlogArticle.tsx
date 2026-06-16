@@ -48,7 +48,7 @@ export default function BlogArticle({ title, author, publishedAt, readTimeMinute
 
         {isHtml ? (
           <div
-            className="flex flex-col gap-5 font-lato text-base leading-relaxed text-[#44403C] [&_p]:m-0 [&_h2]:font-prata [&_h2]:text-2xl [&_h2]:text-dark [&_h2]:leading-snug [&_h3]:font-prata [&_h3]:text-xl [&_h3]:text-dark [&_h3]:leading-snug [&_strong]:font-semibold [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:m-0 [&_blockquote]:border-l-2 [&_blockquote]:border-brown [&_blockquote]:pl-4 [&_blockquote]:italic [&_a]:text-brown [&_a]:underline"
+            className="font-lato text-base leading-relaxed text-[#44403C] [&_p]:my-4 [&_h2]:font-prata [&_h2]:text-2xl [&_h2]:text-dark [&_h2]:font-normal [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:leading-snug [&_h3]:font-bold [&_h3]:text-lg [&_h3]:text-dark [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:leading-snug [&_strong]:font-bold [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-3 [&_li]:my-1 [&_blockquote]:border-l-[3px] [&_blockquote]:border-brown [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-gray-text [&_blockquote]:my-4 [&_a]:text-brown [&_a]:underline [&_a]:underline-offset-2 [&_img]:max-w-full [&_img]:rounded-lg [&_img]:my-4"
             dangerouslySetInnerHTML={{ __html: body }}
           />
         ) : (

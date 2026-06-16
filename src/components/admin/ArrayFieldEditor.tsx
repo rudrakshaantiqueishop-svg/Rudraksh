@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import CloudinaryUploadButton from "@/components/admin/CloudinaryUploadButton";
 
 export interface ArrayFieldConfig {
   key: string;
@@ -85,12 +86,12 @@ export default function ArrayFieldEditor({
             <img
               src={String(item[previewField.key] ?? "")}
               alt=""
-              className="size-16 shrink-0 border border-border bg-secondary object-cover"
+              className="h-24 w-24 shrink-0 rounded border border-border bg-secondary object-cover"
               onError={(e) => {
-                e.currentTarget.style.visibility = "hidden";
+                e.currentTarget.style.opacity = "0";
               }}
               onLoad={(e) => {
-                e.currentTarget.style.visibility = "visible";
+                e.currentTarget.style.opacity = "1";
               }}
             />
           )}
@@ -114,6 +115,20 @@ export default function ArrayFieldEditor({
                     ))}
                   </SelectContent>
                 </Select>
+              ) : field.preview ? (
+                <div className="flex gap-2">
+                  <Input
+                    type="text"
+                    value={String(item[field.key] ?? "")}
+                    placeholder={field.placeholder ?? "Paste URL or upload →"}
+                    className="flex-1"
+                    onChange={(e) => updateItem(index, field.key, e.target.value)}
+                  />
+                  <CloudinaryUploadButton
+                    label="Upload"
+                    onUpload={(url) => updateItem(index, field.key, url)}
+                  />
+                </div>
               ) : (
                 <Input
                   type={field.type === "number" ? "number" : "text"}

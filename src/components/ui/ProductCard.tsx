@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import SmartImage from "@/components/ui/SmartImage";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useCurrency } from "@/components/CurrencyProvider";
@@ -39,7 +39,7 @@ export default function ProductCard({
     <Link href={`/products/${product.slug}`} className={`flex flex-col gap-3 group/card ${className}`}>
       <div className={`relative overflow-hidden bg-[#F0E8DD] ${imageClassName}`}>
         {image && (
-          <Image
+          <SmartImage
             src={image.url}
             alt={image.alt}
             fill

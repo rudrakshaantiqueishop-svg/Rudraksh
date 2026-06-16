@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Plus } from "lucide-react";
 import { listBlogsForAdmin } from "@/lib/admin-blogs";
 import { getCategories } from "@/lib/products";
@@ -24,6 +23,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import TableCategoryFilter from "@/components/admin/TableCategoryFilter";
+import AdminThumbnail from "@/components/admin/AdminThumbnail";
 
 export default async function AdminBlogPage({
   searchParams,
@@ -81,13 +81,7 @@ export default async function AdminBlogPage({
             {posts.map((post) => (
               <TableRow key={post.id}>
                 <TableCell>
-                  <Image
-                    src={post.coverImage}
-                    alt={post.title}
-                    width={48}
-                    height={48}
-                    className="size-12 object-cover"
-                  />
+                  <AdminThumbnail src={post.coverImage} alt={post.title} />
                 </TableCell>
                 <TableCell className="font-lato text-sm text-dark">{post.title}</TableCell>
                 <TableCell className="font-lato text-sm text-gray-text">

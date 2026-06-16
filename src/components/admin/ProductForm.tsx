@@ -1,16 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { useActionState } from "react";
 import { createProduct, updateProduct } from "@/app/actions/admin-products";
-import { PRODUCT_IMAGE_ROLES } from "@/lib/validations/admin-product";
 import type { ProductForAdmin } from "@/lib/admin-products";
 import ArrayFieldEditor from "@/components/admin/ArrayFieldEditor";
 import ProductCollectionsField from "@/components/admin/ProductCollectionsField";
+import ProductImagesField from "@/components/admin/ProductImagesField";
+import ProductSizesField from "@/components/admin/ProductSizesField";
 import TextAreaField from "@/components/admin/TextAreaField";
 import FormField from "@/components/auth/FormField";
 import SubmitButton from "@/components/auth/SubmitButton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -19,7 +22,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const IMAGE_ROLE_OPTIONS = PRODUCT_IMAGE_ROLES.map((role) => ({ value: role, label: role }));
+const DEFAULT_SHIPPING =
+  "Orders are processed within 1-2 business days and shipped via tracked courier. Domestic orders typically arrive within 2-4 working days, while international orders take 7-12 working days depending on destination and customs clearance. A tracking link is emailed as soon as your order ships, and free shipping applies to all domestic orders over ₹2000.";
+
+const DEFAULT_PACKAGING =
+  "Every piece is wrapped in a soft protective pouch and placed in a branded box with a printed authenticity card. Malas and bracelets are cushioned to prevent bead movement during transit, and fragile items are additionally wrapped in bubble layers inside a rigid outer carton.";
+
+const DEFAULT_RETURNS =
+  "If you're not satisfied, you can request a return within 30 days of delivery for a full refund, provided the item is unused and returned in its original packaging with the authenticity card. Energised items and made-to-order combinations are non-returnable once the energization process has been completed. Cancellations made before an order ships are processed immediately; once shipped, the standard return process applies.";
+
+function toSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 interface ProductFormProps {
   product?: ProductForAdmin;
@@ -31,8 +49,16 @@ export default function ProductForm({ product, categories, collections }: Produc
   const action = product ? updateProduct.bind(null, product.id) : createProduct;
   const [state, formAction] = useActionState(action, undefined);
 
+  const [slug, setSlug] = useState(product?.slug ?? "");
+  const [slugTouched, setSlugTouched] = useState(!!product?.slug);
+
+  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!slugTouched) setSlug(toSlug(e.target.value));
+  }
+
   return (
     <form action={formAction} className="flex flex-col gap-8">
+      {/* ── Basic Info ── */}
       <section className="flex flex-col gap-4">
         <h2 className="font-prata text-xl text-dark">Basic Info</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -41,57 +67,71 @@ export default function ProductForm({ product, categories, collections }: Produc
             name="name"
             defaultValue={product?.name}
             required
+            onChange={handleNameChange}
             errors={state?.errors?.name}
           />
-          <FormField
-            label="Slug"
-            name="slug"
-            defaultValue={product?.slug}
-            placeholder="lowercase-with-hyphens"
-            required
-            errors={state?.errors?.slug}
-          />
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="slug">Slug</Label>
+            <Input
+              id="slug"
+              name="slug"
+              value={slug}
+              required
+              placeholder="auto-generated-from-name"
+              onChange={(e) => { setSlug(e.target.value); setSlugTouched(true); }}
+            />
+            <p className="font-lato text-xs text-gray-text">
+              URL path for this product: /products/<em>{slug || "slug"}</em>
+            </p>
+            {state?.errors?.slug?.map((msg) => (
+              <span key={msg} className="font-lato text-[13px] text-destructive">{msg}</span>
+            ))}
+          </div>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FormField
-            label="Breadcrumb Label"
-            name="breadcrumbLabel"
-            defaultValue={product?.breadcrumbLabel}
-            required
-            errors={state?.errors?.breadcrumbLabel}
-          />
+          <div className="flex flex-col gap-1.5">
+            <FormField
+              label="Breadcrumb Label"
+              name="breadcrumbLabel"
+              defaultValue={product?.breadcrumbLabel}
+              required
+              errors={state?.errors?.breadcrumbLabel}
+            />
+            <p className="font-lato text-xs text-gray-text">
+              Short name shown in the navigation trail: Home › Products › <em>this label</em>
+            </p>
+          </div>
           <div className="flex flex-col gap-1.5">
             <Label>Category</Label>
             <Select
               name="categoryId"
               defaultValue={product?.categoryId ?? categories[0]?.id}
-              items={categories.map((category) => ({ value: category.id, label: category.name }))}
+              items={categories.map((c) => ({ value: c.id, label: c.name }))}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
-                    {category.name}
+                {categories.map((c) => (
+                  <SelectItem key={c.id} value={c.id}>
+                    {c.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            {state?.errors?.categoryId?.map((message) => (
-              <span key={message} className="font-lato text-[13px] text-destructive">
-                {message}
-              </span>
+            {state?.errors?.categoryId?.map((msg) => (
+              <span key={msg} className="font-lato text-[13px] text-destructive">{msg}</span>
             ))}
           </div>
         </div>
       </section>
 
+      {/* ── Pricing & Stock ── */}
       <section className="flex flex-col gap-4">
         <h2 className="font-prata text-xl text-dark">Pricing &amp; Stock</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <FormField
-            label="Price (cents)"
+            label="Price (paise)"
             name="priceCents"
             type="number"
             defaultValue={product?.priceCents}
@@ -99,7 +139,7 @@ export default function ProductForm({ product, categories, collections }: Produc
             errors={state?.errors?.priceCents}
           />
           <FormField
-            label="Compare-at Price (cents)"
+            label="Compare-at Price (paise)"
             name="compareAtPriceCents"
             type="number"
             defaultValue={product?.compareAtPriceCents ?? ""}
@@ -120,66 +160,67 @@ export default function ProductForm({ product, categories, collections }: Produc
         </label>
       </section>
 
+      {/* ── Content ── */}
       <section className="flex flex-col gap-4">
         <h2 className="font-prata text-xl text-dark">Content</h2>
+        <p className="font-lato text-xs text-gray-text">
+          All fields are pre-filled with standard Rudraksha Antiquei copy — edit anything product-specific.
+        </p>
         <TextAreaField
           label="Description"
           name="description"
-          defaultValue={product?.description}
+          defaultValue={product?.description ?? ""}
           required
           errors={state?.errors?.description}
         />
         <TextAreaField
           label="Shipping Info"
           name="shippingInfo"
-          defaultValue={product?.shippingInfo}
+          defaultValue={product?.shippingInfo ?? DEFAULT_SHIPPING}
           required
           errors={state?.errors?.shippingInfo}
         />
         <TextAreaField
           label="Packaging Info"
           name="packagingInfo"
-          defaultValue={product?.packagingInfo}
+          defaultValue={product?.packagingInfo ?? DEFAULT_PACKAGING}
           required
           errors={state?.errors?.packagingInfo}
         />
         <TextAreaField
           label="Returns Info"
           name="returnsInfo"
-          defaultValue={product?.returnsInfo}
+          defaultValue={product?.returnsInfo ?? DEFAULT_RETURNS}
           required
           errors={state?.errors?.returnsInfo}
         />
       </section>
 
+      {/* ── Images ── */}
       <section className="flex flex-col gap-4">
         <h2 className="font-prata text-xl text-dark">Images</h2>
-        <ArrayFieldEditor
-          name="images"
-          label="Image"
-          fields={[
-            { key: "url", label: "Image URL", placeholder: "/assets/images/products/...", preview: true },
-            { key: "alt", label: "Alt Text" },
-            { key: "role", label: "Role", type: "select", options: IMAGE_ROLE_OPTIONS },
-          ]}
-          defaultItems={product?.images.map(({ url, alt, role }) => ({ url, alt, role })) ?? []}
-          emptyItem={{ url: "", alt: "", role: "EXTRA" }}
+        <p className="font-lato text-xs text-gray-text">
+          4 fixed image slots that make up the product gallery. Paste a URL or upload via Cloudinary (coming soon).
+        </p>
+        <ProductImagesField
+          defaultItems={product?.images.map(({ url, alt, role }) => ({ url, alt, role }))}
           errors={state?.errors?.images}
         />
       </section>
 
+      {/* ── Variants ── */}
       <section className="flex flex-col gap-4">
-        <h2 className="font-prata text-xl text-dark">Variants</h2>
+        <h2 className="font-prata text-xl text-dark">Design Variants</h2>
         <p className="font-lato text-xs text-gray-text">
-          &quot;Select Your Design&quot; options shown on the product page.
+          Optional. These appear as circular swatches under &quot;Select Your Design&quot; on the product page — use them when the same product comes in multiple designs (e.g. different bead patterns). Each variant can have its own image and price adjustment. Leave empty if the product has only one design.
         </p>
         <ArrayFieldEditor
           name="variants"
           label="Variant"
           fields={[
-            { key: "label", label: "Label" },
-            { key: "priceDeltaCents", label: "Price Delta (cents)", type: "number" },
-            { key: "image", label: "Image URL", placeholder: "/assets/images/products/...", preview: true },
+            { key: "label", label: "Label", placeholder: "e.g. Silver Cap" },
+            { key: "priceDeltaCents", label: "Extra price (paise)", type: "number" },
+            { key: "image", label: "Image URL", placeholder: "/assets/images/...", preview: true },
           ]}
           defaultItems={
             product?.variants.map(({ label, priceDeltaCents, image }) => ({
@@ -193,17 +234,18 @@ export default function ProductForm({ product, categories, collections }: Produc
         />
       </section>
 
+      {/* ── Add-Ons ── */}
       <section className="flex flex-col gap-4">
-        <h2 className="font-prata text-xl text-dark">Add-Ons</h2>
+        <h2 className="font-prata text-xl text-dark">Add-Ons (Energization)</h2>
         <p className="font-lato text-xs text-gray-text">
-          &quot;Select Energization&quot; options shown on the product page.
+          Optional. Shown as &quot;Select Energization&quot; on the product page — extra services the customer can choose (e.g. &quot;Basic Energization&quot; free, &quot;Vedic Puja Energization&quot; +₹500). Leave empty to hide the section. Extra price 0 = free.
         </p>
         <ArrayFieldEditor
           name="addOns"
           label="Add-On"
           fields={[
-            { key: "label", label: "Label" },
-            { key: "priceDeltaCents", label: "Price Delta (cents)", type: "number" },
+            { key: "label", label: "Label", placeholder: "e.g. Vedic Puja Energization" },
+            { key: "priceDeltaCents", label: "Extra price (paise)", type: "number" },
           ]}
           defaultItems={
             product?.addOns.map(({ label, priceDeltaCents }) => ({ label, priceDeltaCents })) ?? []
@@ -213,23 +255,24 @@ export default function ProductForm({ product, categories, collections }: Produc
         />
       </section>
 
+      {/* ── Sizes ── */}
       <section className="flex flex-col gap-4">
         <h2 className="font-prata text-xl text-dark">Sizes</h2>
-        <ArrayFieldEditor
-          name="sizes"
-          label="Size"
-          fields={[{ key: "label", label: "Label" }]}
+        <p className="font-lato text-xs text-gray-text">
+          Bead sizes (6mm, 8mm…) or wearable sizes (S, M, L) available for this product. Leave empty to hide the size selector.
+        </p>
+        <ProductSizesField
           defaultItems={product?.sizes.map(({ label }) => ({ label })) ?? []}
-          emptyItem={{ label: "" }}
           errors={state?.errors?.sizes}
         />
       </section>
 
+      {/* ── Collections ── */}
       <section className="flex flex-col gap-4">
         <h2 className="font-prata text-xl text-dark">Collections</h2>
         <ProductCollectionsField
           collections={collections}
-          defaultValue={product?.collections.map((collection) => collection.id) ?? []}
+          defaultValue={product?.collections.map((c) => c.id) ?? []}
         />
       </section>
 

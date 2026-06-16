@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Plus } from "lucide-react";
 import { listProductsForAdmin } from "@/lib/admin-products";
 import { getCategories } from "@/lib/products";
@@ -25,6 +24,7 @@ import {
 } from "@/components/ui/table";
 import { formatPrice } from "@/lib/currency";
 import TableCategoryFilter from "@/components/admin/TableCategoryFilter";
+import AdminThumbnail from "@/components/admin/AdminThumbnail";
 
 export default async function AdminProductsPage({
   searchParams,
@@ -84,15 +84,9 @@ export default async function AdminProductsPage({
               <TableRow key={product.id}>
                 <TableCell>
                   {product.images[0] ? (
-                    <Image
-                      src={product.images[0].url}
-                      alt={product.images[0].alt}
-                      width={48}
-                      height={48}
-                      className="size-12 object-cover"
-                    />
+                    <AdminThumbnail src={product.images[0].url} alt={product.images[0].alt} />
                   ) : (
-                    <div className="size-12 bg-secondary" />
+                    <div className="size-12 rounded bg-secondary" />
                   )}
                 </TableCell>
                 <TableCell className="font-lato text-sm text-dark">{product.name}</TableCell>
