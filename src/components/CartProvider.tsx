@@ -87,6 +87,22 @@ export default function CartProvider({ children }: { children: React.ReactNode }
   }, [items, isLoading, isAuthed]);
 
   const addItem: CartContextValue["addItem"] = (item, quantity = 1) => {
+    setItems((prev) => {
+      const existing = prev.find(
+        (i) =>
+          i.productId === item.productId &&
+          i.variantId === item.variantId &&
+          i.addOnId === item.addOnId &&
+          i.sizeId === item.sizeId
+      );
+      if (existing) {
+        return prev.map((i) =>
+          i.id === existing.id ? { ...i, quantity: Math.min(i.quantity + quantity, MAX_CART_QUANTITY) } : i
+        );
+      }
+      return [...prev, { ...item, quantity: Math.min(quantity, MAX_CART_QUANTITY) }];
+    });
+
     if (isAuthed) {
       void addCartItem(
         {
@@ -97,25 +113,14 @@ export default function CartProvider({ children }: { children: React.ReactNode }
         },
         quantity
       ).then(setItems);
-    } else {
-      setItems((prev) => {
-        const existing = prev.find((i) => i.id === item.id);
-        if (existing) {
-          return prev.map((i) =>
-            i.id === item.id ? { ...i, quantity: Math.min(i.quantity + quantity, MAX_CART_QUANTITY) } : i
-          );
-        }
-        return [...prev, { ...item, quantity: Math.min(quantity, MAX_CART_QUANTITY) }];
-      });
     }
     setIsOpen(true);
   };
 
   const removeItem: CartContextValue["removeItem"] = (id) => {
+    setItems((prev) => prev.filter((i) => i.id !== id));
     if (isAuthed) {
       void removeCartItem(id).then(setItems);
-    } else {
-      setItems((prev) => prev.filter((i) => i.id !== id));
     }
   };
 
@@ -126,18 +131,17 @@ export default function CartProvider({ children }: { children: React.ReactNode }
     }
     const qty = Math.min(quantity, MAX_CART_QUANTITY);
 
+    setItems((prev) => prev.map((i) => (i.id === id ? { ...i, quantity: qty } : i)));
+
     if (isAuthed) {
       void updateCartItemQuantity(id, qty).then(setItems);
-    } else {
-      setItems((prev) => prev.map((i) => (i.id === id ? { ...i, quantity: qty } : i)));
     }
   };
 
   const clearCart = () => {
+    setItems([]);
     if (isAuthed) {
       void clearCartAction().then(setItems);
-    } else {
-      setItems([]);
     }
   };
 

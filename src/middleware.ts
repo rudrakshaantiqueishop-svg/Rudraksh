@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth.edge";
 
-const protectedRoutes = ["/account", "/checkout"];
+const protectedRoutes = ["/account", "/checkout", "/admin"];
 const authRoutes = ["/login", "/signup"];
 
 export default auth((req) => {

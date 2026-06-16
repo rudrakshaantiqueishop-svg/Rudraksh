@@ -11,6 +11,7 @@ import SearchOverlay from "@/components/SearchOverlay";
 import DesktopSearch from "@/components/DesktopSearch";
 import { useCurrency } from "@/components/CurrencyProvider";
 import { useCart } from "@/components/CartProvider";
+import { useWishlist } from "@/components/WishlistProvider";
 import { CurrencyCode } from "@/lib/currency";
 
 const CURRENCY_OPTIONS: CurrencyCode[] = ["USD", "INR"];
@@ -43,8 +44,9 @@ const aboutLinks = [
 
 export default function Header({ activePage }: { activePage?: string }) {
   const pathname = usePathname();
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const isLoggedIn = status === "authenticated";
+  const isAdmin = session?.user?.role === "ADMIN";
   const accountHref = isLoggedIn ? "/account" : "/login";
   const currentPage = activePage ?? (pathname === "/" ? "home" : pathname === "/about" ? "about" : pathname === "/contact" ? "contact" : pathname?.startsWith("/products") ? "products" : "home");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -60,6 +62,7 @@ export default function Header({ activePage }: { activePage?: string }) {
   const lastScrollY = useRef(0);
   const { currency, setCurrency } = useCurrency();
   const { itemCount, openCart } = useCart();
+  const { ids: wishlistIds } = useWishlist();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -172,15 +175,26 @@ export default function Header({ activePage }: { activePage?: string }) {
               CONTACT US
             </Link>
 
+            {isAdmin && (
+              <Link href="/admin" className="font-lato text-base font-normal flex items-center h-full uppercase transition-colors text-[#0B0404] hover:text-[#BB5A28]">
+                ADMIN
+              </Link>
+            )}
+
           </nav>
         </div>
 
         {/* Right actions — desktop */}
         <div className="header-actions-desktop flex items-center gap-6">
           <DesktopSearch onToggle={setIsDesktopSearchOpen} />
-          <button className="text-[#44403C] hover:text-[#BB5A28] transition-colors">
+          <Link href="/account/wishlist" aria-label="Wishlist" className="relative text-[#44403C] hover:text-[#BB5A28] transition-colors">
             <Heart size={24} strokeWidth={1.5} />
-          </button>
+            {wishlistIds.size > 0 && (
+              <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#BB5A28] text-white font-lato text-[10px] font-bold leading-none">
+                {wishlistIds.size > 99 ? "99+" : wishlistIds.size}
+              </span>
+            )}
+          </Link>
           <button onClick={openCart} aria-label="Open cart" className="relative text-[#44403C] hover:text-[#BB5A28] transition-colors">
             <ShoppingCart size={24} strokeWidth={1.5} />
             {itemCount > 0 && (
@@ -237,9 +251,14 @@ export default function Header({ activePage }: { activePage?: string }) {
           <button onClick={() => setIsSearchOpen(true)} aria-label="Open search" className="text-[#44403C]">
             <Search size={20} strokeWidth={1.5} />
           </button>
-          <button className="text-[#44403C]">
+          <Link href="/account/wishlist" aria-label="Wishlist" className="relative text-[#44403C]">
             <Heart size={20} strokeWidth={1.5} />
-          </button>
+            {wishlistIds.size > 0 && (
+              <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[16px] h-[16px] px-1 rounded-full bg-[#BB5A28] text-white font-lato text-[9px] font-bold leading-none">
+                {wishlistIds.size > 99 ? "99+" : wishlistIds.size}
+              </span>
+            )}
+          </Link>
           <button onClick={openCart} aria-label="Open cart" className="relative text-[#44403C]">
             <ShoppingCart size={20} strokeWidth={1.5} />
             {itemCount > 0 && (
@@ -323,9 +342,14 @@ export default function Header({ activePage }: { activePage?: string }) {
               >
                 <Search size={20} strokeWidth={1.5} />
               </button>
-              <button className="text-[#0B0404]">
+              <Link href="/account/wishlist" aria-label="Wishlist" onClick={() => setIsMobileMenuOpen(false)} className="relative text-[#0B0404]">
                 <Heart size={20} strokeWidth={1.5} />
-              </button>
+                {wishlistIds.size > 0 && (
+                  <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[16px] h-[16px] px-1 rounded-full bg-[#BB5A28] text-white font-lato text-[9px] font-bold leading-none">
+                    {wishlistIds.size > 99 ? "99+" : wishlistIds.size}
+                  </span>
+                )}
+              </Link>
               <button onClick={openCart} aria-label="Open cart" className="relative text-[#0B0404]">
                 <ShoppingCart size={20} strokeWidth={1.5} />
                 {itemCount > 0 && (
@@ -444,6 +468,12 @@ export default function Header({ activePage }: { activePage?: string }) {
             <Link href="/contact" className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase mt-2" onClick={() => setIsMobileMenuOpen(false)}>
               CONTACT US
             </Link>
+
+            {isAdmin && (
+              <Link href="/admin" className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase" onClick={() => setIsMobileMenuOpen(false)}>
+                ADMIN
+              </Link>
+            )}
           </div>
         </div>
       )}

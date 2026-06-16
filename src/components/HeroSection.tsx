@@ -17,14 +17,14 @@ export default function HeroSection() {
 
       {/* ── Text content — responsive position ── */}
       <div
-        className="absolute flex flex-col left-5 right-5 bottom-8 lg:left-16 lg:bottom-[140px] lg:w-[686px] lg:right-auto"
+        className="absolute flex flex-col left-5 right-5 bottom-8 md:left-10 lg:left-12 lg:bottom-[100px] lg:max-w-[460px] xl:left-16 xl:bottom-[140px] xl:max-w-[686px] lg:right-auto z-10"
         style={{ gap: "clamp(24px, 3vw, 40px)" }}
       >
         {/* Title + body */}
         <div className="flex flex-col" style={{ gap: "clamp(12px, 1.5vw, 16px)" }}>
           <h1
             className="font-prata text-white"
-            style={{ fontSize: "clamp(46px, 11.5vw, 72px)", lineHeight: "115%", letterSpacing: "-0.02em", margin: 0 }}
+            style={{ fontSize: "clamp(40px, 8vw, 72px)", lineHeight: "115%", letterSpacing: "-0.02em", margin: 0 }}
           >
             Authenticity Meets Ancient Wisdom
           </h1>
@@ -50,7 +50,7 @@ export default function HeroSection() {
       </div>
 
       {/* ── Responsive Annotation Group — hidden on mobile ── */}
-      <div className="hidden lg:block absolute pointer-events-none" style={{ left: "58%", top: "42%" }}>
+      <div className="hidden lg:block absolute pointer-events-none lg:scale-[0.65] xl:scale-100 origin-left transition-transform" style={{ left: "clamp(52%, 58vw, 58%)", top: "42%" }}>
         
         {/* Circle positioned below the dot */}
         <div className="absolute rounded-full border-2  border-white" style={{ left: "-105px", top: "0px", width: "211px", height: "211px", opacity: 0.6 }} />

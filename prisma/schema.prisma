@@ -38,6 +38,7 @@ model User {
   addresses Address[]
   reviews   Review[]
   cart      Cart?
+  wishlistItems WishlistItem[]
 
   @@map("users")
 }
@@ -169,6 +170,7 @@ model Product {
   reviews     Review[]
   collections Collection[]
   cartItems   CartItem[]
+  wishlistItems WishlistItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -327,4 +329,23 @@ model CartItem {
 
   @@index([cartId])
   @@map("cart_items")
+}
+
+// ---------------------------------------------------------------------
+// Wishlist
+// ---------------------------------------------------------------------
+
+model WishlistItem {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@map("wishlist_items")
 }

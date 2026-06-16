@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Star, Eye, Heart, ShieldCheck, Lock, Award, Truck, Mail, ChevronDown, Plus, Minus } from "lucide-react";
 import { useCurrency } from "@/components/CurrencyProvider";
 import { useCart } from "@/components/CartProvider";
+import { useWishlist } from "@/components/WishlistProvider";
 import { getMainImage } from "@/lib/product-utils";
 import type { getProductBySlug } from "@/lib/products";
 
@@ -14,6 +15,8 @@ type Product = NonNullable<Awaited<ReturnType<typeof getProductBySlug>>>;
 export default function ProductDetailMain({ product }: { product: Product }) {
   const { formatPrice } = useCurrency();
   const { addItem } = useCart();
+  const { isWishlisted, toggleWishlist } = useWishlist();
+  const wishlisted = isWishlisted(product.id);
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [selectedAddOn, setSelectedAddOn] = useState(0);
   const [selectedSize, setSelectedSize] = useState(0);
@@ -252,8 +255,12 @@ export default function ProductDetailMain({ product }: { product: Product }) {
             <button onClick={handleAddToCart} className="flex-1 bg-brown text-white font-lato text-sm font-bold tracking-[0.5px] py-3.5">
               ADD TO CART
             </button>
-            <button className="border border-[#E7DFD6] p-3.5 shrink-0" aria-label="Add to wishlist">
-              <Heart size={18} className="text-dark" />
+            <button
+              onClick={() => toggleWishlist(product.id)}
+              className="border border-[#E7DFD6] p-3.5 shrink-0"
+              aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <Heart size={18} className={wishlisted ? "fill-[#BB5A28] text-[#BB5A28]" : "text-dark"} />
             </button>
           </div>
 

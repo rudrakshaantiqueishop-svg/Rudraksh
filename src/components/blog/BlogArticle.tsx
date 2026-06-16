@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { isHtmlContent } from "@/lib/blog-content";
 
 type BlogArticleProps = {
   title: string;
@@ -14,7 +15,8 @@ function formatDate(date: Date) {
 }
 
 export default function BlogArticle({ title, author, publishedAt, readTimeMinutes, body, category }: BlogArticleProps) {
-  const paragraphs = body.split("\n\n");
+  const isHtml = isHtmlContent(body);
+  const paragraphs = isHtml ? [] : body.split("\n\n");
 
   return (
     <article>
@@ -44,13 +46,20 @@ export default function BlogArticle({ title, author, publishedAt, readTimeMinute
           </div>
         </div>
 
-        <div className="flex flex-col gap-5">
-          {paragraphs.map((paragraph, i) => (
-            <p key={i} className="font-lato text-base leading-relaxed text-[#44403C] m-0">
-              {paragraph}
-            </p>
-          ))}
-        </div>
+        {isHtml ? (
+          <div
+            className="flex flex-col gap-5 font-lato text-base leading-relaxed text-[#44403C] [&_p]:m-0 [&_h2]:font-prata [&_h2]:text-2xl [&_h2]:text-dark [&_h2]:leading-snug [&_h3]:font-prata [&_h3]:text-xl [&_h3]:text-dark [&_h3]:leading-snug [&_strong]:font-semibold [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:m-0 [&_blockquote]:border-l-2 [&_blockquote]:border-brown [&_blockquote]:pl-4 [&_blockquote]:italic [&_a]:text-brown [&_a]:underline"
+            dangerouslySetInnerHTML={{ __html: body }}
+          />
+        ) : (
+          <div className="flex flex-col gap-5">
+            {paragraphs.map((paragraph, i) => (
+              <p key={i} className="font-lato text-base leading-relaxed text-[#44403C] m-0">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
     </article>
   );

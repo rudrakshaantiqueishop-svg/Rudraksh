@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useCurrency } from "@/components/CurrencyProvider";
 import { useCart } from "@/components/CartProvider";
+import { useWishlist } from "@/components/WishlistProvider";
 import { getMainImage } from "@/lib/product-utils";
 import type { ProductImageLite } from "@/lib/product-utils";
 
@@ -29,8 +30,10 @@ export default function ProductCard({
 }) {
   const { formatPrice } = useCurrency();
   const { addItem } = useCart();
+  const { isWishlisted, toggleWishlist } = useWishlist();
   const [quantity, setQuantity] = useState(1);
   const image = getMainImage(product.images);
+  const wishlisted = isWishlisted(product.id);
 
   return (
     <Link href={`/products/${product.slug}`} className={`flex flex-col gap-3 group/card ${className}`}>
@@ -47,11 +50,15 @@ export default function ProductCard({
 
         {/* Wishlist icon - top right - always visible */}
         <button
-          onClick={(e) => e.preventDefault()}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleWishlist(product.id);
+          }}
           className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform z-10"
-          aria-label="Add to wishlist"
+          aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
         >
-          <Heart size={16} className="text-dark" />
+          <Heart size={16} className={wishlisted ? "fill-[#BB5A28] text-[#BB5A28]" : "text-dark"} />
         </button>
 
         {/* Bottom Bar: Quantity Adjuster + Add to Cart */}

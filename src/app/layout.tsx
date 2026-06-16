@@ -7,6 +7,7 @@ import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import GoogleOneTap from "@/components/auth/GoogleOneTap";
 import CurrencyProvider from "@/components/CurrencyProvider";
 import CartProvider from "@/components/CartProvider";
+import WishlistProvider from "@/components/WishlistProvider";
 
 const lato = Lato({
   variable: "--lato",
@@ -36,12 +37,14 @@ export default function RootLayout({
         <SessionProviderWrapper>
           <CurrencyProvider>
             <CartProvider>
-              <GoogleOneTap />
-              <Header />
-              <div style={{ paddingTop: "72px" }}>
-                {children}
-              </div>
-              <Footer />
+              <WishlistProvider>
+                <GoogleOneTap />
+                <Header />
+                <div style={{ paddingTop: "72px" }}>
+                  {children}
+                </div>
+                <Footer />
+              </WishlistProvider>
             </CartProvider>
           </CurrencyProvider>
         </SessionProviderWrapper>
