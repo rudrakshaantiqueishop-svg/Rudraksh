@@ -16,22 +16,22 @@ export default function CategoryGrid({ categories }: { categories: Category[] })
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="sbc-header flex justify-between items-center gap-3">
-        <h2 className="font-prata title-fluid font-normal leading-[1.29] tracking-[-0.02em] text-dark">
+      <div className="flex justify-between items-center gap-2 lg:gap-4 w-full overflow-hidden">
+        <h2 className="font-prata text-[18px] sm:text-[22px] lg:text-[36px] font-normal leading-tight tracking-[-0.02em] text-dark truncate">
           Explore Our Sacred Collections
         </h2>
-        <div className="flex items-center gap-4 shrink-0">
+        <div className="flex items-center gap-2 lg:gap-4 shrink-0">
           <button
             onClick={() => scroll("left")}
             aria-label="Scroll left"
-            className="w-10 h-10 rounded-full border border-[#E7DFD6] flex items-center justify-center text-dark hover:bg-black/5 transition-colors"
+            className="w-8 h-8 lg:w-10 lg:h-10 rounded-full border border-[#E7DFD6] flex items-center justify-center text-dark hover:bg-black/5 transition-colors"
           >
             <ArrowLeft size={16} />
           </button>
           <button
             onClick={() => scroll("right")}
             aria-label="Scroll right"
-            className="w-10 h-10 rounded-full bg-brown flex items-center justify-center text-white hover:bg-[#431f0d] transition-colors"
+            className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-brown flex items-center justify-center text-white hover:bg-[#431f0d] transition-colors"
           >
             <ArrowRight size={16} />
           </button>
