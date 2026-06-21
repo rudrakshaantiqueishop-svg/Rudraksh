@@ -3,34 +3,62 @@ import { notFound } from "next/navigation";
 import { getProductBySlug, getSimilarProducts } from "@/lib/products";
 import ProductDetailMain from "@/components/products/detail/ProductDetailMain";
 
-const ProductReviews = dynamic(() => import("@/components/products/detail/ProductReviews"));
-const TraditionalSupport = dynamic(() => import("@/components/products/detail/TraditionalSupport"));
-const IsThisRightForYou = dynamic(() => import("@/components/products/detail/IsThisRightForYou"));
-const AuthenticityCertification = dynamic(() => import("@/components/products/detail/AuthenticityCertification"));
-const OriginSourcing = dynamic(() => import("@/components/products/detail/OriginSourcing"));
-const HowToWearCare = dynamic(() => import("@/components/products/detail/HowToWearCare"));
-const NeedGuidance = dynamic(() => import("@/components/products/detail/NeedGuidance"));
-const ExpertRecommendedCombinations = dynamic(() => import("@/components/products/detail/ExpertRecommendedCombinations"));
-const ProductFAQ = dynamic(() => import("@/components/products/detail/ProductFAQ"));
-const SimilarProducts = dynamic(() => import("@/components/products/detail/SimilarProducts"));
+const ProductReviews = dynamic(
+  () => import("@/components/products/detail/ProductReviews"),
+);
+const TraditionalSupport = dynamic(
+  () => import("@/components/products/detail/TraditionalSupport"),
+);
+const IsThisRightForYou = dynamic(
+  () => import("@/components/products/detail/IsThisRightForYou"),
+);
+const AuthenticityCertification = dynamic(
+  () => import("@/components/products/detail/AuthenticityCertification"),
+);
+const OriginSourcing = dynamic(
+  () => import("@/components/products/detail/OriginSourcing"),
+);
+const HowToWearCare = dynamic(
+  () => import("@/components/products/detail/HowToWearCare"),
+);
+const NeedGuidance = dynamic(
+  () => import("@/components/products/detail/NeedGuidance"),
+);
+const ExpertRecommendedCombinations = dynamic(
+  () => import("@/components/products/detail/ExpertRecommendedCombinations"),
+);
+const ProductFAQ = dynamic(
+  () => import("@/components/products/detail/ProductFAQ"),
+);
+const SimilarProducts = dynamic(
+  () => import("@/components/products/detail/SimilarProducts"),
+);
 
 import { Metadata } from "next";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
 
   if (!product) return { title: "Product Not Found" };
 
   const getBaseUrl = () => {
-    if (process.env.NEXT_PUBLIC_BASE_URL) return process.env.NEXT_PUBLIC_BASE_URL;
-    if (process.env.VERCEL_PROJECT_PRODUCTION_URL) return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+    if (process.env.NEXT_PUBLIC_BASE_URL)
+      return process.env.NEXT_PUBLIC_BASE_URL;
+    if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
+      return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
     if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
     return "http://localhost:3000";
   };
   const baseUrl = getBaseUrl();
-  const imageUrl = product.images[0]?.url || "/assets/images/og-default.png";
-  const absoluteImageUrl = imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
+  const imageUrl = product.images[0]?.url || "/assets/images/og-default.webp";
+  const absoluteImageUrl = imageUrl.startsWith("http")
+    ? imageUrl
+    : `${baseUrl}${imageUrl}`;
 
   return {
     title: product.name,
@@ -39,7 +67,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: product.name,
       description: product.description.substring(0, 160) + "...",
       url: `${baseUrl}/products/${product.slug}`,
-      images: [{ url: absoluteImageUrl, width: 800, height: 800, alt: product.name }],
+      images: [
+        { url: absoluteImageUrl, width: 800, height: 800, alt: product.name },
+      ],
     },
     twitter: {
       card: "summary_large_image",
@@ -50,7 +80,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
 
@@ -58,11 +92,17 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     notFound();
   }
 
-  const similarProducts = await getSimilarProducts(product.categoryId, product.id, 4);
+  const similarProducts = await getSimilarProducts(
+    product.categoryId,
+    product.id,
+    4,
+  );
 
   const getBaseUrl = () => {
-    if (process.env.NEXT_PUBLIC_BASE_URL) return process.env.NEXT_PUBLIC_BASE_URL;
-    if (process.env.VERCEL_PROJECT_PRODUCTION_URL) return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+    if (process.env.NEXT_PUBLIC_BASE_URL)
+      return process.env.NEXT_PUBLIC_BASE_URL;
+    if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
+      return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
     if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
     return "http://localhost:3000";
   };
@@ -72,7 +112,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
-    image: product.images.map((img) => (img.url.startsWith("http") ? img.url : `${baseUrl}${img.url}`)),
+    image: product.images.map((img) =>
+      img.url.startsWith("http") ? img.url : `${baseUrl}${img.url}`,
+    ),
     description: product.description,
     sku: product.id,
     offers: {
@@ -81,12 +123,18 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       priceCurrency: "INR",
       price: product.priceCents / 100,
       itemCondition: "https://schema.org/NewCondition",
-      availability: product.stockCount > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      availability:
+        product.stockCount > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
     },
     ...(product.reviews.length > 0 && {
       aggregateRating: {
         "@type": "AggregateRating",
-        ratingValue: (product.reviews.reduce((acc, rev) => acc + rev.rating, 0) / product.reviews.length).toFixed(1),
+        ratingValue: (
+          product.reviews.reduce((acc, rev) => acc + rev.rating, 0) /
+          product.reviews.length
+        ).toFixed(1),
         reviewCount: product.reviews.length,
       },
     }),
@@ -99,7 +147,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <ProductDetailMain product={product} />
-      <ProductReviews reviews={product.reviews} productId={product.id} slug={product.slug} />
+      <ProductReviews
+        reviews={product.reviews}
+        productId={product.id}
+        slug={product.slug}
+      />
       <TraditionalSupport />
       <IsThisRightForYou />
       <AuthenticityCertification />
@@ -108,7 +160,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       <NeedGuidance />
       <ExpertRecommendedCombinations />
       <ProductFAQ />
-      <SimilarProducts products={similarProducts} categorySlug={product.category.slug} />
+      <SimilarProducts
+        products={similarProducts}
+        categorySlug={product.category.slug}
+      />
     </div>
   );
 }
