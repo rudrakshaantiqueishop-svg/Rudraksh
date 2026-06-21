@@ -131,18 +131,18 @@ export default function ProductForm({ product, categories, collections }: Produc
         <h2 className="font-prata text-xl text-dark">Pricing &amp; Stock</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <FormField
-            label="Price (paise)"
-            name="priceCents"
+            label="Price (₹)"
+            name="priceRupees"
             type="number"
-            defaultValue={product?.priceCents}
+            defaultValue={product ? product.priceCents / 100 : ""}
             required
             errors={state?.errors?.priceCents}
           />
           <FormField
-            label="Compare-at Price (paise)"
-            name="compareAtPriceCents"
+            label="Compare-at Price (₹)"
+            name="compareAtPriceRupees"
             type="number"
-            defaultValue={product?.compareAtPriceCents ?? ""}
+            defaultValue={product?.compareAtPriceCents ? product.compareAtPriceCents / 100 : ""}
             errors={state?.errors?.compareAtPriceCents}
           />
           <FormField
@@ -219,13 +219,13 @@ export default function ProductForm({ product, categories, collections }: Produc
           label="Variant"
           fields={[
             { key: "label", label: "Label", placeholder: "e.g. Silver Cap" },
-            { key: "priceDeltaCents", label: "Extra price (paise)", type: "number" },
+            { key: "priceDeltaCents", label: "Extra price (₹)", type: "number" },
             { key: "image", label: "Image URL", placeholder: "/assets/images/...", preview: true },
           ]}
           defaultItems={
             product?.variants.map(({ label, priceDeltaCents, image }) => ({
               label,
-              priceDeltaCents,
+              priceDeltaCents: priceDeltaCents / 100,
               image,
             })) ?? []
           }
@@ -245,10 +245,13 @@ export default function ProductForm({ product, categories, collections }: Produc
           label="Add-On"
           fields={[
             { key: "label", label: "Label", placeholder: "e.g. Vedic Puja Energization" },
-            { key: "priceDeltaCents", label: "Extra price (paise)", type: "number" },
+            { key: "priceDeltaCents", label: "Extra price (₹)", type: "number" },
           ]}
           defaultItems={
-            product?.addOns.map(({ label, priceDeltaCents }) => ({ label, priceDeltaCents })) ?? []
+            product?.addOns.map(({ label, priceDeltaCents }) => ({ 
+              label, 
+              priceDeltaCents: priceDeltaCents / 100 
+            })) ?? []
           }
           emptyItem={{ label: "", priceDeltaCents: 0 }}
           errors={state?.errors?.addOns}

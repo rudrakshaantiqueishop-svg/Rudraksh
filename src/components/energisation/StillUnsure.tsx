@@ -26,7 +26,7 @@ export default function StillUnsure() {
             If you have questions or feel uncertain, guidance is always available. There is no expectation to proceed.
           </p>
         </div>
-        <a href="#" style={{
+        <a href="/consultation" style={{
           display: "inline-flex", alignItems: "center", gap: "6px",
           color: "#FFFFFF", fontFamily: "var(--lato), Arial, sans-serif",
           fontSize: "14px", fontWeight: 500, letterSpacing: "0.06em",

@@ -16,6 +16,27 @@ function formatDate(date: Date) {
   return new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
+function getInitials(name: string) {
+  if (!name || name === "Anonymous") return "A";
+  const parts = name.split(" ").filter(Boolean);
+  if (parts.length === 1) return parts[0].substring(0, 1).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+const AVATAR_COLORS = [
+  "#f87171", "#fb923c", "#facc15", "#a3e635", "#4ade80", 
+  "#34d399", "#2dd4bf", "#38bdf8", "#60a5fa", "#818cf8", 
+  "#a78bfa", "#c084fc", "#e879f9", "#f472b6", "#fb7185",
+];
+
+function getAvatarColor(name: string) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+}
+
 export default function ProductReviews({
   reviews,
   productId,
@@ -46,14 +67,21 @@ export default function ProductReviews({
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
-                <Image
-                  src={r.user?.image || "/assets/images/testimonial/client-avatar.png"}
-                  alt={r.authorName}
-                  fill
-                  sizes="40px"
-                  className="object-cover"
-                />
+              <div 
+                className="relative w-10 h-10 rounded-full overflow-hidden shrink-0 flex items-center justify-center text-white font-lato font-bold text-sm"
+                style={{ backgroundColor: r.user?.image ? 'transparent' : getAvatarColor(r.authorName) }}
+              >
+                {r.user?.image ? (
+                  <Image
+                    src={r.user.image}
+                    alt={r.authorName}
+                    fill
+                    sizes="40px"
+                    className="object-cover"
+                  />
+                ) : (
+                  getInitials(r.authorName)
+                )}
               </div>
               <div className="flex flex-col gap-1.5">
                 <span className="font-lato text-sm font-semibold text-dark">{r.authorName}</span>

@@ -145,15 +145,10 @@ export default function ProductDetailMain({ product }: { product: Product }) {
             )}
           </div>
 
-          <div className="border-t border-[#E7DFD6]" />
 
-          {/* Viewing count */}
-          <div className="flex items-center gap-2 font-lato text-sm text-gray-text">
-            <Eye size={16} /> 24 People are viewing this right now
-          </div>
 
           {/* Stock */}
-          {product.stockCount <= 10 && (
+          {product.stockCount > 0 && (
             <div className="flex flex-col gap-2">
               <p className="font-lato text-sm text-dark m-0">
                 Only <span className="text-brown font-semibold">{product.stockCount} items</span> left in stock

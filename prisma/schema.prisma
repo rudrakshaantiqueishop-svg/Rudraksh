@@ -349,3 +349,26 @@ model WishlistItem {
   @@index([userId])
   @@map("wishlist_items")
 }
+
+// ---------------------------------------------------------------------
+// Consultation Requests
+// ---------------------------------------------------------------------
+
+model ConsultationRequest {
+  id              String   @id @default(uuid())
+  name            String
+  email           String
+  phone           String
+  dob             String
+  tob             String
+  pob             String
+  appointmentDate String
+  kundaliUrl      String
+  
+  status          String   @default("PENDING")
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("consultation_requests")
+}

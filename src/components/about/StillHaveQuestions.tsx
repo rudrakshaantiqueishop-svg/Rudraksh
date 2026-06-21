@@ -21,7 +21,7 @@ export default function StillHaveQuestions() {
             If you would like guidance before choosing a Rudraksha or gemstone, our team is available — without pressure.
           </p>
         </div>
-        <a href="#" style={{
+        <a href="/consultation" style={{
           display: "inline-flex", alignItems: "center", gap: "6px",
           color: "#FFFFFF", fontFamily: "var(--lato), Arial, sans-serif",
           fontSize: "16px", fontWeight: 500, letterSpacing: "0.06em",

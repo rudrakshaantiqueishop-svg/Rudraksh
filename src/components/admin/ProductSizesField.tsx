@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const PRESET_SIZES = ["6mm", "8mm", "10mm", "12mm", "14mm", "18mm", "S", "M", "L", "XL"];
+const PRESET_SIZES = ["18", "20", "24", "28"];
 
 interface ProductSizesFieldProps {
   defaultItems?: { label: string }[];

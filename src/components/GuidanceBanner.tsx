@@ -35,7 +35,7 @@ export default function GuidanceBanner() {
           </p>
 
           <Link
-            href="#"
+            href="/consultation"
             style={{
               display: "inline-flex", alignItems: "center", gap: "8px",
               paddingBottom: "6px", borderBottom: "1px solid rgba(255,255,255,0.7)",

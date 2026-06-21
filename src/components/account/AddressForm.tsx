@@ -37,7 +37,7 @@ export default function AddressForm({
         <PhoneField
           label="Phone Number"
           name="phone"
-          placeholder="98765 43210"
+          placeholder="99999 99999"
           defaultValue={defaultPhone?.replace(PHONE_COUNTRY_CODE, "") ?? ""}
           required
           errors={state?.errors?.phone}

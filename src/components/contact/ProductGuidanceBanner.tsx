@@ -26,7 +26,7 @@ export default function ProductGuidanceBanner() {
           If your query is about selecting the right Rudraksha or gemstone, we recommend using our dedicated guidance. This allows us to understand your context properly before suggesting anything.
         </p>
         <a
-          href="#"
+          href="/consultation"
           className="font-lato"
           style={{
             display: "inline-flex", alignItems: "center", gap: "6px",

@@ -14,7 +14,7 @@ const CurrencyContext = createContext<CurrencyContextValue | null>(null);
 const STORAGE_KEY = "currency";
 
 export default function CurrencyProvider({ children }: { children: React.ReactNode }) {
-  const [currency, setCurrencyState] = useState<CurrencyCode>("USD");
+  const [currency, setCurrencyState] = useState<CurrencyCode>("INR");
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
@@ -42,9 +42,9 @@ export function useCurrency() {
   if (!ctx) {
     console.warn("useCurrency is being called outside of a CurrencyProvider. Using fallback.");
     return {
-      currency: "USD" as CurrencyCode,
+      currency: "INR" as CurrencyCode,
       setCurrency: () => {},
-      formatPrice: (cents: number) => `$${(cents / 100).toFixed(2)}`,
+      formatPrice: (cents: number) => `₹${Math.round(cents / 100).toLocaleString("en-IN")}`,
     };
   }
   return ctx;

@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import ConsultationHero from "@/components/consultation/ConsultationHero";
+import ConsultationForm from "@/components/consultation/ConsultationForm";
 
 const WhyConsultationMatters = dynamic(() => import("@/components/consultation/WhyConsultationMatters"));
 const WhenGuidanceBecomesHelpful = dynamic(() => import("@/components/consultation/WhenGuidanceBecomesHelpful"));
@@ -15,6 +16,7 @@ export default function ConsultationPage() {
     <div style={{ background: "#FEF9F2", overflowX: "hidden" }}>
       <ConsultationHero />
       <WhyConsultationMatters />
+      <ConsultationForm />
       <WhenGuidanceBecomesHelpful />
       <ExperiencedAndResponsibleGuidance />
       <HowConsultationWorks />

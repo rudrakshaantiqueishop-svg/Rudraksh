@@ -26,7 +26,7 @@ export default function StillHaveQuestions() {
             If you&apos;d like clarity or guidance, we&apos;re here to help—without obligation.
           </p>
         </div>
-        <a href="#" style={{
+        <a href="/consultation" style={{
           display: "inline-flex", alignItems: "center", gap: "6px",
           color: "#FFFFFF", fontFamily: "var(--lato), Arial, sans-serif",
           fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em",

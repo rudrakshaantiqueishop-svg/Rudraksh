@@ -52,6 +52,7 @@ export default function Header({ activePage }: { activePage?: string }) {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false); // Default open in mobile as per image
+  const [isMobileAboutOpen, setIsMobileAboutOpen] = useState(false);
 
   const [isVisible, setIsVisible] = useState(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -115,15 +116,15 @@ export default function Header({ activePage }: { activePage?: string }) {
 
         {/* Nav — absolutely centred, hidden on mobile */}
         <div className="header-nav-center absolute inset-x-0 h-full flex justify-center pointer-events-none">
-          <nav className={`flex items-center gap-8 h-full transition-opacity duration-300 ${isDesktopSearchOpen ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"}`}>
+          <nav className={`flex items-center gap-4 lg:gap-5 xl:gap-8 h-full transition-opacity duration-300 ${isDesktopSearchOpen ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"}`}>
 
-            <Link href="/" className={`font-lato text-base font-normal flex items-center h-full transition-colors ${currentPage === "home" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}>
+            <Link href="/" className={`font-lato text-[13px] xl:text-base font-normal flex items-center h-full transition-colors ${currentPage === "home" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}>
               HOME
             </Link>
 
             {/* About Us trigger */}
             <div
-              className={`relative flex items-center gap-2 font-lato text-base font-normal h-full transition-colors cursor-pointer ${activeDropdown === "about" || currentPage === "about" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
+              className={`relative flex items-center gap-1.5 xl:gap-2 font-lato text-[13px] xl:text-base font-normal h-full transition-colors cursor-pointer ${activeDropdown === "about" || currentPage === "about" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
               onMouseEnter={() => setActiveDropdown("about")}
               onMouseLeave={() => setActiveDropdown(null)}
             >
@@ -139,14 +140,14 @@ export default function Header({ activePage }: { activePage?: string }) {
               {/* Linear Dropdown for About Us */}
               {activeDropdown === "about" && (
                 <div
-                  className="absolute left-1/2 -translate-x-1/2 bg-[#FEF9F2] flex flex-col min-w-[260px] py-3 rounded-b-md z-50"
+                  className="absolute left-1/2 -translate-x-1/2 bg-[#FEF9F2] flex flex-col min-w-[260px] py-3 rounded-b-md z-50 pointer-events-auto"
                   style={{ boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", top: "100%" }}
                 >
                   {aboutLinks.map((item) => (
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="px-6 py-3 font-lato font-medium text-[#44403C] hover:text-[#BB5A28] hover:bg-black/5 transition-colors whitespace-nowrap text-base"
+                      className="px-6 py-3 font-lato font-medium text-[#44403C] hover:text-[#BB5A28] hover:bg-black/5 transition-colors whitespace-nowrap text-[13px] xl:text-base"
                     >
                       {item.name}
                     </Link>
@@ -157,7 +158,7 @@ export default function Header({ activePage }: { activePage?: string }) {
 
             {/* Products trigger */}
             <div
-              className={`relative flex items-center gap-2 font-lato text-base font-normal h-full transition-colors cursor-pointer ${activeDropdown === "products" || currentPage === "products" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
+              className={`relative flex items-center gap-1.5 xl:gap-2 font-lato text-[13px] xl:text-base font-normal h-full transition-colors cursor-pointer ${activeDropdown === "products" || currentPage === "products" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
               onMouseEnter={() => setActiveDropdown("products")}
               onMouseLeave={() => setActiveDropdown(null)}
             >
@@ -171,12 +172,12 @@ export default function Header({ activePage }: { activePage?: string }) {
               />
             </div>
 
-            <Link href="/contact" className={`font-lato text-base font-normal flex items-center h-full uppercase transition-colors ${currentPage === "contact" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}>
+            <Link href="/contact" className={`font-lato text-[13px] xl:text-base font-normal flex items-center h-full uppercase transition-colors ${currentPage === "contact" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}>
               CONTACT US
             </Link>
 
             {isAdmin && (
-              <Link href="/admin" className="font-lato text-base font-normal flex items-center h-full uppercase transition-colors text-[#0B0404] hover:text-[#BB5A28]">
+              <Link href="/admin" className={`font-lato text-[13px] xl:text-base font-normal flex items-center h-full uppercase transition-colors text-[#0B0404] hover:text-[#BB5A28]`}>
                 ADMIN
               </Link>
             )}
@@ -185,10 +186,10 @@ export default function Header({ activePage }: { activePage?: string }) {
         </div>
 
         {/* Right actions — desktop */}
-        <div className="header-actions-desktop flex items-center gap-6">
+        <div className="header-actions-desktop flex items-center gap-3 xl:gap-6">
           <DesktopSearch onToggle={setIsDesktopSearchOpen} />
           <Link href="/account/wishlist" aria-label="Wishlist" className="relative text-[#44403C] hover:text-[#BB5A28] transition-colors">
-            <Heart size={24} strokeWidth={1.5} />
+            <Heart size={20} className="xl:w-6 xl:h-6" strokeWidth={1.5} />
             {wishlistIds.size > 0 && (
               <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#BB5A28] text-white font-lato text-[10px] font-bold leading-none">
                 {wishlistIds.size > 99 ? "99+" : wishlistIds.size}
@@ -196,7 +197,7 @@ export default function Header({ activePage }: { activePage?: string }) {
             )}
           </Link>
           <button onClick={openCart} aria-label="Open cart" className="relative text-[#44403C] hover:text-[#BB5A28] transition-colors">
-            <ShoppingCart size={24} strokeWidth={1.5} />
+            <ShoppingCart size={20} className="xl:w-6 xl:h-6" strokeWidth={1.5} />
             {itemCount > 0 && (
               <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#BB5A28] text-white font-lato text-[10px] font-bold leading-none">
                 {itemCount > 99 ? "99+" : itemCount}
@@ -205,7 +206,7 @@ export default function Header({ activePage }: { activePage?: string }) {
           </button>
           {isLoggedIn ? (
             <Link href={accountHref} className="text-[#44403C] hover:text-[#BB5A28] transition-colors" aria-label="My Account">
-              <User size={24} strokeWidth={1.5} />
+              <User size={20} className="xl:w-6 xl:h-6" strokeWidth={1.5} />
             </Link>
           ) : (
             <button
@@ -213,11 +214,11 @@ export default function Header({ activePage }: { activePage?: string }) {
               className="text-[#44403C] hover:text-[#BB5A28] transition-colors"
               aria-label="Sign in"
             >
-              <User size={24} strokeWidth={1.5} />
+              <User size={20} className="xl:w-6 xl:h-6" strokeWidth={1.5} />
             </button>
           )}
           <div
-            className="relative flex items-center gap-1 font-lato text-base text-[#44403C] cursor-pointer hover:text-[#BB5A28] transition-colors"
+            className="relative flex items-center gap-1 font-lato text-[13px] xl:text-base text-[#44403C] cursor-pointer hover:text-[#BB5A28] transition-colors"
             onMouseEnter={() => setIsCurrencyOpen(true)}
             onMouseLeave={() => setIsCurrencyOpen(false)}
           >
@@ -226,7 +227,7 @@ export default function Header({ activePage }: { activePage?: string }) {
 
             {isCurrencyOpen && (
               <div
-                className="absolute right-0 top-full bg-[#FEF9F2] flex flex-col min-w-[80px] py-2 rounded-md z-50"
+                className="absolute right-0 top-full bg-[#FEF9F2] flex flex-col min-w-[80px] py-2 rounded-md z-50 pointer-events-auto"
                 style={{ boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)" }}
               >
                 {CURRENCY_OPTIONS.map((code) => (
@@ -236,7 +237,7 @@ export default function Header({ activePage }: { activePage?: string }) {
                       setCurrency(code);
                       setIsCurrencyOpen(false);
                     }}
-                    className={`px-4 py-2 text-left font-lato text-sm transition-colors hover:bg-black/5 hover:text-[#BB5A28] ${currency === code ? "text-[#BB5A28] font-medium" : "text-[#44403C]"}`}
+                    className={`px-4 py-2 text-left font-lato text-[13px] xl:text-sm transition-colors hover:bg-black/5 hover:text-[#BB5A28] ${currency === code ? "text-[#BB5A28] font-medium" : "text-[#44403C]"}`}
                   >
                     {code}
                   </button>
@@ -319,7 +320,7 @@ export default function Header({ activePage }: { activePage?: string }) {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-[100] bg-[#FEF9F2] overflow-y-auto pb-8 md:hidden">
+        <div className="fixed inset-0 z-[100] bg-[#FEF9F2] overflow-y-auto pb-8 lg:hidden">
           {/* Top Bar matching image */}
           <div className="flex items-center justify-between px-4 border-b border-black/5" style={{ height: "72px" }}>
             <div className="flex items-center gap-4">
@@ -412,17 +413,38 @@ export default function Header({ activePage }: { activePage?: string }) {
               HOME
             </Link>
 
-            <Link href="/about" className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase" onClick={() => setIsMobileMenuOpen(false)}>
-              ABOUT US
-            </Link>
+            <div className="flex flex-col">
+              <div className="flex justify-between items-center font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase">
+                <Link href="/about" onClick={() => setIsMobileMenuOpen(false)}>
+                  ABOUT US
+                </Link>
+                <button
+                  aria-label="Toggle about menu"
+                  onClick={() => setIsMobileAboutOpen(!isMobileAboutOpen)}
+                >
+                  {isMobileAboutOpen ? (
+                    <Minus size={16} strokeWidth={1.5} />
+                  ) : (
+                    <Plus size={16} strokeWidth={1.5} />
+                  )}
+                </button>
+              </div>
 
-            <Link href="/how-to-choose" className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase pl-4" onClick={() => setIsMobileMenuOpen(false)}>
-              HOW TO CHOOSE
-            </Link>
-
-            <Link href="/blog" className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase pl-4" onClick={() => setIsMobileMenuOpen(false)}>
-              BLOGS
-            </Link>
+              {isMobileAboutOpen && (
+                <div className="flex flex-col gap-6 mt-6 pl-4">
+                  {aboutLinks.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="font-lato font-normal text-[#44403C] text-[15px] hover:text-[#BB5A28] transition-colors uppercase"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <div className="flex flex-col">
               <div className="flex justify-between items-center font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase">

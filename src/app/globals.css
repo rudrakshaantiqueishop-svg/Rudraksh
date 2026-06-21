@@ -811,7 +811,7 @@
 }
 
 /* Header mobile */
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .header-nav-center {
     display: none !important;
   }
@@ -825,7 +825,7 @@
     display: flex !important;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .header-hamburger {
     display: none !important;
   }

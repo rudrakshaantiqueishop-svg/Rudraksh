@@ -64,7 +64,7 @@ export default async function AdminProductsPage({
         </Button>
       </form>
 
-      <div className="border border-border">
+      <div className="border border-border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
