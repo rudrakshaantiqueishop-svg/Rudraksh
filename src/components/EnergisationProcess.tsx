@@ -77,7 +77,7 @@ export default function EnergisationProcess() {
       {/* CTA */}
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Link
-          href="#"
+          href="/energisation-process"
           style={{
             display: "inline-flex", alignItems: "center", gap: "6px",
             paddingBottom: "6px", borderBottom: "1px solid #44403C",

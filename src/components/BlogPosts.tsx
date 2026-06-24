@@ -1,28 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getRecentBlogs } from "@/lib/blogs";
 
-const posts = [
-  {
-    id: 1,
-    img: "/assets/images/about/about-founding-1.png",
-    title: "Understanding Rudraksha Mukhi and Their Significance",
-    desc: "A simple guide to the meaning and traditional importance of different Rudraksha beads.",
-  },
-  {
-    id: 2,
-    img: "/assets/images/about/about-p04.png",
-    title: "How Gemstones Are Traditionally Energised",
-    desc: "An overview of the rituals and practices used to prepare gemstones with intention.",
-  },
-  {
-    id: 3,
-    img: "/assets/images/about/about-sacred-1.png",
-    title: "Choosing the Right Stone for Your Personal Journey",
-    desc: "Learn how intention, lifestyle, and guidance play a role in selection.",
-  },
-];
+export default async function BlogPosts() {
+  const posts = await getRecentBlogs(3);
 
-export default function BlogPosts() {
+  if (posts.length === 0) return null;
+
   return (
     <section className="h-px-section py-[60px] lg:py-[80px]" style={{ background: "#FEF9F2" }}>
 
@@ -59,12 +43,12 @@ export default function BlogPosts() {
       {/* Cards */}
       <div className="flex lg:grid lg:grid-cols-3 gap-5 lg:gap-6 overflow-x-auto no-scrollbar pb-4 lg:pb-0 lg:overflow-x-visible" style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}>
         {posts.map((post) => (
-          <Link key={post.id} href="#" style={{ textDecoration: "none", scrollSnapAlign: "start" }} className="group/post flex-shrink-0 w-[301px] lg:w-full lg:flex-shrink">
+          <Link key={post.id} href={`/blog/${post.slug}`} style={{ textDecoration: "none", scrollSnapAlign: "start" }} className="group/post flex-shrink-0 w-[301px] lg:w-full lg:flex-shrink">
 
             {/* Image */}
-            <div className="relative overflow-hidden mb-5 h-[65vw] md:h-[30vw] lg:h-[450px]">
+            <div className="relative overflow-hidden mb-5 h-[65vw] md:h-[30vw] lg:h-[450px] bg-[#F0E8DD]">
               <Image
-                src={post.img}
+                src={post.coverImage}
                 alt={post.title}
                 fill
                 sizes="33vw"
@@ -83,10 +67,10 @@ export default function BlogPosts() {
 
             {/* Description */}
             <p
-              className="font-lato"
+              className="font-lato line-clamp-3"
               style={{ fontSize: "14px", lineHeight: "160%", color: "#44403C", margin: 0 }}
             >
-              {post.desc}
+              {post.excerpt}
             </p>
 
           </Link>

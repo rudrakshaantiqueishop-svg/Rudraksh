@@ -34,7 +34,7 @@ export default function ConsultationHero() {
         </div>
 
         <a
-          href="#"
+          href="#consultation-form"
           className="flex items-center w-fit no-underline"
           style={{ gap: "4px", paddingBottom: "8px", borderBottom: "1px solid white" }}
         >

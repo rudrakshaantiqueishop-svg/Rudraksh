@@ -20,6 +20,14 @@ export async function getBlogsByCategory(categoryId: string, limit = 3) {
   return [...categoryPosts, ...fillerPosts];
 }
 
+export async function getRecentBlogs(limit = 3) {
+  return prisma.blog.findMany({
+    orderBy: { publishedAt: "desc" },
+    take: limit,
+    select: { id: true, slug: true, title: true, excerpt: true, coverImage: true },
+  });
+}
+
 export async function getBlogBySlug(slug: string) {
   return prisma.blog.findUnique({
     where: { slug },

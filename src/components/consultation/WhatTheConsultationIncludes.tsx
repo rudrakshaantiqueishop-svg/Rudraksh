@@ -35,7 +35,7 @@ export default function WhatTheConsultationIncludes() {
 
             <div className="flex flex-row items-center gap-6 lg:gap-8 flex-wrap mt-4">
               <a
-                href="#"
+                href="#consultation-form"
                 className="font-lato inline-flex items-center gap-[6px] text-[#0B0404] text-[13px] md:text-[14px] font-semibold tracking-[0.08em] uppercase no-underline pb-[6px] border-b border-[#0B0404]"
               >
                 BOOK CONSULTATION

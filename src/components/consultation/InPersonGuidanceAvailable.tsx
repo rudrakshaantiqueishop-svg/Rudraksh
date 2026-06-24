@@ -22,7 +22,7 @@ export default function InPersonGuidanceAvailable() {
               You may also visit our physical store in Rishikesh for consultation by prior appointment. Being near the banks of the Ganga, our space is designed for focused discussions rather than hurried transactions.
             </p>
           </div>
-          <a href="#" className="inline-flex items-center gap-[6px] text-white font-lato text-[14px] md:text-[16px] font-medium tracking-[0.06em] uppercase no-underline pb-2 border-b border-white/60 w-fit">
+          <a href="#consultation-form" className="inline-flex items-center gap-[6px] text-white font-lato text-[14px] md:text-[16px] font-medium tracking-[0.06em] uppercase no-underline pb-2 border-b border-white/60 w-fit">
             BOOK IN-STORE APPOINTMENT
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M7 17L17 7M17 7H7M17 7v10" />

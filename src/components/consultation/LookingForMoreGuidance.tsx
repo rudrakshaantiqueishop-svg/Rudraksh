@@ -27,7 +27,7 @@ export default function LookingForMoreGuidance() {
               If you prefer understanding before ownership, we encourage you to begin with a conversation.
             </p>
           </div>
-          <a href="#" style={{
+          <a href="#consultation-form" style={{
             display: "inline-flex", alignItems: "center", gap: "6px",
             color: "#FFFFFF", fontFamily: "var(--lato), Arial, sans-serif",
             fontSize: "14px", fontWeight: 500, letterSpacing: "0.06em",
