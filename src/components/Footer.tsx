@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const ShippingIcon = () => (
   <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -46,6 +49,9 @@ const YoutubeIcon = () => (
 );
 
 export default function Footer() {
+  const { data: session, status } = useSession();
+  const isLoggedIn = status === "authenticated";
+
   return (
     <footer>
       {/* ── 1. BENEFITS BAR ── */}
@@ -78,46 +84,71 @@ export default function Footer() {
 
         {/* CENTER — Newsletter (bordered left+right) */}
         <div className="footer-mid-dividers w-full lg:flex-1 lg:max-w-[804px] lg:border-x lg:border-[#E7E5E4] lg:px-8 flex flex-col items-center gap-6">
-          <div style={{ textAlign: "center", display: "flex", flexDirection: "column", gap: "8px" }}>
-            <h3 className="font-prata" style={{ fontSize: "36px", lineHeight: "129%", letterSpacing: "-0.02em", color: "#0B0404" }}>
-              Let&apos;s Get In Touch!
-            </h3>
-            <p className="font-lato" style={{ fontSize: "16px", color: "#78716C", textAlign: "center" }}>
-              What&apos;s inside? Exclusive sales, new arrivals &amp; much more.
-            </p>
-          </div>
-          {/* Email input row */}
-          <div className="footer-email-wrap relative w-full lg:w-[453px]" style={{ height: "48px" }}>
-            <input
-              type="email"
-              placeholder="Email Address"
-              style={{
-                position: "absolute", inset: 0, width: "100%", height: "100%",
-                border: "none", borderBottom: "1px solid #E7E5E4",
-                outline: "none", fontSize: "16px", color: "#0B0404",
-                fontFamily: "var(--lato), Arial, sans-serif",
-                background: "transparent", paddingLeft: "0",
-              }}
-            />
-            <button style={{
-              position: "absolute", right: 0, top: 0, height: "48px",
-              background: "#552912", color: "#FFFFFF",
-              border: "none", padding: "0 24px",
-              fontSize: "14px", fontWeight: 500, cursor: "pointer",
-              fontFamily: "var(--lato), Arial, sans-serif",
-              letterSpacing: "0.03em",
-            }}>
-              SIGN UP
-            </button>
-          </div>
+          {isLoggedIn ? (
+            <div style={{ textAlign: "center", display: "flex", flexDirection: "column", gap: "8px", alignItems: "center" }}>
+              <h3 className="font-prata" style={{ fontSize: "36px", lineHeight: "129%", letterSpacing: "-0.02em", color: "#0B0404" }}>
+                Thank You for Joining!
+              </h3>
+              <p className="font-lato" style={{ fontSize: "16px", color: "#78716C", textAlign: "center", maxWidth: "450px" }}>
+                You&apos;ll be the first to hear about new Rudraksha arrivals, special offers, and spiritual insights.
+              </p>
+              <Link href="/products" style={{
+                marginTop: "16px", height: "48px", display: "inline-flex", alignItems: "center", justifyContent: "center",
+                background: "#552912", color: "#FFFFFF", textDecoration: "none",
+                padding: "0 32px", fontSize: "14px", fontWeight: 500,
+                fontFamily: "var(--lato), Arial, sans-serif", letterSpacing: "0.03em"
+              }}>
+                CONTINUE SHOPPING
+              </Link>
+            </div>
+          ) : (
+            <>
+              <div style={{ textAlign: "center", display: "flex", flexDirection: "column", gap: "8px" }}>
+                <h3 className="font-prata" style={{ fontSize: "36px", lineHeight: "129%", letterSpacing: "-0.02em", color: "#0B0404" }}>
+                  Let&apos;s Get In Touch!
+                </h3>
+                <p className="font-lato" style={{ fontSize: "16px", color: "#78716C", textAlign: "center" }}>
+                  What&apos;s inside? Exclusive sales, new arrivals &amp; much more.
+                </p>
+              </div>
+              {/* Email input row */}
+              <div className="footer-email-wrap relative w-full lg:w-[453px]" style={{ height: "48px" }}>
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  style={{
+                    position: "absolute", inset: 0, width: "100%", height: "100%",
+                    border: "none", borderBottom: "1px solid #E7E5E4",
+                    outline: "none", fontSize: "16px", color: "#0B0404",
+                    fontFamily: "var(--lato), Arial, sans-serif",
+                    background: "transparent", paddingLeft: "0",
+                  }}
+                />
+                <button style={{
+                  position: "absolute", right: 0, top: 0, height: "48px",
+                  background: "#552912", color: "#FFFFFF",
+                  border: "none", padding: "0 24px",
+                  fontSize: "14px", fontWeight: 500, cursor: "pointer",
+                  fontFamily: "var(--lato), Arial, sans-serif",
+                  letterSpacing: "0.03em",
+                }}>
+                  SIGN UP
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
         {/* RIGHT — Social */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", minWidth: "160px" }}>
           <p className="font-lato" style={{ fontSize: "18px", fontWeight: 400, color: "#0B0404", letterSpacing: "0.05em", textTransform: "uppercase" }}>SOCIAL NETWORKS</p>
           <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
-            {[FacebookIcon, InstagramIcon, TwitterIcon, YoutubeIcon].map((Icon, i) => (
-              <a key={i} href="#" style={{ display: "flex", alignItems: "center", justifyContent: "center", transition: "opacity 0.2s" }}>
+            {[
+              { Icon: FacebookIcon, href: "https://www.facebook.com/share/1Ec8zZJbo8/" },
+              { Icon: InstagramIcon, href: "https://www.instagram.com/rudrakshaantiquei?igsh=MWJlNmFiNTY4ZjV3cg==" },
+              { Icon: YoutubeIcon, href: "https://youtube.com/@_lifechangingbeads?si=9HZqrn30Lkx3ea3E" }
+            ].map(({ Icon, href }, i) => (
+              <a key={i} href={href} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", transition: "opacity 0.2s" }}>
                 <Icon />
               </a>
             ))}
@@ -132,8 +163,8 @@ export default function Footer() {
           {[
             { label: "HOME", href: "/" },
             { label: "ABOUT US", href: "/about" },
-            { label: "PRODUCTS", href: "#" },
-            { label: "CONTACT US", href: "#" },
+            { label: "PRODUCTS", href: "/products" },
+            { label: "CONTACT US", href: "/contact" },
           ].map(({ label, href }) => (
             <Link key={label} href={href} className="font-lato" style={{ fontSize: "16px", color: "#0B0404", textDecoration: "none", fontWeight: 400, letterSpacing: "0.03em" }}>
               {label}

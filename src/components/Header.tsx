@@ -111,7 +111,7 @@ export default function Header({ activePage }: { activePage?: string }) {
 
         {/* Logo */}
         <Link href="/" className="flex-shrink-0">
-          <Image src="/assets/images/common/logo.png" alt="Rudraksha Antiquei" width={212} height={40} priority style={{ objectFit: "contain", height: "36px", width: "auto" }} />
+          <Image src="/assets/images/common/logo.png" alt="Rudraksha Antiquei" width={212} height={40} priority className="h-8 sm:h-[36px] w-auto object-contain" />
         </Link>
 
         {/* Nav — absolutely centred, hidden on mobile */}

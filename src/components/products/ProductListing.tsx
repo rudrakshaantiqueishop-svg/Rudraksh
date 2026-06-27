@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, LayoutGrid, List, SlidersHorizontal, ChevronUp, ChevronDown, Check, X } from "lucide-react";
@@ -63,6 +63,13 @@ export default function ProductListing({
   const [priceRange, setPriceRange] = useState<[number, number]>([priceBounds.min, priceBounds.max]);
   const [sortBy, setSortBy] = useState<SortOption>("popularity");
 
+  const [page, setPage] = useState(1);
+  const ITEMS_PER_PAGE = 12;
+
+  useEffect(() => {
+    setPage(1);
+  }, [selectedSizes, priceRange, sortBy]);
+
   const visibleProducts = useMemo(() => {
     const filtered = products.filter((p) => {
       const sizeMatch = selectedSizes.length === 0 || p.sizes.some((s) => selectedSizes.includes(s.label));
@@ -114,12 +121,6 @@ export default function ProductListing({
       {/* Toolbar */}
       <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
         <div className="flex items-center gap-4">
-          <div className="flex items-center justify-center w-8 h-8 bg-brown text-white">
-            <LayoutGrid size={15} />
-          </div>
-          <div className="flex items-center justify-center w-8 h-8 border border-[#E7DFD6] text-gray-text">
-            <List size={15} />
-          </div>
           <span className="font-lato text-sm text-gray-text">
             {products.length === 0
               ? "No products found"
@@ -176,14 +177,26 @@ export default function ProductListing({
       </div>
 
       {/* Product grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
-        {visibleProducts.map((p) => {
-          const image = getMainImage(p.images);
+      <div className="grid grid-rows-2 grid-flow-col auto-cols-[60vw] md:auto-cols-[45vw] overflow-x-auto snap-x snap-mandatory pb-4 gap-4 sm:grid-rows-none sm:grid-flow-row sm:grid-cols-2 lg:grid-cols-3 sm:auto-cols-auto sm:overflow-visible sm:snap-none sm:pb-0 sm:gap-x-6 sm:gap-y-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        {visibleProducts.slice(0, page * ITEMS_PER_PAGE).map((p) => {
           return (
-            <ProductCard key={p.id} product={p} imageClassName="aspect-square" />
+            <div key={p.id} className="snap-start h-full">
+              <ProductCard product={p} imageClassName="aspect-[4/5] sm:aspect-square" />
+            </div>
           );
         })}
       </div>
+
+      {visibleProducts.length > page * ITEMS_PER_PAGE && (
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => setPage((prev) => prev + 1)}
+            className="px-6 py-3 bg-[#552912] text-white font-lato text-sm font-medium tracking-[0.5px] uppercase hover:bg-[#BB5A28] transition-colors"
+          >
+            Load More Products
+          </button>
+        </div>
+      )}
 
       {/* Filter backdrop */}
       <div
