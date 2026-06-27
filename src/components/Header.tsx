@@ -322,12 +322,15 @@ export default function Header({ activePage }: { activePage?: string }) {
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-[100] bg-[#FEF9F2] overflow-y-auto pb-8 lg:hidden">
           {/* Top Bar matching image */}
-          <div className="flex items-center justify-between px-4 border-b border-black/5" style={{ height: "72px" }}>
-            <div className="flex items-center gap-4">
+          <div className="relative flex items-center justify-between px-4 border-b border-black/5" style={{ height: "72px" }}>
+            <div className="flex items-center">
               <button onClick={() => setIsMobileMenuOpen(false)} className="p-1 -ml-1 text-[#0B0404]" aria-label="Close menu">
                 <X size={22} strokeWidth={1.5} />
               </button>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+            </div>
+
+            <div className="absolute inset-x-0 h-full flex items-center justify-center pointer-events-none">
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="pointer-events-auto">
                 <Image src="/assets/images/common/logo.png" alt="Rudraksha Antiquei" width={160} height={30} style={{ objectFit: "contain", height: "28px", width: "auto" }} />
               </Link>
             </div>

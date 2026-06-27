@@ -176,13 +176,29 @@ export default function ProductListing({
         </div>
       </div>
 
-      {/* Product grid */}
-      <div className="grid grid-rows-2 grid-flow-col auto-cols-[60vw] md:auto-cols-[45vw] overflow-x-auto snap-x snap-mandatory pb-4 gap-4 sm:grid-rows-none sm:grid-flow-row sm:grid-cols-2 lg:grid-cols-3 sm:auto-cols-auto sm:overflow-visible sm:snap-none sm:pb-0 sm:gap-x-6 sm:gap-y-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      {/* Mobile view: 2 independent horizontal scrolling rows */}
+      <div className="flex flex-col gap-6 sm:hidden">
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          {visibleProducts.slice(0, page * ITEMS_PER_PAGE).filter((_, i) => i % 2 === 0).map((p) => (
+            <div key={`m1-${p.id}`} className="snap-start w-[55vw] shrink-0">
+              <ProductCard product={p} imageClassName="aspect-[4/5]" />
+            </div>
+          ))}
+        </div>
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          {visibleProducts.slice(0, page * ITEMS_PER_PAGE).filter((_, i) => i % 2 !== 0).map((p) => (
+            <div key={`m2-${p.id}`} className="snap-start w-[55vw] shrink-0">
+              <ProductCard product={p} imageClassName="aspect-[4/5]" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop view: Standard grid */}
+      <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-x-6 sm:gap-y-8">
         {visibleProducts.slice(0, page * ITEMS_PER_PAGE).map((p) => {
           return (
-            <div key={p.id} className="snap-start h-full">
-              <ProductCard product={p} imageClassName="aspect-[4/5] sm:aspect-square" />
-            </div>
+            <ProductCard key={p.id} product={p} imageClassName="aspect-square" />
           );
         })}
       </div>
