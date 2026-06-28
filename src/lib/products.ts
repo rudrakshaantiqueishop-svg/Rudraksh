@@ -77,6 +77,20 @@ export async function getCategoriesWithProductCounts() {
   return categories;
 }
 
+// Fetch products by an ordered list of slugs, preserving the slug order
+// (used for Life Path Number recommendations). Missing slugs are skipped.
+export async function getProductsBySlugs(slugs: string[]) {
+  if (slugs.length === 0) return [];
+
+  const products = await prisma.product.findMany({
+    where: { slug: { in: slugs } },
+    include: { images: { orderBy: { sortOrder: "asc" } } },
+  });
+
+  const bySlug = new Map(products.map((p) => [p.slug, p]));
+  return slugs.map((slug) => bySlug.get(slug)).filter((p): p is NonNullable<typeof p> => Boolean(p));
+}
+
 export async function searchProducts(query: string, limit = 6) {
   const term = query.trim();
   if (!term) return [];

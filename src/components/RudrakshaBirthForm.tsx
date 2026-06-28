@@ -1,8 +1,32 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import {
+  type BirthProfile,
+  calculateLifePathNumber,
+  readLocalBirthProfile,
+  writeLocalBirthProfile,
+  clearLocalBirthProfile,
+} from "@/lib/recommendation";
+import { saveBirthProfile, getBirthProfile, mergeGuestBirthProfile } from "@/app/actions/recommendation";
 
-const InputBox = ({ icon, placeholder, disabled }: { icon: React.ReactNode; placeholder: string; disabled?: boolean }) => (
+const InputBox = ({
+  icon,
+  placeholder,
+  disabled,
+  type = "text",
+  value,
+  onChange,
+}: {
+  icon: React.ReactNode;
+  placeholder: string;
+  disabled?: boolean;
+  type?: string;
+  value: string;
+  onChange: (v: string) => void;
+}) => (
   <div style={{
     display: "flex", alignItems: "center", gap: "12px",
     border: "1px solid rgba(255,255,255,0.5)",
@@ -11,17 +35,104 @@ const InputBox = ({ icon, placeholder, disabled }: { icon: React.ReactNode; plac
   }}>
     {icon}
     <input
-      type="text"
+      type={type}
       placeholder={placeholder}
       disabled={disabled}
-      className="font-lato bg-transparent outline-none text-white placeholder:text-white/50 w-full"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="font-lato bg-transparent outline-none text-white placeholder:text-white/50 w-full [color-scheme:dark]"
       style={{ fontSize: "13px", lineHeight: "150%", border: "none", opacity: disabled ? 0.4 : 1 }}
     />
   </div>
 );
 
 export default function RudrakshaBirthForm() {
+  const router = useRouter();
+  const { status } = useSession();
+  const isAuthed = status === "authenticated";
+
+  const [fullName, setFullName] = useState("");
+  const [dob, setDob] = useState("");
+  const [tob, setTob] = useState("");
   const [timeNotSure, setTimeNotSure] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  // Pre-fill from a saved profile so returning users see their details.
+  useEffect(() => {
+    if (status === "loading") return;
+    let cancelled = false;
+
+    (async () => {
+      let profile: BirthProfile | null = null;
+
+      if (isAuthed) {
+        // Migrate any guest profile into the DB on first authenticated load.
+        const local = readLocalBirthProfile();
+        if (local) {
+          await mergeGuestBirthProfile(local);
+          clearLocalBirthProfile();
+        }
+        profile = await getBirthProfile();
+      } else {
+        profile = readLocalBirthProfile();
+      }
+
+      if (cancelled || !profile) return;
+      setFullName(profile.fullName);
+      setDob(profile.dob);
+      setTob(profile.tob ?? "");
+      setTimeNotSure(profile.timeNotSure);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [status, isAuthed]);
+
+  const handleSubmit = async () => {
+    setError(null);
+
+    if (fullName.trim().length < 2) {
+      setError("Please enter your full name.");
+      return;
+    }
+    if (!dob) {
+      setError("Please enter your date of birth.");
+      return;
+    }
+    if (!timeNotSure && !tob) {
+      setError("Please enter your time of birth, or check “Time Not Sure”.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    const input = { fullName: fullName.trim(), dob, tob: timeNotSure ? undefined : tob, timeNotSure };
+
+    try {
+      const res = await saveBirthProfile(input);
+      if (!res.success) {
+        setError(res.error);
+        setSubmitting(false);
+        return;
+      }
+      // Guests keep their profile in localStorage; logged-in users are in the DB.
+      if (!isAuthed) {
+        writeLocalBirthProfile(res.profile);
+      }
+      router.push("/recommendations");
+    } catch {
+      // Fall back to a locally-computed profile so the user is never blocked.
+      const profile: BirthProfile = {
+        ...input,
+        tob: input.tob,
+        lifePathNumber: calculateLifePathNumber(dob),
+      };
+      writeLocalBirthProfile(profile);
+      router.push("/recommendations");
+    }
+  };
 
   return (
     <section className="relative w-full overflow-hidden" style={{ minHeight: "clamp(560px, 120vw, 560px)" }}>
@@ -76,6 +187,8 @@ export default function RudrakshaBirthForm() {
               <label className="font-lato text-white" style={{ fontSize: "13px" }}>Full Name*</label>
               <InputBox
                 placeholder="Enter Your Name"
+                value={fullName}
+                onChange={setFullName}
                 icon={
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" style={{ flexShrink: 0, opacity: 0.7 }}>
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
@@ -89,6 +202,9 @@ export default function RudrakshaBirthForm() {
               <label className="font-lato text-white" style={{ fontSize: "13px" }}>Date Of Birth*</label>
               <InputBox
                 placeholder="dd-mm-yyyy"
+                type="date"
+                value={dob}
+                onChange={setDob}
                 icon={
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" style={{ flexShrink: 0, opacity: 0.7 }}>
                     <rect x="3" y="4" width="18" height="18" rx="2"/>
@@ -104,7 +220,10 @@ export default function RudrakshaBirthForm() {
               <label className="font-lato text-white" style={{ fontSize: "13px" }}>Time Of Birth*</label>
               <InputBox
                 placeholder="--:--"
+                type="time"
                 disabled={timeNotSure}
+                value={tob}
+                onChange={setTob}
                 icon={
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" style={{ flexShrink: 0, opacity: 0.7 }}>
                     <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
@@ -137,13 +256,22 @@ export default function RudrakshaBirthForm() {
           </div>
         </div>
 
+        {/* Error */}
+        {error && (
+          <p className="font-lato" style={{ fontSize: "13px", color: "#FFD7C2", margin: "0 0 16px 0" }}>
+            {error}
+          </p>
+        )}
+
         {/* CTA */}
         <button
-          className="group/cta flex items-center gap-2 w-fit"
-          style={{ background: "none", border: "none", borderBottom: "1px solid rgba(255,255,255,0.7)", padding: "0 0 7px 0", cursor: "pointer" }}
+          onClick={handleSubmit}
+          disabled={submitting}
+          className="group/cta flex items-center gap-2 w-fit disabled:opacity-60"
+          style={{ background: "none", border: "none", borderBottom: "1px solid rgba(255,255,255,0.7)", padding: "0 0 7px 0", cursor: submitting ? "default" : "pointer" }}
         >
           <span className="font-lato text-white group-hover/cta:opacity-75 transition-opacity" style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.08em" }}>
-            FIND THE RIGHT RUDRAKSHA
+            {submitting ? "FINDING…" : "FIND THE RIGHT RUDRAKSHA"}
           </span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="group-hover/cta:opacity-75 transition-opacity">
             <path d="M17 7L7 17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

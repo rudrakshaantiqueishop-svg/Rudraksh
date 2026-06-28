@@ -39,6 +39,7 @@ model User {
   reviews   Review[]
   cart      Cart?
   wishlistItems WishlistItem[]
+  birthProfile  BirthProfile?
 
   @@map("users")
 }
@@ -348,6 +349,30 @@ model WishlistItem {
   @@unique([userId, productId])
   @@index([userId])
   @@map("wishlist_items")
+}
+
+// ---------------------------------------------------------------------
+// Birth Profile (Rudraksha recommendation)
+// ---------------------------------------------------------------------
+
+// Stores a logged-in user's birth details and the computed Life Path
+// Number so their Rudraksha recommendation persists across visits.
+// Guests keep the same shape in localStorage until they log in.
+model BirthProfile {
+  id             String  @id @default(uuid())
+  userId         String  @unique
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  fullName       String
+  dob            String
+  tob            String?
+  timeNotSure    Boolean @default(false)
+  lifePathNumber Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("birth_profiles")
 }
 
 // ---------------------------------------------------------------------
