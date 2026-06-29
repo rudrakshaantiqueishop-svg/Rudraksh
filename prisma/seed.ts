@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { PrismaClient, Prisma } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { newProducts } from "./new-products";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -892,6 +893,9 @@ const products: ProductSeed[] = [
     images: [{ url: "/assets/images/about/about-p03.png", alt: "5 Mukhi Rudraksha Pendant Necklace", role: "MAIN", sortOrder: 0 }],
     collectionSlugs: ["wealth", "love"],
   },
+
+  // ---- Additional products (see prisma/new-products.ts) -------------------
+  ...newProducts,
 ];
 
 type BlogSeed = {

@@ -36,9 +36,9 @@ export function calculateLifePathNumber(dob: string): number {
  * Slugs must match Product.slug values in the catalog/seed.
  */
 export const NUMBER_TO_MUKHI: Record<number, string[]> = {
-  1: ["12-mukhi-rudraksha"],
-  2: ["5-mukhi-rudraksha"],
-  3: ["5-mukhi-rudraksha"],
+  1: ["1-mukhi-rudraksha", "12-mukhi-rudraksha"],
+  2: ["2-mukhi-rudraksha", "5-mukhi-rudraksha"],
+  3: ["3-mukhi-rudraksha", "5-mukhi-rudraksha"],
   4: ["4-mukhi-regular-rudraksha"],
   5: ["4-mukhi-regular-rudraksha"],
   6: ["6-mukhi-rudraksha"],
