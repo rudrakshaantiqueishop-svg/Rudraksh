@@ -14,7 +14,7 @@ export default function ContinueWithClarity() {
         />
         <div
           className="ewc-content"
-          style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 64px", gap: "16px", maxWidth: "520px" }}
+          style={{ position: "absolute", inset: 0, margin: "0 auto", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "0 64px", gap: "16px", maxWidth: "520px" }}
         >
           <h2
             className="font-prata ewc-title"
@@ -25,7 +25,7 @@ export default function ContinueWithClarity() {
           <p className="font-lato" style={{ fontSize: "14px", lineHeight: "160%", color: "rgba(255,255,255,0.9)", margin: 0 }}>
             If you&apos;d like to explore further, these guides offer context and support—before, during, or after your decision.
           </p>
-          <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: "32px" }}>
+          <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: "32px" }}>
             <a
               href="/authenticity"
               className="font-lato"

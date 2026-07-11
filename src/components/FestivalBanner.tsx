@@ -16,7 +16,7 @@ export default function FestivalBanner() {
 
       {/* Content */}
       <div
-        className="fb-content absolute inset-0 flex flex-col justify-center h-px-section"
+        className="fb-content absolute inset-0 flex flex-col items-center text-center justify-center h-px-section"
         style={{ paddingTop: 0, paddingBottom: 0 }}
       >
         {/* Title — max ~680px wide */}

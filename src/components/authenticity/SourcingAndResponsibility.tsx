@@ -54,7 +54,7 @@ export default function SourcingAndResponsibility() {
           <div className="sar-text-inner" style={{ marginLeft: "64px", display: "flex", flexDirection: "column", gap: "48px" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
               <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3.5vw, 36px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
+                <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3vw, 30px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
                   Our Responsibility
                 </h2>
                 <p className="font-lato" style={{ fontSize: "16px", lineHeight: "150%", color: "#44403C", margin: 0, fontWeight: 400 }}>

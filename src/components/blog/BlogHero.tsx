@@ -17,8 +17,8 @@ export default function BlogHero() {
         className="blog-hero-content"
         style={{
           position: "absolute",
-          left: "70px", bottom: "80px",
-          display: "flex", flexDirection: "column", gap: "16px",
+          left: 0, right: 0, margin: "0 auto", bottom: "80px",
+          display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "16px",
           maxWidth: "620px",
         }}
       >

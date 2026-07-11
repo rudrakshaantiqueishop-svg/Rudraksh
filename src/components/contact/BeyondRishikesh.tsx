@@ -15,7 +15,7 @@ export default function BeyondRishikesh() {
         {/* LEFT — text */}
         <div className="br-text" style={{ flex: 1, display: "flex", flexDirection: "column", gap: "24px" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <h2 className="font-prata" style={{ fontSize: "clamp(26px, 3.5vw, 36px)", lineHeight: "130%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
+            <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3vw, 30px)", lineHeight: "130%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
               Beyond Rishikesh
             </h2>
             <p className="font-lato" style={{ fontSize: "16px", lineHeight: "150%", color: "#44403C", margin: 0 }}>

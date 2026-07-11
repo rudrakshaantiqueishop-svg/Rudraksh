@@ -10,7 +10,7 @@ export default function FoundingIntention() {
           <div style={{ display: "flex", flexDirection: "column", gap: "23px" }}>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3.5vw, 36px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
+              <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3vw, 30px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
                 Our Founding Intention
               </h2>
               <p className="font-lato" style={{ fontSize: "16px", color: "#44403C", lineHeight: "150%", margin: 0 }}>

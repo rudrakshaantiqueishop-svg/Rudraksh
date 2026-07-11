@@ -14,9 +14,9 @@ export default function StillUnsure() {
       <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.45)" }} />
       <div style={{
         position: "absolute",
-        left: "64px", top: "50%", transform: "translateY(-50%)",
-        width: "460px",
-        display: "flex", flexDirection: "column", gap: "24px",
+        left: 0, right: 0, margin: "0 auto", top: "50%", transform: "translateY(-50%)",
+        width: "460px", maxWidth: "calc(100% - 48px)",
+        display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "24px",
       }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
           <h2 className="font-prata" style={{ fontSize: "32px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#FFFFFF", margin: 0 }}>

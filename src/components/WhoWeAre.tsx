@@ -23,7 +23,7 @@ export default function WhoWeAre() {
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               <h2
                 className="font-prata"
-                style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}
+                style={{ fontSize: "30px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}
               >
                 Who Are We?
               </h2>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -9,9 +9,40 @@ type Category = { id: string; name: string; slug: string; image: string };
 
 export default function CategoryGrid({ categories }: { categories: Category[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [pages, setPages] = useState(1);
+
+  const calculatePages = useCallback(() => {
+    if (scrollRef.current) {
+      const containerWidth = scrollRef.current.clientWidth;
+      const scrollWidth = scrollRef.current.scrollWidth;
+      const numPages = Math.round(scrollWidth / containerWidth);
+      setPages(Math.max(1, numPages));
+    }
+  }, []);
+
+  useEffect(() => {
+    calculatePages();
+    window.addEventListener("resize", calculatePages);
+    return () => window.removeEventListener("resize", calculatePages);
+  }, [calculatePages, categories]);
 
   const scroll = (dir: "left" | "right") => {
     scrollRef.current?.scrollBy({ left: dir === "left" ? -300 : 300, behavior: "smooth" });
+  };
+
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const scrollLeft = scrollRef.current.scrollLeft;
+      const containerWidth = scrollRef.current.clientWidth;
+      
+      let newIndex = Math.round(scrollLeft / containerWidth);
+      if (newIndex >= pages) newIndex = pages - 1;
+      
+      if (newIndex !== activeIndex && newIndex >= 0) {
+        setActiveIndex(newIndex);
+      }
+    }
   };
 
   return (
@@ -40,6 +71,7 @@ export default function CategoryGrid({ categories }: { categories: Category[] })
 
       <div
         ref={scrollRef}
+        onScroll={handleScroll}
         className="flex gap-3 lg:gap-[15px] overflow-x-auto no-scrollbar pb-2 lg:pb-0 scroll-smooth"
         style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
       >
@@ -47,16 +79,28 @@ export default function CategoryGrid({ categories }: { categories: Category[] })
           <Link
             key={cat.id}
             href={cat.slug.startsWith("/") ? cat.slug : `/products/category/${cat.slug}`}
-            className="flex flex-col gap-3 cursor-pointer group flex-shrink-0 w-[180px] lg:w-[calc(20%-12px)]"
+            className="flex flex-col gap-3 cursor-pointer group flex-shrink-0 w-[220px] sm:w-[240px] lg:w-[calc(20%-12px)]"
             style={{ scrollSnapAlign: "start" }}
           >
-            <div className="relative overflow-hidden h-[200px] lg:h-[276px] rounded-sm">
-              <Image src={cat.image} alt={cat.name} fill sizes="(max-width: 767px) 180px, 20vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
+            <div className="relative overflow-hidden h-[260px] sm:h-[280px] lg:h-[276px] rounded-sm">
+              <Image src={cat.image} alt={cat.name} fill sizes="(max-width: 767px) 240px, 20vw" className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
             </div>
             <p className="font-prata text-base lg:text-xl font-normal text-center text-dark">{cat.name}</p>
           </Link>
         ))}
       </div>
+
+      {/* Dots indicator (mobile only) */}
+      {pages > 1 && (
+        <div className="flex lg:hidden justify-center items-center gap-1.5 mt-2">
+          {Array.from({ length: pages }).map((_, i) => (
+            <div
+              key={i}
+              className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${i === activeIndex ? "bg-[#BB5A28]" : "bg-black/20"}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

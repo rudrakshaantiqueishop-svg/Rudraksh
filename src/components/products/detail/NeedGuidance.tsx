@@ -7,7 +7,7 @@ export default function NeedGuidance() {
       <div className="relative h-[300px] lg:h-[380px] overflow-hidden">
         <Image src="/assets/images/products/category-bracelets.png" alt="Need Guidance?" fill sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent" />
-        <div className="absolute inset-0 flex flex-col items-start justify-center px-8 lg:px-14 gap-3 max-w-md">
+        <div className="absolute inset-0 flex flex-col items-center text-center justify-center px-8 lg:px-14 gap-3 max-w-md mx-auto">
           <h2 className="font-prata text-2xl lg:text-[32px] text-white m-0">Need Guidance?</h2>
           <p className="font-lato text-sm text-white/85 m-0 leading-relaxed">
             If you&apos;re unsure whether this Rudraksha aligns with your intention or practice, our experts can help

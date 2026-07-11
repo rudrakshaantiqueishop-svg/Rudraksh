@@ -10,7 +10,7 @@ export default function VerificationChecklist({ pageContent }: { pageContent: Ca
         <div className="fi-text" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "23px" }}>
 
-            <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3.5vw, 36px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
+            <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3vw, 30px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
               {pageContent.checklistHeading}
             </h2>
 

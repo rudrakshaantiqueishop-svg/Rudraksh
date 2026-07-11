@@ -19,7 +19,7 @@ export default function WhoWeAreFor() {
           />
         </div>
         <div className="wwaf-text">
-          <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3.5vw, 36px)", lineHeight: 1.35, letterSpacing: "-0.02em", color: "#0B0404" }}>
+          <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3vw, 30px)", lineHeight: 1.35, letterSpacing: "-0.02em", color: "#0B0404" }}>
             Who We Are For
           </h2>
           <p className="font-lato" style={{ fontSize: "15px", color: "#44403C", fontWeight: 600 }}>

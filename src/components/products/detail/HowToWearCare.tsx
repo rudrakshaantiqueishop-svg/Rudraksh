@@ -15,7 +15,7 @@ export default function HowToWearCare() {
         <div className="w-full lg:w-[380px] lg:flex-shrink-0">
           <h2
             className="font-prata"
-            style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: "0 0 20px 0" }}
+            style={{ fontSize: "30px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: "0 0 20px 0" }}
           >
             How to Wear &amp; Care
           </h2>

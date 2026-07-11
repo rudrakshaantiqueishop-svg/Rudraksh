@@ -18,7 +18,7 @@ export default function EnergisationProcess() {
       {/* Heading */}
       <h2
         className="font-prata"
-        style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", textAlign: "center", margin: "0 0 12px 0" }}
+        style={{ fontSize: "30px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", textAlign: "center", margin: "0 0 12px 0" }}
       >
         Our Energisation Process
       </h2>

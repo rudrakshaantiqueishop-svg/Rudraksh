@@ -29,7 +29,7 @@ export default function LookingForward() {
         {/* Text content */}
         <div className="lf-content" style={{ position: "relative", zIndex: 2, textAlign: "center", display: "flex", flexDirection: "column", maxWidth: "1000px" }}>
           <h2 className="font-prata" style={{
-            fontSize: "clamp(24px, 3.5vw, 36px)", lineHeight: "140%", letterSpacing: "-0.02em",
+            fontSize: "clamp(24px, 3vw, 30px)", lineHeight: "140%", letterSpacing: "-0.02em",
             background: "linear-gradient(90deg, #EAB308 0%, #FFFFFF 100%)",
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
           }}>

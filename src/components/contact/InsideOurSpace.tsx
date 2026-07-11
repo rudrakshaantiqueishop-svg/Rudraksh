@@ -25,7 +25,7 @@ export default function InsideOurSpace() {
 
       {/* Header row */}
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-        <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3.5vw, 36px)", lineHeight: "130%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
+        <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3vw, 30px)", lineHeight: "130%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
           Inside Our Space
         </h2>
         <div style={{ display: "flex", flexDirection: "row", gap: "12px" }}>

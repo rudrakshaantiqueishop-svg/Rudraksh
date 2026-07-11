@@ -32,7 +32,7 @@ export default function WhenEnergisationIsRecommended() {
   return (
     <section className="weir-section section-pad" style={{ background: "#FEF9F2" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", marginBottom: "56px" }}>
-        <h2 className="font-prata" style={{ fontSize: "clamp(28px, 4vw, 36px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", textAlign: "center", margin: 0 }}>
+        <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3vw, 30px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", textAlign: "center", margin: 0 }}>
           When Energisation Is—and Is Not—Recommended
         </h2>
         <p className="font-lato" style={{ fontSize: "14px", color: "#78716C", textAlign: "center", margin: 0 }}>

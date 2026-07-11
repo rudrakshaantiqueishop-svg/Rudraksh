@@ -15,7 +15,7 @@ export default function AboutHero() {
       <div className="absolute bottom-0 left-0 right-0 h-[180px]" style={{ background: "linear-gradient(to bottom, transparent, #1D1D1D)" }} />
       
       <div
-        className="absolute flex flex-col left-5 right-5 bottom-8 lg:left-16 lg:bottom-[140px] lg:w-[686px] lg:right-auto"
+        className="absolute flex flex-col items-center text-center left-5 right-5 bottom-8 lg:bottom-[140px] lg:left-1/2 lg:right-auto lg:-translate-x-1/2 lg:w-[686px]"
         style={{ gap: "clamp(24px, 3vw, 40px)" }}
       >
         <div className="flex flex-col" style={{ gap: "clamp(12px, 1.5vw, 16px)" }}>

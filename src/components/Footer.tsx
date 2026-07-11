@@ -86,7 +86,7 @@ export default function Footer() {
         <div className="footer-mid-dividers w-full lg:flex-1 lg:max-w-[804px] lg:border-x lg:border-[#E7E5E4] lg:px-8 flex flex-col items-center gap-6">
           {isLoggedIn ? (
             <div style={{ textAlign: "center", display: "flex", flexDirection: "column", gap: "8px", alignItems: "center" }}>
-              <h3 className="font-prata" style={{ fontSize: "36px", lineHeight: "129%", letterSpacing: "-0.02em", color: "#0B0404" }}>
+              <h3 className="font-prata" style={{ fontSize: "30px", lineHeight: "129%", letterSpacing: "-0.02em", color: "#0B0404" }}>
                 Thank You for Joining!
               </h3>
               <p className="font-lato" style={{ fontSize: "16px", color: "#78716C", textAlign: "center", maxWidth: "450px" }}>
@@ -98,13 +98,13 @@ export default function Footer() {
                 padding: "0 32px", fontSize: "14px", fontWeight: 500,
                 fontFamily: "var(--lato), Arial, sans-serif", letterSpacing: "0.03em"
               }}>
-                CONTINUE SHOPPING
+                CONTINUE EXPLORING
               </Link>
             </div>
           ) : (
             <>
               <div style={{ textAlign: "center", display: "flex", flexDirection: "column", gap: "8px" }}>
-                <h3 className="font-prata" style={{ fontSize: "36px", lineHeight: "129%", letterSpacing: "-0.02em", color: "#0B0404" }}>
+                <h3 className="font-prata" style={{ fontSize: "30px", lineHeight: "129%", letterSpacing: "-0.02em", color: "#0B0404" }}>
                   Let&apos;s Get In Touch!
                 </h3>
                 <p className="font-lato" style={{ fontSize: "16px", color: "#78716C", textAlign: "center" }}>

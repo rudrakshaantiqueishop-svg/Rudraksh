@@ -12,8 +12,8 @@ export default function InPersonGuidanceAvailable() {
         loading="lazy"
       />
       <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.45)" }} />
-      <div className="absolute inset-0 flex items-center justify-center md:justify-start p-6 md:px-[64px] text-center md:text-left">
-        <div className="flex flex-col items-center md:items-start gap-6 md:gap-8 w-full max-w-[650px]">
+      <div className="absolute inset-0 flex items-center justify-center p-6 md:px-[64px] text-center">
+        <div className="flex flex-col items-center gap-6 md:gap-8 w-full max-w-[650px]">
           <div className="flex flex-col gap-2">
             <h2 className="font-prata title-fluid text-white m-0">
               In-Person Guidance Available

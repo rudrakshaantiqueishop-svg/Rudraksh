@@ -154,7 +154,7 @@ export default function RudrakshaBirthForm() {
         {/* Title */}
         <h2
           className="font-prata text-white"
-          style={{ fontSize: "clamp(24px, 5vw, 36px)", lineHeight: "140%", letterSpacing: "-0.02em", margin: "0 0 10px 0" }}
+          style={{ fontSize: "clamp(24px, 3vw, 30px)", lineHeight: "140%", letterSpacing: "-0.02em", margin: "0 0 10px 0" }}
         >
           Your Rudraksha Journey Begins Here!
         </h2>

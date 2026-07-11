@@ -1,7 +1,7 @@
 export default function FindUsEasily() {
   return (
     <section className="section-pad" style={{ background: "#FEF9F2", display: "flex", flexDirection: "column", gap: "32px" }}>
-      <h2 className="font-prata" style={{ fontSize: "clamp(26px, 3.5vw, 36px)", lineHeight: "130%", letterSpacing: "-0.02em", color: "#0B0404", textAlign: "center", margin: 0 }}>
+      <h2 className="font-prata" style={{ fontSize: "clamp(24px, 3vw, 30px)", lineHeight: "130%", letterSpacing: "-0.02em", color: "#0B0404", textAlign: "center", margin: 0 }}>
         Find Us Easily
       </h2>
       <div className="fue-map" style={{ width: "100%", height: "440px", overflow: "hidden" }}>

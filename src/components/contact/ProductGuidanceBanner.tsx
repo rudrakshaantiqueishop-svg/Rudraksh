@@ -14,7 +14,7 @@ export default function ProductGuidanceBanner() {
       <div style={{ position: "absolute", inset: 0, background: "rgba(10,5,2,0.55)" }} />
       <div
         className="pgb-content"
-        style={{ position: "absolute", left: "70px", bottom: "64px", display: "flex", flexDirection: "column", gap: "16px", maxWidth: "460px" }}
+        style={{ position: "absolute", left: 0, right: 0, margin: "0 auto", bottom: "64px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "16px", maxWidth: "460px" }}
       >
         <h2
           className="font-prata pgb-title"

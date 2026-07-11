@@ -14,7 +14,7 @@ export default function ContinueWithClarity() {
         <div style={{ position: "absolute", inset: 0, background: "rgba(10,5,2,0.5)" }} />
         <div
           className="cwc-content"
-          style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 64px", gap: "16px", maxWidth: "520px" }}
+          style={{ position: "absolute", inset: 0, margin: "0 auto", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "0 64px", gap: "16px", maxWidth: "520px" }}
         >
           <h2
             className="font-prata cwc-title"

@@ -61,7 +61,7 @@ export default function GetInTouch() {
 
           {/* Title */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <h2 className="font-prata" style={{ fontSize: "36px", lineHeight: "130%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
+            <h2 className="font-prata" style={{ fontSize: "30px", lineHeight: "130%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
               Get In Touch
             </h2>
             <p className="font-lato" style={{ fontSize: "16px", lineHeight: "150%", color: "#44403C", margin: 0 }}>

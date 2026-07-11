@@ -83,7 +83,7 @@ export default function RecommendationsPage() {
         <p className="font-lato" style={{ fontSize: "13px", letterSpacing: "0.12em", color: "#BB5A28", fontWeight: 700, margin: 0 }}>
           YOUR LIFE PATH NUMBER · {profile.lifePathNumber}
         </p>
-        <h1 className="font-prata" style={{ fontSize: "clamp(26px, 4vw, 36px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
+        <h1 className="font-prata" style={{ fontSize: "clamp(24px, 3vw, 30px)", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
           {firstName ? `${firstName}, your Rudraksha awaits` : "Your Rudraksha awaits"}
         </h1>
         <p className="font-lato" style={{ fontSize: "15px", lineHeight: "160%", color: "#44403C", margin: 0 }}>

@@ -18,7 +18,7 @@ export default function GuidanceBanner() {
         />
 
         {/* Content */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-center lg:items-start lg:text-left px-5 lg:px-[64px]">
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-5 lg:px-[64px]">
           <h2
             className="font-prata text-white"
             style={{ fontSize: "40px", lineHeight: "130%", letterSpacing: "-0.02em", margin: "0 0 20px 0", maxWidth: "560px" }}

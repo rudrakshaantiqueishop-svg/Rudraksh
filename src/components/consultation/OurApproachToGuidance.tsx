@@ -22,7 +22,7 @@ export default function OurApproachToGuidance() {
           <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <h2 className="font-prata" style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
+              <h2 className="font-prata" style={{ fontSize: "30px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}>
                 Our Approach to Guidance
               </h2>
               <p className="font-lato" style={{ fontSize: "16px", color: "#44403C", lineHeight: "150%", margin: 0 }}>

@@ -15,9 +15,9 @@ export default function LookingForMoreGuidance() {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(11,4,4,0.6) 0%, rgba(11,4,4,0.2) 50%, rgba(11,4,4,0) 75%)" }} />
         <div style={{
           position: "absolute",
-          left: "48px", top: "50%", transform: "translateY(-50%)",
-          width: "420px",
-          display: "flex", flexDirection: "column", gap: "16px",
+          left: 0, right: 0, margin: "0 auto", top: "50%", transform: "translateY(-50%)",
+          width: "420px", maxWidth: "calc(100% - 48px)",
+          display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "16px",
         }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <h2 className="font-prata" style={{ fontSize: "28px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#FFFFFF", margin: 0 }}>

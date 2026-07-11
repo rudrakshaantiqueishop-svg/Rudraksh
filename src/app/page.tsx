@@ -6,6 +6,7 @@ import { getBestsellerProducts } from "@/lib/products";
 const WhoWeAre            = dynamic(() => import("@/components/WhoWeAre"));
 const ShopByPurpose       = dynamic(() => import("@/components/ShopByPurpose"));
 const RudrakshaBirthForm  = dynamic(() => import("@/components/RudrakshaBirthForm"));
+const ProductZoomShowcase = dynamic(() => import("@/components/ProductZoomShowcase"));
 const BestsellerProducts  = dynamic(() => import("@/components/BestsellerProducts"));
 const FestivalBanner      = dynamic(() => import("@/components/FestivalBanner"));
 const AuthenticityBanner  = dynamic(() => import("@/components/AuthenticityBanner"));
@@ -27,6 +28,7 @@ export default async function Home() {
         <WhoWeAre />
         <ShopByPurpose />
         <RudrakshaBirthForm />
+        <ProductZoomShowcase />
         <BestsellerProducts products={bestsellers} />
         <FestivalBanner />
         <AuthenticityBanner />

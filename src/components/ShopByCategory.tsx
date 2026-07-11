@@ -16,7 +16,7 @@ export default async function ShopByCategory() {
   ];
 
   return (
-    <section className="h-px-section py-[60px] lg:py-[72px]" style={{ background: "#FEF9F2" }}>
+    <section className="h-px-section py-[40px] lg:py-[72px]" style={{ background: "#FEF9F2" }}>
 
 
       <CategoryGrid categories={categoriesWithConsultancy} />

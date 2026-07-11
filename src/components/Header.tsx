@@ -102,7 +102,7 @@ export default function Header({ activePage }: { activePage?: string }) {
 
         {/* Hamburger — mobile only */}
         <button
-          className="header-hamburger hidden items-center justify-center p-2 -ml-2 text-[#0B0404]"
+          className="header-hamburger hidden items-center justify-center p-2 -ml-2 text-[#0B0404] flex-shrink-0"
           aria-label="Menu"
           onClick={() => setIsMobileMenuOpen(true)}
         >
@@ -110,8 +110,8 @@ export default function Header({ activePage }: { activePage?: string }) {
         </button>
 
         {/* Logo */}
-        <Link href="/" className="flex-shrink-0">
-          <Image src="/assets/images/common/logo.png" alt="Rudraksha Antiquei" width={212} height={40} priority className="h-8 sm:h-[36px] w-auto object-contain" />
+        <Link href="/" className="flex-shrink-1 min-w-0 lg:flex-shrink-0">
+          <Image src="/assets/images/common/logo.png" alt="Rudraksha Antiquei" width={212} height={40} priority className="h-6 min-[375px]:h-7 sm:h-[36px] w-auto object-contain max-w-[130px] min-[375px]:max-w-[160px] sm:max-w-none" />
         </Link>
 
         {/* Nav — absolutely centred, hidden on mobile */}
@@ -248,7 +248,7 @@ export default function Header({ activePage }: { activePage?: string }) {
         </div>
 
         {/* Right actions — mobile only (search, heart, cart) */}
-        <div className="header-actions-mobile hidden items-center gap-4">
+        <div className="header-actions-mobile hidden items-center gap-3 sm:gap-4 flex-shrink-0">
           <button onClick={() => setIsSearchOpen(true)} aria-label="Open search" className="text-[#44403C]">
             <Search size={20} strokeWidth={1.5} />
           </button>
@@ -323,19 +323,19 @@ export default function Header({ activePage }: { activePage?: string }) {
         <div className="fixed inset-0 z-[100] bg-[#FEF9F2] overflow-y-auto pb-8 lg:hidden">
           {/* Top Bar matching image */}
           <div className="relative flex items-center justify-between px-4 border-b border-black/5" style={{ height: "72px" }}>
-            <div className="flex items-center">
+            <div className="flex items-center flex-shrink-0">
               <button onClick={() => setIsMobileMenuOpen(false)} className="p-1 -ml-1 text-[#0B0404]" aria-label="Close menu">
                 <X size={22} strokeWidth={1.5} />
               </button>
             </div>
 
-            <div className="absolute inset-x-0 h-full flex items-center justify-center pointer-events-none">
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="pointer-events-auto">
-                <Image src="/assets/images/common/logo.png" alt="Rudraksha Antiquei" width={160} height={30} style={{ objectFit: "contain", height: "28px", width: "auto" }} />
+            <div className="flex-1 flex items-center justify-center min-w-0 px-2">
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="pointer-events-auto min-w-0">
+                <Image src="/assets/images/common/logo.png" alt="Rudraksha Antiquei" width={160} height={30} className="w-auto h-6 min-[375px]:h-7 object-contain max-w-full" />
               </Link>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
               <button
                 onClick={() => {
                   setIsMobileMenuOpen(false);

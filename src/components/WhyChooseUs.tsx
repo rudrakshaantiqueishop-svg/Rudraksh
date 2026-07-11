@@ -70,7 +70,7 @@ export default function WhyChooseUs() {
 
           <h2
             className="font-prata"
-            style={{ fontSize: "36px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}
+            style={{ fontSize: "30px", lineHeight: "140%", letterSpacing: "-0.02em", color: "#0B0404", margin: 0 }}
           >
             Why Choose Us?
           </h2>
