@@ -2,12 +2,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getUserForAdmin } from "@/lib/admin-users";
+import { requireAdmin } from "@/lib/dal";
+import UserRoleForm from "@/components/admin/UserRoleForm";
 
 export default async function AdminUserDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requireAdmin();
   const { id } = await params;
   const user = await getUserForAdmin(id);
 
@@ -44,18 +47,18 @@ export default async function AdminUserDetailPage({
             <dd className="font-lato text-sm text-dark">{user.phone ?? "—"}</dd>
           </div>
           <div>
-            <dt className="font-lato text-xs uppercase tracking-wide text-gray-text">Role</dt>
-            <dd className="font-lato text-sm text-dark">
-              <span className="inline-block border border-border px-2 py-0.5 text-xs uppercase tracking-wide">
-                {user.role}
-              </span>
-            </dd>
-          </div>
-          <div>
             <dt className="font-lato text-xs uppercase tracking-wide text-gray-text">Joined</dt>
             <dd className="font-lato text-sm text-dark">{user.createdAt.toLocaleDateString()}</dd>
           </div>
         </dl>
+      </div>
+
+      <div className="border border-border p-6">
+        <h2 className="mb-1 font-prata text-lg text-dark">Role</h2>
+        <p className="mb-4 font-lato text-sm text-gray-text">
+          Writers can create blog posts and submit them for review. Admins have full access.
+        </p>
+        <UserRoleForm userId={user.id} role={user.role} />
       </div>
 
       <div className="border border-border p-6">

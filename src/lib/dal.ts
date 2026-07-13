@@ -38,3 +38,10 @@ export async function requireAdmin() {
   if (user.role !== "ADMIN") redirect("/account");
   return user;
 }
+
+// Writers and admins can both reach the blog area of the admin panel.
+export async function requireStaff() {
+  const user = await requireUser();
+  if (user.role !== "ADMIN" && user.role !== "WRITER") redirect("/account");
+  return user;
+}

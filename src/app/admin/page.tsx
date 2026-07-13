@@ -1,8 +1,13 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Package, Newspaper, Users } from "lucide-react";
 import { getAdminDashboardCounts } from "@/lib/admin-dashboard";
+import { requireStaff } from "@/lib/dal";
 
 export default async function AdminPage() {
+  const user = await requireStaff();
+  if (user.role === "WRITER") redirect("/admin/blog");
+
   const counts = await getAdminDashboardCounts();
 
   const cards = [

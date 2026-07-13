@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Eye, Trash2 } from "lucide-react";
 import { deleteConsultationRequest } from "@/app/actions/consultation";
+import { requireAdmin } from "@/lib/dal";
 
 export const metadata: Metadata = {
   title: "Consultation Requests | Admin",
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function ConsultationsAdminPage() {
+  await requireAdmin();
   const requests = await prisma.consultationRequest.findMany({
     orderBy: { createdAt: "desc" },
   });

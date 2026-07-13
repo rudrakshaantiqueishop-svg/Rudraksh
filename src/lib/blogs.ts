@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function getBlogsByCategory(categoryId: string, limit = 3) {
   const categoryPosts = await prisma.blog.findMany({
-    where: { categoryId },
+    where: { categoryId, status: "PUBLISHED" },
     orderBy: { publishedAt: "desc" },
     take: limit,
   });
@@ -12,7 +12,7 @@ export async function getBlogsByCategory(categoryId: string, limit = 3) {
   }
 
   const fillerPosts = await prisma.blog.findMany({
-    where: { id: { notIn: categoryPosts.map((p) => p.id) } },
+    where: { status: "PUBLISHED", id: { notIn: categoryPosts.map((p) => p.id) } },
     orderBy: { publishedAt: "desc" },
     take: limit - categoryPosts.length,
   });
@@ -22,6 +22,7 @@ export async function getBlogsByCategory(categoryId: string, limit = 3) {
 
 export async function getRecentBlogs(limit = 3) {
   return prisma.blog.findMany({
+    where: { status: "PUBLISHED" },
     orderBy: { publishedAt: "desc" },
     take: limit,
     select: { id: true, slug: true, title: true, excerpt: true, coverImage: true },
@@ -29,15 +30,18 @@ export async function getRecentBlogs(limit = 3) {
 }
 
 export async function getBlogBySlug(slug: string) {
-  return prisma.blog.findUnique({
+  const blog = await prisma.blog.findUnique({
     where: { slug },
     include: { category: true },
   });
+  // Only published posts are visible on the public site.
+  if (!blog || blog.status !== "PUBLISHED") return null;
+  return blog;
 }
 
 export async function getBlogCategories() {
   return prisma.category.findMany({
-    where: { blogs: { some: {} } },
+    where: { blogs: { some: { status: "PUBLISHED" } } },
     orderBy: { name: "asc" },
     select: { id: true, name: true, slug: true },
   });
@@ -52,7 +56,9 @@ export async function getBlogsPaginated({
   skip?: number;
   take?: number;
 }) {
-  const where = categorySlug ? { category: { slug: categorySlug } } : {};
+  const where = categorySlug
+    ? { status: "PUBLISHED" as const, category: { slug: categorySlug } }
+    : { status: "PUBLISHED" as const };
 
   const [posts, total] = await Promise.all([
     prisma.blog.findMany({

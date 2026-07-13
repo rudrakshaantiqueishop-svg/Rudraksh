@@ -5,6 +5,8 @@ import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
+import { TableKit } from "@tiptap/extension-table";
+import Youtube from "@tiptap/extension-youtube";
 import {
   Bold,
   Italic,
@@ -12,12 +14,19 @@ import {
   Strikethrough,
   Heading2,
   Heading3,
+  Heading4,
   List,
   ListOrdered,
   Quote,
   Link as LinkIcon,
   Unlink,
   ImageIcon,
+  Minus,
+  Table as TableIcon,
+  Video as YoutubeIcon,
+  Columns3,
+  Rows3,
+  Trash2,
   Undo,
   Redo,
 } from "lucide-react";
@@ -39,9 +48,12 @@ interface RichTextEditorProps {
 const EDITOR_EXTENSIONS = [
   StarterKit.configure({
     link: { openOnClick: false, autolink: true },
+    heading: { levels: [2, 3, 4] },
   }),
   Image.configure({ HTMLAttributes: { class: "max-w-full rounded-lg" } }),
   Placeholder.configure({ placeholder: "Write your post here..." }),
+  TableKit.configure({ table: { resizable: true, HTMLAttributes: { class: "blog-table" } } }),
+  Youtube.configure({ width: 640, height: 360, nocookie: true, HTMLAttributes: { class: "blog-video" } }),
 ];
 
 const EDITOR_PROPS = {
@@ -98,7 +110,18 @@ function Toolbar({ editor }: { editor: Editor }) {
   const addImage = useCallback(() => {
     const url = window.prompt("Image URL or path", "/assets/images/");
     if (!url) return;
-    editor.chain().focus().setImage({ src: url }).run();
+    const alt = window.prompt("Image alt text (describe the image for accessibility & SEO)", "") ?? "";
+    editor.chain().focus().setImage({ src: url, alt }).run();
+  }, [editor]);
+
+  const addYoutube = useCallback(() => {
+    const url = window.prompt("YouTube video URL", "https://www.youtube.com/watch?v=");
+    if (!url) return;
+    editor.chain().focus().setYoutubeVideo({ src: url }).run();
+  }, [editor]);
+
+  const insertTable = useCallback(() => {
+    editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
   }, [editor]);
 
   return (
@@ -126,6 +149,9 @@ function Toolbar({ editor }: { editor: Editor }) {
       <ToolbarButton label="Heading 3 (sub-section title)" active={editor.isActive("heading", { level: 3 })} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
         <Heading3 size={15} strokeWidth={1.5} />
       </ToolbarButton>
+      <ToolbarButton label="Heading 4 (minor heading)" active={editor.isActive("heading", { level: 4 })} onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}>
+        <Heading4 size={15} strokeWidth={1.5} />
+      </ToolbarButton>
 
       <Divider />
 
@@ -151,6 +177,28 @@ function Toolbar({ editor }: { editor: Editor }) {
       </ToolbarButton>
       <ToolbarButton label="Insert image" onClick={addImage}>
         <ImageIcon size={15} strokeWidth={1.5} />
+      </ToolbarButton>
+      <ToolbarButton label="Embed YouTube video" onClick={addYoutube}>
+        <YoutubeIcon size={15} strokeWidth={1.5} />
+      </ToolbarButton>
+
+      <Divider />
+
+      {/* Blocks: divider & table */}
+      <ToolbarButton label="Horizontal divider" onClick={() => editor.chain().focus().setHorizontalRule().run()}>
+        <Minus size={15} strokeWidth={1.5} />
+      </ToolbarButton>
+      <ToolbarButton label="Insert table" onClick={insertTable}>
+        <TableIcon size={15} strokeWidth={1.5} />
+      </ToolbarButton>
+      <ToolbarButton label="Add column" disabled={!editor.can().addColumnAfter()} onClick={() => editor.chain().focus().addColumnAfter().run()}>
+        <Columns3 size={15} strokeWidth={1.5} />
+      </ToolbarButton>
+      <ToolbarButton label="Add row" disabled={!editor.can().addRowAfter()} onClick={() => editor.chain().focus().addRowAfter().run()}>
+        <Rows3 size={15} strokeWidth={1.5} />
+      </ToolbarButton>
+      <ToolbarButton label="Delete table" disabled={!editor.can().deleteTable()} onClick={() => editor.chain().focus().deleteTable().run()}>
+        <Trash2 size={15} strokeWidth={1.5} />
       </ToolbarButton>
 
       <Divider />

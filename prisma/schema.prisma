@@ -12,7 +12,14 @@ datasource db {
 
 enum Role {
   CUSTOMER
+  WRITER
   ADMIN
+}
+
+enum BlogStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
 }
 
 enum TokenType {
@@ -40,6 +47,7 @@ model User {
   cart      Cart?
   wishlistItems WishlistItem[]
   birthProfile  BirthProfile?
+  blogs         Blog[]
 
   @@map("users")
 }
@@ -277,8 +285,18 @@ model Blog {
   author          String   @default("Rudraksha Antiquei")
   readTimeMinutes Int      @default(5)
 
+  status          BlogStatus @default(PUBLISHED)
+  tags            String[]   @default([])
+  metaTitle       String?
+  metaDescription String?    @db.Text
+
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  // The staff member (writer/admin) who created the post. Free-text `author`
+  // remains the byline shown to readers.
+  authorId   String?
+  authorUser User?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
 
   publishedAt DateTime @default(now())
   createdAt   DateTime @default(now())
@@ -286,6 +304,8 @@ model Blog {
 
   @@index([categoryId])
   @@index([publishedAt])
+  @@index([status])
+  @@index([authorId])
   @@map("blogs")
 }
 

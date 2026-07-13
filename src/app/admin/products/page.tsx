@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import { requireAdmin } from "@/lib/dal";
 import { listProductsForAdmin } from "@/lib/admin-products";
 import { getCategories } from "@/lib/products";
 import { deleteProduct } from "@/app/actions/admin-products";
@@ -31,6 +32,7 @@ export default async function AdminProductsPage({
 }: {
   searchParams: Promise<{ q?: string; category?: string; page?: string }>;
 }) {
+  await requireAdmin();
   const { q, category, page } = await searchParams;
   const currentPage = Math.max(1, Number(page) || 1);
   const categoryId = category && category !== "all" ? category : undefined;

@@ -47,6 +47,10 @@ export default function Header({ activePage }: { activePage?: string }) {
   const { data: session, status } = useSession();
   const isLoggedIn = status === "authenticated";
   const isAdmin = session?.user?.role === "ADMIN";
+  const isWriter = session?.user?.role === "WRITER";
+  const isStaff = isAdmin || isWriter;
+  const staffHref = isAdmin ? "/admin" : "/admin/blog";
+  const staffLabel = isAdmin ? "ADMIN" : "WRITER";
   const accountHref = isLoggedIn ? "/account" : "/login";
   const currentPage = activePage ?? (pathname === "/" ? "home" : pathname === "/about" ? "about" : pathname === "/contact" ? "contact" : pathname?.startsWith("/products") ? "products" : "home");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -176,9 +180,9 @@ export default function Header({ activePage }: { activePage?: string }) {
               CONTACT US
             </Link>
 
-            {isAdmin && (
-              <Link href="/admin" className={`font-lato text-[13px] xl:text-base font-normal flex items-center h-full uppercase transition-colors text-[#0B0404] hover:text-[#BB5A28]`}>
-                ADMIN
+            {isStaff && (
+              <Link href={staffHref} className={`font-lato text-[13px] xl:text-base font-normal flex items-center h-full uppercase transition-colors text-[#0B0404] hover:text-[#BB5A28]`}>
+                {staffLabel}
               </Link>
             )}
 
@@ -494,9 +498,9 @@ export default function Header({ activePage }: { activePage?: string }) {
               CONTACT US
             </Link>
 
-            {isAdmin && (
-              <Link href="/admin" className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase" onClick={() => setIsMobileMenuOpen(false)}>
-                ADMIN
+            {isStaff && (
+              <Link href={staffHref} className="font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase" onClick={() => setIsMobileMenuOpen(false)}>
+                {staffLabel}
               </Link>
             )}
           </div>

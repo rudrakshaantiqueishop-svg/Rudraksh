@@ -2,12 +2,14 @@ import { notFound } from "next/navigation";
 import { getCategories, getCollections } from "@/lib/products";
 import { getProductForAdmin } from "@/lib/admin-products";
 import ProductForm from "@/components/admin/ProductForm";
+import { requireAdmin } from "@/lib/dal";
 
 export default async function EditProductPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requireAdmin();
   const { id } = await params;
   const [product, categories, collections] = await Promise.all([
     getProductForAdmin(id),

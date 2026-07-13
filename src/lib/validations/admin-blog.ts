@@ -31,6 +31,31 @@ export const blogSchema = z.object({
     .transform((value) => (value === "" ? undefined : value))
     .optional(),
   publishedAt: z.coerce.date(),
+  status: z.enum(["DRAFT", "REVIEW", "PUBLISHED"]).catch("DRAFT"),
+  // Comma-separated in the form; normalised to a de-duped, trimmed array.
+  tags: z.preprocess(
+    (value) => (typeof value === "string" ? value : ""),
+    z.string().transform((value) =>
+      Array.from(
+        new Set(
+          value
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter(Boolean)
+        )
+      )
+    )
+  ),
+  metaTitle: z
+    .string()
+    .trim()
+    .transform((value) => (value === "" ? undefined : value))
+    .optional(),
+  metaDescription: z
+    .string()
+    .trim()
+    .transform((value) => (value === "" ? undefined : value))
+    .optional(),
 });
 
 export type BlogInput = z.infer<typeof blogSchema>;

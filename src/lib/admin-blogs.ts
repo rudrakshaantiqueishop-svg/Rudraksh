@@ -7,15 +7,18 @@ const PAGE_SIZE = 15;
 export async function listBlogsForAdmin({
   search,
   categoryId,
+  status,
   page = 1,
 }: {
   search?: string;
   categoryId?: string;
+  status?: "DRAFT" | "REVIEW" | "PUBLISHED";
   page?: number;
 }) {
   const where: Prisma.BlogWhereInput = {};
   if (search) where.title = { contains: search, mode: "insensitive" };
   if (categoryId) where.categoryId = categoryId;
+  if (status) where.status = status;
 
   const [posts, total] = await Promise.all([
     prisma.blog.findMany({
@@ -23,7 +26,7 @@ export async function listBlogsForAdmin({
       orderBy: { publishedAt: "desc" },
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
-      include: { category: true },
+      include: { category: true, authorUser: { select: { name: true, email: true } } },
     }),
     prisma.blog.count({ where }),
   ]);

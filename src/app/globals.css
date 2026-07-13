@@ -2924,3 +2924,108 @@
   border-radius: 3px;
   font-size: 0.85em;
 }
+.tiptap-editor h4 {
+  font-family: var(--lato), Arial, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0B0404;
+  margin: 0.85rem 0 0.3rem;
+  line-height: 1.35;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.tiptap-editor hr {
+  border: none;
+  border-top: 1px solid #E7DFD6;
+  margin: 1.25em 0;
+}
+.tiptap-editor table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.75em 0;
+  table-layout: fixed;
+  overflow: hidden;
+}
+.tiptap-editor table td,
+.tiptap-editor table th {
+  border: 1px solid #E7DFD6;
+  padding: 0.5em 0.65em;
+  vertical-align: top;
+  position: relative;
+}
+.tiptap-editor table th {
+  background: #f7f1ea;
+  font-weight: 700;
+  text-align: left;
+}
+.tiptap-editor table .selectedCell:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(187, 90, 40, 0.12);
+  pointer-events: none;
+}
+.tiptap-editor table .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #BB5A28;
+  pointer-events: none;
+}
+.tiptap-editor .blog-video,
+.tiptap-editor div[data-youtube-video] {
+  margin: 0.75em 0;
+}
+.tiptap-editor div[data-youtube-video] iframe {
+  max-width: 100%;
+  border-radius: 8px;
+  aspect-ratio: 16 / 9;
+  height: auto;
+}
+
+/* Public blog article — elements not covered by the Tailwind arbitrary variants */
+.blog-article-content h4 {
+  font-family: var(--lato), Arial, sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #0B0404;
+  margin: 1.25rem 0 0.4rem;
+}
+.blog-article-content hr {
+  border: none;
+  border-top: 1px solid #E7DFD6;
+  margin: 2rem 0;
+}
+.blog-article-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.25rem 0;
+  font-size: 0.95rem;
+}
+.blog-article-content th,
+.blog-article-content td {
+  border: 1px solid #E7DFD6;
+  padding: 0.55em 0.7em;
+  text-align: left;
+  vertical-align: top;
+}
+.blog-article-content th {
+  background: #f7f1ea;
+  font-weight: 700;
+  color: #0B0404;
+}
+.blog-article-content div[data-youtube-video] {
+  margin: 1.5rem 0;
+}
+.blog-article-content div[data-youtube-video] iframe {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border-radius: 8px;
+  border: 0;
+}

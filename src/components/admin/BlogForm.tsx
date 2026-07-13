@@ -30,15 +30,31 @@ function toSlug(title: string): string {
 interface BlogFormProps {
   blog?: BlogForAdmin;
   categories: { id: string; name: string }[];
+  // Admins may publish directly; writers can only save as Draft or submit for Review.
+  canPublish?: boolean;
 }
 
-export default function BlogForm({ blog, categories }: BlogFormProps) {
+const STATUS_OPTIONS: {
+  value: "DRAFT" | "REVIEW" | "PUBLISHED";
+  label: string;
+  hint: string;
+  adminOnly?: boolean;
+}[] = [
+  { value: "DRAFT", label: "Draft", hint: "Keep working on it — not visible to anyone." },
+  { value: "REVIEW", label: "Submit for Review", hint: "Send to an admin to approve & publish." },
+  { value: "PUBLISHED", label: "Published", hint: "Live on the site immediately.", adminOnly: true },
+];
+
+export default function BlogForm({ blog, categories, canPublish = false }: BlogFormProps) {
   const action = blog ? updateBlog.bind(null, blog.id) : createBlog;
   const [state, formAction] = useActionState(action, undefined);
 
   const [slug, setSlug] = useState(blog?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(!!blog?.slug);
   const [coverImage, setCoverImage] = useState(blog?.coverImage ?? "");
+
+  const defaultStatus = blog?.status ?? "DRAFT";
+  const availableStatuses = STATUS_OPTIONS.filter((opt) => canPublish || !opt.adminOnly);
 
   const defaultPublishedAt = blog?.publishedAt
     ? blog.publishedAt.toISOString().slice(0, 10)
@@ -127,6 +143,20 @@ export default function BlogForm({ blog, categories }: BlogFormProps) {
           ))}
         </div>
 
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="tags">Tags</Label>
+          <Input
+            id="tags"
+            name="tags"
+            defaultValue={blog?.tags?.join(", ") ?? ""}
+            placeholder="e.g. Rudraksha, Meditation, Spirituality"
+          />
+          <p className="font-lato text-xs text-gray-text">Separate tags with commas.</p>
+          {state?.errors?.tags?.map((msg) => (
+            <span key={msg} className="font-lato text-[13px] text-destructive">{msg}</span>
+          ))}
+        </div>
+
         {/* Cover image with upload */}
         <div className="flex flex-col gap-1.5">
           <Label>Cover Image</Label>
@@ -174,6 +204,58 @@ export default function BlogForm({ blog, categories }: BlogFormProps) {
           defaultValue={blog?.body}
           errors={state?.errors?.body}
         />
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-prata text-xl text-dark">SEO</h2>
+        <FormField
+          label="Meta Title"
+          name="metaTitle"
+          defaultValue={blog?.metaTitle ?? ""}
+          errors={state?.errors?.metaTitle}
+        />
+        <TextAreaField
+          label="Meta Description"
+          name="metaDescription"
+          defaultValue={blog?.metaDescription ?? ""}
+          errors={state?.errors?.metaDescription}
+        />
+        <p className="font-lato text-xs text-gray-text -mt-2">
+          Used for search engines and social previews. Leave blank to fall back to the title and excerpt.
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-prata text-xl text-dark">Publishing</h2>
+        <fieldset className="flex flex-col gap-3">
+          <legend className="sr-only">Status</legend>
+          {availableStatuses.map((opt) => (
+            <label
+              key={opt.value}
+              className="flex cursor-pointer items-start gap-3 rounded-md border border-border p-3 has-[:checked]:border-brown has-[:checked]:bg-secondary/40"
+            >
+              <input
+                type="radio"
+                name="status"
+                value={opt.value}
+                defaultChecked={defaultStatus === opt.value}
+                className="mt-1 accent-brown"
+              />
+              <span className="flex flex-col">
+                <span className="font-lato text-sm font-semibold text-dark">{opt.label}</span>
+                <span className="font-lato text-xs text-gray-text">{opt.hint}</span>
+              </span>
+            </label>
+          ))}
+        </fieldset>
+        {!canPublish && (
+          <p className="font-lato text-xs text-gray-text">
+            Submitted posts are reviewed by an admin before going live.
+          </p>
+        )}
+        {state?.errors?.status?.map((msg) => (
+          <span key={msg} className="font-lato text-[13px] text-destructive">{msg}</span>
+        ))}
       </section>
 
       {state?.message && <p className="font-lato text-sm text-destructive">{state.message}</p>}

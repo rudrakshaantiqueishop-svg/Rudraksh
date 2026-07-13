@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdmin } from "@/lib/dal";
 import { listUsersForAdmin } from "@/lib/admin-users";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,7 @@ export default async function AdminUsersPage({
 }: {
   searchParams: Promise<{ q?: string; page?: string }>;
 }) {
+  await requireAdmin();
   const { q, page } = await searchParams;
   const currentPage = Math.max(1, Number(page) || 1);
   const { users, total, pageSize } = await listUsersForAdmin({ search: q, page: currentPage });

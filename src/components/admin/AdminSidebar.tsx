@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Package, Newspaper, Users, Calendar } from "lucide-react";
+import type { Role } from "@/generated/prisma/client";
 
-const navItems = [
+const adminNavItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/blog", label: "Blog", icon: Newspaper },
@@ -12,14 +13,20 @@ const navItems = [
   { href: "/admin/consultations", label: "Consults", icon: Calendar },
 ];
 
-export default function AdminSidebar() {
+// Writers only manage blog content.
+const writerNavItems = [{ href: "/admin/blog", label: "Blog", icon: Newspaper }];
+
+export default function AdminSidebar({ role }: { role: Role }) {
   const pathname = usePathname();
+  const navItems = role === "WRITER" ? writerNavItems : adminNavItems;
 
   return (
     <aside className="flex shrink-0 flex-col md:h-full md:w-[260px]">
       <div className="mb-4 mt-6 md:mb-8 md:mt-0">
-        <h1 className="font-prata text-[28px] text-dark">Admin</h1>
-        <p className="mt-1 font-lato text-sm text-gray-text">Manage your store</p>
+        <h1 className="font-prata text-[28px] text-dark">{role === "WRITER" ? "Writer" : "Admin"}</h1>
+        <p className="mt-1 font-lato text-sm text-gray-text">
+          {role === "WRITER" ? "Manage your blog posts" : "Manage your store"}
+        </p>
       </div>
 
       <div className="fixed bottom-6 left-1/2 z-50 flex w-[90%] max-w-[400px] -translate-x-1/2 flex-row items-center justify-around rounded-full bg-white px-4 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.12)] md:static md:z-auto md:flex-1 md:w-auto md:max-w-none md:translate-x-0 md:flex-col md:items-stretch md:rounded-none md:bg-transparent md:px-0 md:py-0 md:shadow-none">

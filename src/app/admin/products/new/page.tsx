@@ -1,7 +1,9 @@
 import { getCategories, getCollections } from "@/lib/products";
 import ProductForm from "@/components/admin/ProductForm";
+import { requireAdmin } from "@/lib/dal";
 
 export default async function NewProductPage() {
+  await requireAdmin();
   const [categories, collections] = await Promise.all([getCategories(), getCollections()]);
 
   return (
