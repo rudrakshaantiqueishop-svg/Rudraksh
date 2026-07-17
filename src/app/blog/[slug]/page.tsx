@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
-import { getBlogBySlug } from "@/lib/blogs";
+import { getBlogBySlug, getPopularBlogs, getRelatedBlogs } from "@/lib/blogs";
+import { getRelatedProducts } from "@/lib/products";
 import BlogArticle from "@/components/blog/BlogArticle";
+import BlogSidebar from "@/components/blog/BlogSidebar";
+import RelatedArticles from "@/components/blog/RelatedArticles";
 
 const BlogStillUnsure = dynamic(() => import("@/components/blog/BlogStillUnsure"));
 
@@ -39,16 +42,32 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     notFound();
   }
 
+  const [relatedProducts, popularPosts, relatedPosts] = await Promise.all([
+    getRelatedProducts(blog.categoryId, 3),
+    getPopularBlogs(blog.id, 4),
+    getRelatedBlogs(blog.id, blog.categoryId, 3),
+  ]);
+
   return (
     <div style={{ background: "#FEF9F2", overflowX: "hidden" }}>
-      <BlogArticle
-        title={blog.title}
-        author={blog.author}
-        publishedAt={blog.publishedAt}
-        readTimeMinutes={blog.readTimeMinutes}
-        body={blog.body}
-        category={blog.category}
-      />
+      <div className="h-px-section py-10 lg:py-14">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] gap-10 lg:gap-14">
+          <BlogArticle
+            title={blog.title}
+            excerpt={blog.excerpt}
+            coverImage={blog.coverImage}
+            coverImageAlt={blog.coverImageAlt}
+            author={blog.authorUser?.name ?? blog.author}
+            publishedAt={blog.publishedAt}
+            readTimeMinutes={blog.readTimeMinutes}
+            body={blog.body}
+            category={blog.category}
+          />
+          <BlogSidebar relatedProducts={relatedProducts} popularPosts={popularPosts} />
+        </div>
+      </div>
+
+      <RelatedArticles posts={relatedPosts} />
       <BlogStillUnsure />
     </div>
   );

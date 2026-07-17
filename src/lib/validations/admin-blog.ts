@@ -20,16 +20,17 @@ export const blogSchema = z.object({
       error: "Body is required.",
     }),
   coverImage: z.string().trim().min(1, { error: "Cover image is required." }),
+  coverImageAlt: z
+    .string()
+    .trim()
+    .transform((value) => (value === "" ? undefined : value))
+    .optional(),
   author: z.string().trim().min(1, { error: "Author is required." }),
   readTimeMinutes: z.coerce
     .number()
     .int()
     .positive({ error: "Read time must be a positive number." }),
-  categoryId: z
-    .string()
-    .trim()
-    .transform((value) => (value === "" ? undefined : value))
-    .optional(),
+  categoryId: z.string().trim().min(1, { error: "Category is required." }),
   publishedAt: z.coerce.date(),
   status: z.enum(["DRAFT", "REVIEW", "PUBLISHED"]).catch("DRAFT"),
   // Comma-separated in the form; normalised to a de-duped, trimmed array.

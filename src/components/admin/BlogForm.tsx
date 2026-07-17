@@ -32,6 +32,9 @@ interface BlogFormProps {
   categories: { id: string; name: string }[];
   // Admins may publish directly; writers can only save as Draft or submit for Review.
   canPublish?: boolean;
+  // The logged-in staff member's name — used to pre-fill the byline on new
+  // posts so the author is a real person, not a hardcoded brand string.
+  defaultAuthor?: string;
 }
 
 const STATUS_OPTIONS: {
@@ -45,7 +48,7 @@ const STATUS_OPTIONS: {
   { value: "PUBLISHED", label: "Published", hint: "Live on the site immediately.", adminOnly: true },
 ];
 
-export default function BlogForm({ blog, categories, canPublish = false }: BlogFormProps) {
+export default function BlogForm({ blog, categories, canPublish = false, defaultAuthor = "" }: BlogFormProps) {
   const action = blog ? updateBlog.bind(null, blog.id) : createBlog;
   const [state, formAction] = useActionState(action, undefined);
 
@@ -96,7 +99,7 @@ export default function BlogForm({ blog, categories, canPublish = false }: BlogF
           <FormField
             label="Author"
             name="author"
-            defaultValue={blog?.author ?? "Rudraksha Antiquei"}
+            defaultValue={blog?.author ?? defaultAuthor}
             required
             errors={state?.errors?.author}
           />
@@ -119,20 +122,17 @@ export default function BlogForm({ blog, categories, canPublish = false }: BlogF
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label>Category</Label>
+          <Label>Category <span className="text-destructive">*</span></Label>
           <Select
             name="categoryId"
             defaultValue={blog?.categoryId ?? ""}
-            items={[
-              { value: "", label: "— None —" },
-              ...categories.map((c) => ({ value: c.id, label: c.name })),
-            ]}
+            required
+            items={categories.map((c) => ({ value: c.id, label: c.name }))}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="No category" />
+              <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">— None —</SelectItem>
               {categories.map((c) => (
                 <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
               ))}
@@ -181,9 +181,17 @@ export default function BlogForm({ blog, categories, canPublish = false }: BlogF
                 />
                 <CloudinaryUploadButton label="Upload" onUpload={setCoverImage} />
               </div>
+              <Input
+                name="coverImageAlt"
+                defaultValue={blog?.coverImageAlt ?? ""}
+                placeholder="Alt text — describe the image for accessibility & SEO"
+              />
             </div>
           </div>
           {state?.errors?.coverImage?.map((msg) => (
+            <span key={msg} className="font-lato text-[13px] text-destructive">{msg}</span>
+          ))}
+          {state?.errors?.coverImageAlt?.map((msg) => (
             <span key={msg} className="font-lato text-[13px] text-destructive">{msg}</span>
           ))}
         </div>

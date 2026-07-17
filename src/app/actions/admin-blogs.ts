@@ -22,6 +22,7 @@ function parseBlogFormData(formData: FormData) {
     excerpt: formData.get("excerpt"),
     body: formData.get("body"),
     coverImage: formData.get("coverImage"),
+    coverImageAlt: formData.get("coverImageAlt"),
     author: formData.get("author"),
     readTimeMinutes: formData.get("readTimeMinutes"),
     categoryId: formData.get("categoryId"),
@@ -51,17 +52,18 @@ export async function createBlog(
     return { errors: result.error.flatten().fieldErrors, message: "Please fix the errors below." };
   }
 
-  const { categoryId, status, metaTitle, metaDescription, ...data } = result.data;
+  const { categoryId, status, metaTitle, metaDescription, coverImageAlt, ...data } = result.data;
   const effectiveStatus = resolveStatusOnCreate(staff.role, status);
 
   try {
     await prisma.blog.create({
       data: {
         ...data,
-        categoryId: categoryId ?? null,
+        categoryId,
         status: effectiveStatus,
         metaTitle: metaTitle ?? null,
         metaDescription: metaDescription ?? null,
+        coverImageAlt: coverImageAlt ?? null,
         authorId: staff.id,
       },
     });
@@ -94,7 +96,7 @@ export async function updateBlog(
     return { errors: result.error.flatten().fieldErrors, message: "Please fix the errors below." };
   }
 
-  const { categoryId, status, metaTitle, metaDescription, ...data } = result.data;
+  const { categoryId, status, metaTitle, metaDescription, coverImageAlt, ...data } = result.data;
 
   // Writers can't publish, and can't unpublish an already-live post.
   let effectiveStatus: BlogStatus = status;
@@ -108,10 +110,11 @@ export async function updateBlog(
       where: { id },
       data: {
         ...data,
-        categoryId: categoryId ?? null,
+        categoryId,
         status: effectiveStatus,
         metaTitle: metaTitle ?? null,
         metaDescription: metaDescription ?? null,
+        coverImageAlt: coverImageAlt ?? null,
       },
     });
   } catch (err) {

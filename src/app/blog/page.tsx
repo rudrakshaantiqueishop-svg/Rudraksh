@@ -7,7 +7,7 @@ const BlogStillUnsure = dynamic(() => import("@/components/blog/BlogStillUnsure"
 
 export default async function BlogPage() {
   const [{ posts, total }, categories] = await Promise.all([
-    getBlogsPaginated({ skip: 0, take: 4 }),
+    getBlogsPaginated({ skip: 0, take: 10 }),
     getBlogCategories(),
   ]);
 

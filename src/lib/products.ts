@@ -61,6 +61,33 @@ export async function getSimilarProducts(categoryId: string, excludeId: string, 
   });
 }
 
+// Sidebar "Related Products" for a blog post — products in the same category
+// as the post, filled out with bestsellers when the category is empty or the
+// post has no category.
+export async function getRelatedProducts(categoryId: string | null, limit = 3) {
+  const include = { images: { orderBy: { sortOrder: "asc" as const } } };
+
+  const inCategory = categoryId
+    ? await prisma.product.findMany({
+        where: { categoryId },
+        take: limit,
+        orderBy: [{ isBestseller: "desc" }, { createdAt: "asc" }],
+        include,
+      })
+    : [];
+
+  if (inCategory.length >= limit) return inCategory;
+
+  const fillers = await prisma.product.findMany({
+    where: { isBestseller: true, id: { notIn: inCategory.map((p) => p.id) } },
+    take: limit - inCategory.length,
+    orderBy: { createdAt: "asc" },
+    include,
+  });
+
+  return [...inCategory, ...fillers];
+}
+
 export async function getProductsByCategory(categorySlug: string) {
   return prisma.product.findMany({
     where: { category: { slug: categorySlug } },

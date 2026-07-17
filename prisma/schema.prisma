@@ -282,6 +282,7 @@ model Blog {
   excerpt         String   @db.Text
   body            String   @db.Text
   coverImage      String
+  coverImageAlt   String?
   author          String   @default("Rudraksha Antiquei")
   readTimeMinutes Int      @default(5)
 

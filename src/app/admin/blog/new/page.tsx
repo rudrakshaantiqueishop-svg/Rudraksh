@@ -8,7 +8,11 @@ export default async function NewBlogPage() {
   return (
     <div className="flex flex-col gap-6">
       <h1 className="font-prata text-2xl text-dark">New Blog Post</h1>
-      <BlogForm categories={categories} canPublish={user.role === "ADMIN"} />
+      <BlogForm
+        categories={categories}
+        canPublish={user.role === "ADMIN"}
+        defaultAuthor={user.name ?? ""}
+      />
     </div>
   );
 }

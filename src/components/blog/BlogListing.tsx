@@ -18,8 +18,8 @@ type BlogPost = {
 
 type BlogCategory = { id: string; name: string; slug: string };
 
-const INITIAL_SIZE = 4;
-const PAGE_SIZE = 3;
+const INITIAL_SIZE = 10;
+const PAGE_SIZE = 10;
 
 function formatPostDate(date: Date, readTimeMinutes: number) {
   const formatted = new Date(date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
@@ -62,16 +62,17 @@ export default function BlogListing({
   const [activeCategory, setActiveCategory] = useState("all");
   const [posts, setPosts] = useState<BlogPost[]>(initialPosts);
   const [total, setTotal] = useState(initialTotal);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isCategoryLoading, setIsCategoryLoading] = useState(false);
+  const [isMoreLoading, setIsMoreLoading] = useState(false);
 
   const featured = posts[0];
   const gridPosts = posts.slice(1);
   const hasMore = posts.length < total;
 
   async function handleCategoryChange(slug: string) {
-    if (slug === activeCategory || isLoading) return;
+    if (slug === activeCategory || isCategoryLoading || isMoreLoading) return;
     setActiveCategory(slug);
-    setIsLoading(true);
+    setIsCategoryLoading(true);
     const { posts: newPosts, total: newTotal } = await fetchBlogs(
       slug === "all" ? undefined : slug,
       0,
@@ -79,12 +80,12 @@ export default function BlogListing({
     );
     setPosts(newPosts);
     setTotal(newTotal);
-    setIsLoading(false);
+    setIsCategoryLoading(false);
   }
 
   async function handleShowMore() {
-    if (isLoading) return;
-    setIsLoading(true);
+    if (isCategoryLoading || isMoreLoading) return;
+    setIsMoreLoading(true);
     const { posts: morePosts, total: newTotal } = await fetchBlogs(
       activeCategory === "all" ? undefined : activeCategory,
       posts.length,
@@ -92,7 +93,7 @@ export default function BlogListing({
     );
     setPosts((prev) => [...prev, ...morePosts]);
     setTotal(newTotal);
-    setIsLoading(false);
+    setIsMoreLoading(false);
   }
 
   return (
@@ -133,7 +134,7 @@ export default function BlogListing({
             No articles yet. Check back soon.
           </p>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "48px", alignItems: "center", width: "100%", opacity: isLoading ? 0.6 : 1, transition: "opacity 0.2s" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "48px", alignItems: "center", width: "100%", opacity: isCategoryLoading ? 0.6 : 1, transition: "opacity 0.2s" }}>
             {/* Featured article */}
             <div className="bl-featured" style={{ background: "#FFF5E6" }}>
               {/* Image */}
@@ -220,12 +221,12 @@ export default function BlogListing({
             {hasMore && (
               <button
                 onClick={handleShowMore}
-                disabled={isLoading}
+                disabled={isCategoryLoading || isMoreLoading}
                 className="font-lato bl-show-more"
-                style={{ background: "none", cursor: isLoading ? "default" : "pointer" }}
+                style={{ background: "none", cursor: (isCategoryLoading || isMoreLoading) ? "default" : "pointer" }}
               >
                 <span style={{ fontWeight: 500, fontSize: "16px", lineHeight: "150%", color: "#552912" }}>
-                  {isLoading ? "LOADING..." : "SHOW MORE"}
+                  {isMoreLoading ? "LOADING..." : "SHOW MORE"}
                 </span>
               </button>
             )}
