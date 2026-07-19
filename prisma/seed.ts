@@ -1,7 +1,8 @@
 import "dotenv/config";
 import { PrismaClient, Prisma } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { newProducts } from "./new-products";
+import { CATALOG, rotationImage, type SubcategorySeed } from "./catalog-data";
+import { blogs } from "./blog-seed-data";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -17,432 +18,10 @@ const RETURNS_INFO =
 
 const SIZES = ["<18mm", "<20mm", "<24mm", "<28mm"];
 
-const categories = [
-  {
-    name: "Rudraksha",
-    slug: "rudraksha",
-    image: "/assets/images/home/rudraksh.png",
-    sortOrder: 0,
-    pageContent: {
-      heroTitle: "Authentic Rudraksha, Chosen with Care",
-      heroSubtitle:
-        "Every Rudraksha listed here is physically examined, scientifically verified, and handled with traditional respect—so you can explore with confidence, not confusion.",
-      introHeading: "Rudraksha Beads",
-      introDescription:
-        "Rudraksha beads have been worn for centuries for spiritual grounding, focus, and inner balance. However, not every Rudraksha is the same—and choosing the right one depends on authenticity, structure, and personal suitability. This collection brings together verified Rudraksha beads, clearly categorized by mukhi, origin, and form, so you can make an informed choice without pressure.",
-      introImage: "/assets/images/home/rudraksh.png",
-      checklistHeading: "Every Rudraksha You See Here Is",
-      checklist: [
-        "Physically examined for natural structure",
-        "Scientifically tested using non-destructive methods",
-        "Mukhi confirmed manually and technically",
-        "Provided with certification",
-        "Final-checked before dispatch",
-      ],
-      checklistImages: ["/assets/images/about/about-sacred-1.png", "/assets/images/about/about-sacred-2.png"],
-      fitCheckRightLabel: "Rudraksha May Be Right for You If:",
-      fitCheckRightItems: [
-        "You value authenticity over appearance",
-        "You're seeking grounding, focus, or spiritual discipline",
-        "You want traditional guidance, not exaggerated claims",
-      ],
-      fitCheckWrongLabel: "Rudraksha May Not Be Right for You If:",
-      fitCheckWrongItems: [
-        "You're looking for instant or guaranteed outcomes",
-        "You prefer decorative jewelry with no traditional context",
-        "You're unsure and don't want guidance",
-      ],
-      fitCheckImage: "/assets/images/home/rudraksh.png",
-      exploreDesigns: {
-        heading: "Explore Our Designs",
-        description: "Rudraksha beads are available in multiple forms depending on how you prefer to wear them.",
-        items: [
-          { title: "Loose Beads", description: "For traditional threading or personal customization.", image: "/assets/images/home/beads.png" },
-          { title: "Silver Capped", description: "A protective silver cap for durability and daily wear.", image: "/assets/images/products/category-bracelets.png" },
-          { title: "Silver Chain", description: "Minimal, ready-to-wear designs with a refined finish.", image: "/assets/images/products/category-necklace.png" },
-          { title: "Rudraksha Chain", description: "Traditionally strung chains for regular spiritual use.", image: "/assets/images/products/Product Highlight.png" },
-        ],
-      },
-    },
-  },
-  {
-    name: "Bracelets",
-    slug: "bracelets",
-    image: "/assets/images/products/category-bracelets.png",
-    sortOrder: 1,
-    pageContent: {
-      heroTitle: "Sacred Bracelets, Worn with Intention",
-      heroSubtitle:
-        "Each bracelet is strung with genuine Rudraksha and gemstone beads, checked for quality and energised on request—so it feels personal, not generic.",
-      introHeading: "Rudraksha & Gemstone Bracelets",
-      introDescription:
-        "Bracelets are one of the simplest ways to keep Rudraksha and gemstone energy close throughout the day. Worn on the wrist, they sit near the pulse points and are easy to carry into work, travel, and daily routine. This collection brings together single-mukhi, multi-bead, and combination bracelets—strung on durable elastic or thread, sized for comfort, and finished with authentic beads sourced and verified the same way as our loose Rudraksha.",
-      introImage: "/assets/images/products/category-bracelets.png",
-      checklistHeading: "Every Bracelet You See Here Is",
-      checklist: [
-        "Strung with genuine, hand-selected beads",
-        "Checked for size, finish, and thread strength",
-        "Mukhi and bead type confirmed before listing",
-        "Provided with certification on request",
-        "Final-checked and cleaned before dispatch",
-      ],
-      checklistImages: ["/assets/images/products/category-bracelets.png", "/assets/images/about/about-founding-1.png"],
-      fitCheckRightLabel: "Bracelets May Be Right for You If:",
-      fitCheckRightItems: [
-        "You want a simple, everyday way to stay connected to your practice",
-        "You prefer something subtle that fits with daily life and work",
-        "You're looking for an easy gift with genuine meaning",
-      ],
-      fitCheckWrongLabel: "Bracelets May Not Be Right for You If:",
-      fitCheckWrongItems: [
-        "You need a statement piece for formal occasions",
-        "You're allergic to natural fibres or wood and need metal-only pieces",
-        "You want something precisely adjustable without resizing",
-      ],
-      fitCheckImage: "/assets/images/products/category-bracelets.png",
-      exploreDesigns: {
-        heading: "Explore Our Designs",
-        description: "Bracelets are strung in a few different styles depending on how many beads you want to wear and how they're finished.",
-        items: [
-          { title: "Single Mukhi", description: "One bead style, strung for everyday simplicity.", image: "/assets/images/products/category-bracelets.png" },
-          { title: "Multi-Bead", description: "Several beads strung together on durable elastic.", image: "/assets/images/about/about-founding-1.png" },
-          { title: "Gemstone Combination", description: "Nine traditional gemstones set on an adjustable cord.", image: "/assets/images/about/about-principle-1.png" },
-          { title: "Elastic Cord", description: "Stretch-fit cords sized for a comfortable daily fit.", image: "/assets/images/about/about-founding-2.png" },
-        ],
-      },
-    },
-  },
-  {
-    name: "Murtis",
-    slug: "murtis",
-    image: "/assets/images/home/god.png",
-    sortOrder: 2,
-    pageContent: {
-      heroTitle: "Murtis Crafted for the Home Temple",
-      heroSubtitle:
-        "Every murti is cast and finished with attention to proportion and detail, suited for daily worship and quiet reflection at home.",
-      introHeading: "Deity Murtis & Idols",
-      introDescription:
-        "A murti anchors a home altar—it gives daily prayer a focal point and a sense of presence. This collection includes murtis of major deities in brass, marble-dust composite, and resin finishes, sized for home temples, study tables, and gifting. Each piece is checked for finish, proportion, and stability before it's listed, so what you see is what arrives.",
-      introImage: "/assets/images/home/god.png",
-      checklistHeading: "Every Murti You See Here Is",
-      checklist: [
-        "Checked for proportion, posture, and detailing",
-        "Finished by hand to remove mould marks and rough edges",
-        "Base-tested for stability on flat surfaces",
-        "Packed with protective wrapping for safe transit",
-        "Final quality-checked before dispatch",
-      ],
-      checklistImages: ["/assets/images/home/god.png", "/assets/images/about/about-founding-2.png"],
-      fitCheckRightLabel: "Murtis May Be Right for You If:",
-      fitCheckRightItems: [
-        "You're setting up or refreshing a home altar",
-        "You want a meaningful gift for a housewarming or festival",
-        "You value craftsmanship and finish in devotional pieces",
-      ],
-      fitCheckWrongLabel: "Murtis May Not Be Right for You If:",
-      fitCheckWrongItems: [
-        "You need a very large piece for a temple hall (we focus on home-sized murtis)",
-        "You're looking for antique or pre-owned pieces only",
-        "You want a custom deity or pose not listed here",
-      ],
-      fitCheckImage: "/assets/images/home/god.png",
-      exploreDesigns: {
-        heading: "Explore Our Designs",
-        description: "Murtis are available in a few finishes, chosen for the look and feel you want on your altar.",
-        items: [
-          { title: "Brass", description: "Solid brass with hand-detailing on the crown and base.", image: "/assets/images/home/god.png" },
-          { title: "Marble Finish", description: "A marble-dust composite, hand-painted for a stone-like look.", image: "/assets/images/about/about-founding-1.png" },
-          { title: "Resin", description: "Lightweight resin castings suited for travel and gifting.", image: "/assets/images/about/about-founding-2.png" },
-          { title: "Table-Sized", description: "Compact sizing for study tables and small altars.", image: "/assets/images/about/about-p04.png" },
-        ],
-      },
-    },
-  },
-  {
-    name: "Siddha Mala",
-    slug: "siddha-mala",
-    image: "/assets/images/about/about-sacred-1.png",
-    sortOrder: 3,
-    pageContent: {
-      heroTitle: "Siddha Mala, Strung for Daily Practice",
-      heroSubtitle:
-        "Each mala is hand-strung to traditional bead counts and checked bead-by-bead, so it holds up to daily japa and long-term use.",
-      introHeading: "Siddha Mala (108 Beads)",
-      introDescription:
-        "A Siddha Mala is a full 108-bead strand traditionally used for japa (mantra repetition), meditation counting, and as a worn or carried sacred object. This collection includes malas strung from Rudraksha, Tulsi, and mixed sacred beads, knotted between beads for durability, and finished with a guru bead and tassel. Bead size, count, and stringing are checked before each mala is listed.",
-      introImage: "/assets/images/about/about-sacred-1.png",
-      checklistHeading: "Every Siddha Mala You See Here Is",
-      checklist: [
-        "Strung to the correct traditional 108-bead count",
-        "Hand-knotted between beads for durability",
-        "Bead size and material verified before listing",
-        "Finished with a guru bead and tassel",
-        "Final-checked for thread strength before dispatch",
-      ],
-      checklistImages: ["/assets/images/about/about-sacred-1.png", "/assets/images/about/about-sacred-2.png"],
-      fitCheckRightLabel: "A Siddha Mala May Be Right for You If:",
-      fitCheckRightItems: [
-        "You have a regular japa, mantra, or meditation practice",
-        "You want a mala that can be worn as well as used for counting",
-        "You prefer traditional bead counts and stringing methods",
-      ],
-      fitCheckWrongLabel: "A Siddha Mala May Not Be Right for You If:",
-      fitCheckWrongItems: [
-        "You're looking for a short, decorative-only necklace",
-        "You need a mala pre-energised for a specific deity practice not listed",
-        "You prefer machine-knotted, mass-produced strands",
-      ],
-      fitCheckImage: "/assets/images/about/about-sacred-2.png",
-      exploreDesigns: {
-        heading: "Explore Our Designs",
-        description: "Siddha Malas are strung from different bead materials, each suited to a particular practice.",
-        items: [
-          { title: "Rudraksha Mala", description: "108 Rudraksha beads, hand-knotted for durability.", image: "/assets/images/about/about-sacred-1.png" },
-          { title: "Tulsi Mala", description: "108 Tulsi wood beads, traditional for Vaishnav practice.", image: "/assets/images/about/about-sacred-2.png" },
-          { title: "Guru Bead & Tassel", description: "Every mala is finished with a guru bead and cotton tassel.", image: "/assets/images/about/about-p03.png" },
-          { title: "Wearable Length", description: "Strung to a length suited for both wear and counting.", image: "/assets/images/about/about-principle-2.png" },
-        ],
-      },
-    },
-  },
-  {
-    name: "Gemstones",
-    slug: "gemstones",
-    image: "/assets/images/about/about-p01-3021a5.png",
-    sortOrder: 4,
-    pageContent: {
-      heroTitle: "Gemstones, Verified Before They Reach You",
-      heroSubtitle:
-        "Every gemstone is checked for cut, clarity, and weight before listing—so you know exactly what you're choosing for wear or remedy.",
-      introHeading: "Natural Gemstones & Rings",
-      introDescription:
-        "Gemstones are widely used in Vedic astrology as a way to strengthen the influence of a particular planet for the wearer. This collection covers natural, untreated gemstones set in simple rings and pendants—chosen for clarity, cut, and carat weight rather than size alone. Each stone is checked before setting, and basic guidance on which finger and metal is traditionally recommended is included with the listing.",
-      introImage: "/assets/images/about/about-p01-3021a5.png",
-      checklistHeading: "Every Gemstone You See Here Is",
-      checklist: [
-        "Checked for natural origin before listing",
-        "Verified for cut, clarity, and carat weight",
-        "Set securely in tested metal mounts",
-        "Provided with basic wearing guidance",
-        "Final-checked before dispatch",
-      ],
-      checklistImages: ["/assets/images/about/about-p01-3021a5.png", "/assets/images/products/category-rings.png"],
-      fitCheckRightLabel: "Gemstones May Be Right for You If:",
-      fitCheckRightItems: [
-        "You're exploring gemstones as part of an astrological remedy",
-        "You want a natural stone with basic verification before purchase",
-        "You're comfortable seeking a professional consultation for fit and timing",
-      ],
-      fitCheckWrongLabel: "Gemstones May Not Be Right for You If:",
-      fitCheckWrongItems: [
-        "You're looking for lab-created or synthetic stones",
-        "You want guaranteed astrological results without consultation",
-        "You need formal gemological certification included by default",
-      ],
-      fitCheckImage: "/assets/images/about/about-p01-3021a5.png",
-      exploreDesigns: {
-        heading: "Explore Our Designs",
-        description: "Gemstones are set in a few different ways depending on how you plan to wear them.",
-        items: [
-          { title: "Rings", description: "Natural stones set in simple panchadhatu or silver mounts.", image: "/assets/images/products/category-rings.png" },
-          { title: "Yellow Sapphire", description: "Pukhraj, traditionally worn to strengthen Jupiter.", image: "/assets/images/about/about-p01-3021a5.png" },
-          { title: "Red Coral", description: "Moonga, traditionally worn to strengthen Mars.", image: "/assets/images/about/about-p04.png" },
-          { title: "Pendants", description: "Stones set in pendants for those who prefer not to wear rings.", image: "/assets/images/about/about-principle-3.png" },
-        ],
-      },
-    },
-  },
-  {
-    name: "Antiques",
-    slug: "antiques",
-    image: "/assets/images/about/about-founding-2.png",
-    sortOrder: 5,
-    pageContent: {
-      heroTitle: "Antiques, Sourced with Provenance in Mind",
-      heroSubtitle:
-        "Every antique piece is inspected for age, condition, and craftsmanship—so what you're buying is described honestly, not embellished.",
-      introHeading: "Antique Religious Artefacts",
-      introDescription:
-        "This collection brings together older devotional and decorative pieces—pendants, boxes, figurines, and ritual items—sourced for their craftsmanship and history rather than mass appeal. Each piece is inspected for condition, listed with an honest description of wear and age, and photographed as-is so there are no surprises. Quantities are limited and pieces are not re-stocked once sold.",
-      introImage: "/assets/images/about/about-founding-2.png",
-      checklistHeading: "Every Antique Piece You See Here Is",
-      checklist: [
-        "Inspected for age, material, and condition",
-        "Photographed as-is, including visible wear",
-        "Described honestly with no exaggerated claims",
-        "Cleaned gently without altering original finish",
-        "Final-checked before dispatch",
-      ],
-      checklistImages: ["/assets/images/about/about-founding-2.png", "/assets/images/about/about-founding-1.png"],
-      fitCheckRightLabel: "Antiques May Be Right for You If:",
-      fitCheckRightItems: [
-        "You appreciate older craftsmanship and natural wear",
-        "You're comfortable with one-of-a-kind pieces that won't be restocked",
-        "You want a collectible piece with character, not a uniform finish",
-      ],
-      fitCheckWrongLabel: "Antiques May Not Be Right for You If:",
-      fitCheckWrongItems: [
-        "You expect a brand-new, flawless finish",
-        "You need an exact match to a specific reference piece",
-        "You're looking for formal antique authentication paperwork",
-      ],
-      fitCheckImage: "/assets/images/about/about-founding-1.png",
-      exploreDesigns: {
-        heading: "Explore Our Designs",
-        description: "Our antique pieces span a few categories of devotional and decorative items.",
-        items: [
-          { title: "Boxes", description: "Hand-engraved brass boxes, originally used to store malas.", image: "/assets/images/about/about-founding-2.png" },
-          { title: "Temple Bells", description: "Brass bells with carved handles, rung at the start of puja.", image: "/assets/images/about/about-founding-1.png" },
-          { title: "Figurines", description: "Small devotional figurines sourced for craftsmanship and history.", image: "/assets/images/about/about-principle-1.png" },
-          { title: "Pendants", description: "Older pendants and ritual items, photographed as-is.", image: "/assets/images/about/about-principle-2.png" },
-        ],
-      },
-    },
-  },
-  {
-    name: "Combinations",
-    slug: "combinations",
-    image: "/assets/images/about/about-principle-3.png",
-    sortOrder: 6,
-    pageContent: {
-      heroTitle: "Combinations, Paired with Purpose",
-      heroSubtitle:
-        "Every combination is assembled from individually verified beads—paired by traditional intention, not just by appearance.",
-      introHeading: "Rudraksha Combination Sets",
-      introDescription:
-        "Some Rudraksha mukhis are traditionally worn together to support a specific intention—grounding, focus, courage, or balance. This collection brings together pre-assembled combination bracelets and pendants, where each bead is sourced and checked individually before being combined. Every combination listing explains which mukhis are included and the traditional reasoning behind the pairing.",
-      introImage: "/assets/images/about/about-principle-3.png",
-      checklistHeading: "Every Combination You See Here Is",
-      checklist: [
-        "Assembled from individually verified beads",
-        "Paired according to traditional guidance, explained on the listing",
-        "Checked for mukhi accuracy before combining",
-        "Strung and finished to the same standard as single-bead pieces",
-        "Final-checked before dispatch",
-      ],
-      checklistImages: ["/assets/images/about/about-principle-3.png", "/assets/images/about/about-principle-1.png"],
-      fitCheckRightLabel: "Combinations May Be Right for You If:",
-      fitCheckRightItems: [
-        "You already know which mukhis you want to combine",
-        "You're following guidance from a consultation or prior research",
-        "You want one piece that covers more than one intention",
-      ],
-      fitCheckWrongLabel: "Combinations May Not Be Right for You If:",
-      fitCheckWrongItems: [
-        "You'd rather choose and combine single beads yourself",
-        "You want a custom combination not listed here",
-        "You're new to Rudraksha and unsure which combination suits you",
-      ],
-      fitCheckImage: "/assets/images/about/about-principle-1.png",
-      exploreDesigns: {
-        heading: "Explore Our Designs",
-        description: "Combination pieces pair specific mukhis together for a particular intention.",
-        items: [
-          { title: "5+7 Mukhi", description: "Pairs discipline (5 Mukhi) with prosperity (7 Mukhi).", image: "/assets/images/about/about-principle-3.png" },
-          { title: "1+4+7 Mukhi", description: "Combines clarity, communication, and obstacle removal.", image: "/assets/images/about/about-principle-2.png" },
-          { title: "Bracelets", description: "Combination beads strung on a durable elastic cord.", image: "/assets/images/about/about-principle-1.png" },
-          { title: "Pendants", description: "Combination beads set together in a single silver cap.", image: "/assets/images/about/about-founding-2.png" },
-        ],
-      },
-    },
-  },
-  {
-    name: "Singing Bowls",
-    slug: "singing-bowls",
-    image: "/assets/images/about/about-p04.png",
-    sortOrder: 7,
-    pageContent: {
-      heroTitle: "Singing Bowls, Tuned by Hand",
-      heroSubtitle:
-        "Every bowl is played and listened to before listing—so the tone, sustain, and finish meet the same standard, bowl to bowl.",
-      introHeading: "Himalayan Singing Bowls",
-      introDescription:
-        "Singing bowls are used for sound meditation, relaxation practices, and as a closing or opening signal in yoga and ritual settings. This collection includes hand-hammered metal bowls in a range of sizes, each played and checked for tone, sustain, and balance before listing. A wooden striker is included with every bowl, and a basic guide on striking and rim-rubbing technique comes with the listing.",
-      introImage: "/assets/images/about/about-p04.png",
-      checklistHeading: "Every Singing Bowl You See Here Is",
-      checklist: [
-        "Played and listened to for tone and sustain",
-        "Checked for balance and even rim contact",
-        "Inspected for dents, cracks, or casting flaws",
-        "Supplied with a matching wooden striker",
-        "Final-checked and cleaned before dispatch",
-      ],
-      checklistImages: ["/assets/images/about/about-p04.png", "/assets/images/about/about-p02.png"],
-      fitCheckRightLabel: "Singing Bowls May Be Right for You If:",
-      fitCheckRightItems: [
-        "You use sound as part of meditation, yoga, or relaxation practice",
-        "You want a hand-finished bowl with a checked tone",
-        "You're comfortable with natural variation in size and finish, bowl to bowl",
-      ],
-      fitCheckWrongLabel: "Singing Bowls May Not Be Right for You If:",
-      fitCheckWrongItems: [
-        "You need an exact, lab-tuned frequency for sound therapy work",
-        "You want a perfectly uniform, machine-made finish",
-        "You're looking for a decorative piece only and don't plan to play it",
-      ],
-      fitCheckImage: "/assets/images/about/about-p02.png",
-      exploreDesigns: {
-        heading: "Explore Our Designs",
-        description: "Singing bowls come in a few sizes and metal blends, each suited to a different use.",
-        items: [
-          { title: "Medium Bowls", description: "Hand-hammered, suited for individual sound meditation.", image: "/assets/images/about/about-p04.png" },
-          { title: "Large Bowls", description: "Deeper, sustained tones suited for group meditation.", image: "/assets/images/about/about-p02.png" },
-          { title: "Seven Metal", description: "Cast from a traditional seven-metal alloy for a richer tone.", image: "/assets/images/about/about-p01-3021a5.png" },
-          { title: "Wooden Striker", description: "Every bowl includes a matching striker and cushion.", image: "/assets/images/about/about-founding-1.png" },
-        ],
-      },
-    },
-  },
-  {
-    name: "Necklaces",
-    slug: "necklaces",
-    image: "/assets/images/products/category-necklace.png",
-    sortOrder: 8,
-    pageContent: {
-      heroTitle: "Necklaces, Finished for Everyday Wear",
-      heroSubtitle:
-        "Every necklace is strung and finished to sit comfortably for daily wear, with each bead checked the same way as our loose Rudraksha.",
-      introHeading: "Rudraksha Necklaces",
-      introDescription:
-        "A Rudraksha necklace is one of the most common ways to keep a bead close throughout the day, worn under or over clothing. This collection includes single-bead pendants, multi-bead strands, and capped designs in silver, strung on adjustable cord or chain. Each bead is checked for mukhi and finish before stringing, and chain or cord length is listed clearly so sizing is predictable.",
-      introImage: "/assets/images/products/category-necklace.png",
-      checklistHeading: "Every Necklace You See Here Is",
-      checklist: [
-        "Strung with checked, genuine Rudraksha beads",
-        "Finished with secure caps, clasps, or knots",
-        "Length and adjustability listed clearly",
-        "Mukhi and bead type confirmed before listing",
-        "Final-checked before dispatch",
-      ],
-      checklistImages: ["/assets/images/products/category-necklace.png", "/assets/images/about/about-p02.png"],
-      fitCheckRightLabel: "Necklaces May Be Right for You If:",
-      fitCheckRightItems: [
-        "You want to wear your Rudraksha visibly or under clothing throughout the day",
-        "You prefer an adjustable cord or chain over a fixed-size piece",
-        "You're looking for a versatile everyday or gifting piece",
-      ],
-      fitCheckWrongLabel: "Necklaces May Not Be Right for You If:",
-      fitCheckWrongItems: [
-        "You need a fixed, tailored chain length only",
-        "You want gemstone-only necklaces with no Rudraksha",
-        "You prefer wrist-worn pieces over neck-worn ones (see Bracelets)",
-      ],
-      fitCheckImage: "/assets/images/products/category-necklace.png",
-      exploreDesigns: {
-        heading: "Explore Our Designs",
-        description: "Necklaces are finished in a few different ways depending on how you like to wear your Rudraksha.",
-        items: [
-          { title: "Silver Capped", description: "A single bead, silver-capped and strung on an adjustable cord.", image: "/assets/images/products/category-necklace.png" },
-          { title: "Pendant Style", description: "A bead set in a simple pendant on a fine chain.", image: "/assets/images/about/about-p03.png" },
-          { title: "Multi-Bead", description: "Several beads strung together for a fuller look.", image: "/assets/images/products/Product Highlight.png" },
-          { title: "Adjustable Cord", description: "Cord lengths that adjust to sit comfortably under or over clothing.", image: "/assets/images/about/about-p02.png" },
-        ],
-      },
-    },
-  },
-];
+// Minimum products generated per subcategory ("type").
+const PRODUCTS_PER_SUBCATEGORY = 10;
 
+// "Shop By Purpose" collections (unchanged from the original catalog).
 const collections = [
   { name: "Wealth", slug: "wealth", icon: "/assets/icons/wealth.svg", sortOrder: 0 },
   { name: "Health", slug: "health", icon: "/assets/icons/health.svg", sortOrder: 1 },
@@ -454,630 +33,162 @@ const collections = [
   { name: "Balance", slug: "balance", icon: "/assets/icons/balance.svg", sortOrder: 7 },
 ];
 
-type ProductSeed = {
+// Blog categorySlugs from the old catalog remapped onto the new 11 categories.
+const BLOG_CATEGORY_REMAP: Record<string, string> = {
+  murtis: "idols-singing-bowls",
+  combinations: "bracelets",
+  "singing-bowls": "idols-singing-bowls",
+  necklaces: "gemstones",
+  antiques: "antique-collection",
+};
+
+// ── Deterministic attribute helpers (no randomness → repeatable seeds) ──
+const ORIGINS = ["Nepal", "Indonesia", "India"];
+const CHAKRAS = ["Root", "Sacral", "Solar Plexus", "Heart", "Throat", "Third Eye", "Crown"];
+const COLLECTION_SLUGS = collections.map((c) => c.slug);
+const GRADES = [
+  "Premium",
+  "Nepal Origin",
+  "Collector Grade",
+  "Lab Certified",
+  "Energized",
+  "Classic",
+  "Deluxe",
+  "Standard",
+  "Handpicked",
+  "Signature",
+];
+
+type GeneratedProduct = {
   slug: string;
   name: string;
   breadcrumbLabel: string;
   categorySlug: string;
+  subcategorySlug: string;
+  description: string;
   priceCents: number;
-  compareAtPriceCents: number;
+  compareAtPriceCents: number | null;
   stockCount: number;
   ratingAvg: number;
   ratingCount: number;
   isBestseller: boolean;
-  description: string;
   images: { url: string; alt: string; role: string; sortOrder: number }[];
-  variants?: { label: string; priceDeltaCents: number; image: string; sortOrder: number }[];
-  addOns?: { label: string; priceDeltaCents: number; sortOrder: number }[];
-  reviews?: { authorName: string; title: string; body: string; rating: number; createdAt: Date }[];
   collectionSlugs: string[];
+  attrs: {
+    mukhi: number | null;
+    origin: string | null;
+    gemstoneType: string | null;
+    certified: boolean;
+    energized: boolean;
+    weightGrams: number | null;
+    sizeMm: number | null;
+    zodiac: string | null;
+    planet: string | null;
+    chakra: string | null;
+  };
 };
 
-const products: ProductSeed[] = [
-  // ---- Rudraksha (7) -------------------------------------------------
-  {
-    slug: "4-mukhi-regular-rudraksha",
-    name: "4 Mukhi (Regular) Rudraksha",
-    breadcrumbLabel: "4 Mukhi (Regular) Rudraksha",
-    categorySlug: "rudraksha",
-    priceCents: 16000,
-    compareAtPriceCents: 17000,
-    stockCount: 3,
-    ratingAvg: 5.0,
-    ratingCount: 1200,
-    isBestseller: true,
-    description:
-      "The 4 Mukhi (four-faced) Rudraksha is associated with Lord Brahma and is traditionally worn to support clarity of thought, communication, and learning. Each bead in this listing is sourced from Nepal, hand-inspected for natural mukhi lines, bead density, and surface condition, and verified before it is photographed and listed. What you see in the gallery is the actual bead you will receive, not a representative sample.",
-    images: [
-      { url: "/assets/images/about/about-sacred-2.png", alt: "4 Mukhi Rudraksha", role: "MAIN", sortOrder: 0 },
-      { url: "/assets/images/products/category-necklace.png", alt: "4 Mukhi Rudraksha laid out", role: "GALLERY_LEFT", sortOrder: 1 },
-      { url: "/assets/images/about/about-p02.png", alt: "4 Mukhi Rudraksha worn", role: "GALLERY_TOP_RIGHT", sortOrder: 2 },
-      { url: "/assets/images/home/rudraksh.png", alt: "4 Mukhi Rudraksha detail", role: "GALLERY_BOTTOM_RIGHT", sortOrder: 3 },
-    ],
-    variants: [
-      { label: "Loose Bead", priceDeltaCents: 0, image: "/assets/images/home/beads.png", sortOrder: 0 },
-      { label: "Silver Capped", priceDeltaCents: 12000, image: "/assets/images/products/category-bracelets.png", sortOrder: 1 },
-      { label: "Silver Chain", priceDeltaCents: 18000, image: "/assets/images/products/category-charms.png", sortOrder: 2 },
-      { label: "Rudraksha Chain", priceDeltaCents: 22000, image: "/assets/images/products/category-earrings.png", sortOrder: 3 },
-    ],
-    addOns: [
-      { label: "Free Touch Energization", priceDeltaCents: 0, sortOrder: 0 },
-      { label: "Rudraksha Prana Pratishtha Pooja", priceDeltaCents: 29900, sortOrder: 1 },
-      { label: "Maha Shivaratri Pooja at Pashupatinath - 2026", priceDeltaCents: 30100, sortOrder: 2 },
-      { label: "Trividha Prana Pratishtha Pooja (3 Brahmans)", priceDeltaCents: 59900, sortOrder: 3 },
-      { label: "Dwadasha Maha Prana Pratishtha Pooja (13 Brahmans)", priceDeltaCents: 120000, sortOrder: 4 },
-    ],
-    reviews: [
-      {
-        authorName: "Annette Black",
-        title: "Exquisite Craftsmanship & Timeless Beauty",
-        body: "Absolutely stunning! The craftsmanship and attention to detail are beyond compare. Truly timeless and elegant. Each piece is meticulously designed to bring out brilliance and sophistication, making every moment special.",
-        rating: 5,
-        createdAt: new Date("2025-02-25"),
-      },
-      {
-        authorName: "Darrell Steward",
-        title: "Perfect Gift for Any Occasion",
-        body: "Bought a necklace for my wife, and she loved it! A perfect blend of luxury and charm. Designed to make every celebration memorable, our jewelry captures love, elegance, and personal style effortlessly.",
-        rating: 5,
-        createdAt: new Date("2025-02-25"),
-      },
-    ],
-    collectionSlugs: ["health", "peace"],
-  },
-  {
-    slug: "5-mukhi-rudraksha",
-    name: "5 Mukhi Rudraksha",
-    breadcrumbLabel: "5 Mukhi Rudraksha",
-    categorySlug: "rudraksha",
-    priceCents: 14000,
-    compareAtPriceCents: 15000,
-    stockCount: 10,
-    ratingAvg: 4.8,
-    ratingCount: 340,
-    isBestseller: true,
-    description:
-      "The 5 Mukhi (five-faced) Rudraksha is the most commonly worn bead, associated with Lord Shiva in his Kalagni Rudra form. It is traditionally worn for general well-being, calmness, and balance in daily life, and is considered suitable for first-time wearers. Each bead is sourced from Nepal and hand-checked for natural mukhi lines and surface condition before listing.",
-    images: [{ url: "/assets/images/about/about-sacred-1.png", alt: "5 Mukhi Rudraksha", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["wealth", "balance"],
-  },
-  {
-    slug: "6-mukhi-rudraksha",
-    name: "6 Mukhi Rudraksha",
-    breadcrumbLabel: "6 Mukhi Rudraksha",
-    categorySlug: "rudraksha",
-    priceCents: 18000,
-    compareAtPriceCents: 20000,
-    stockCount: 10,
-    ratingAvg: 4.7,
-    ratingCount: 210,
-    isBestseller: true,
-    description:
-      "The 6 Mukhi (six-faced) Rudraksha is associated with Lord Kartikeya and is traditionally worn to support willpower, discipline, and steady relationships. This bead is sourced and hand-verified for authentic mukhi structure before it is photographed and listed.",
-    images: [{ url: "/assets/images/about/about-founding-1.png", alt: "6 Mukhi Rudraksha", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["love", "peace"],
-  },
-  {
-    slug: "7-mukhi-rudraksha",
-    name: "7 Mukhi Rudraksha",
-    breadcrumbLabel: "7 Mukhi Rudraksha",
-    categorySlug: "rudraksha",
-    priceCents: 20000,
-    compareAtPriceCents: 22000,
-    stockCount: 10,
-    ratingAvg: 4.8,
-    ratingCount: 175,
-    isBestseller: true,
-    description:
-      "The 7 Mukhi (seven-faced) Rudraksha is associated with Goddess Mahalakshmi and is traditionally worn for stability in finances and to ease long-standing obstacles. Each bead is individually checked for natural ridges and bead density before listing.",
-    images: [{ url: "/assets/images/about/about-founding-2.png", alt: "7 Mukhi Rudraksha", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["luck", "protection"],
-  },
-  {
-    slug: "8-mukhi-rudraksha",
-    name: "8 Mukhi Rudraksha",
-    breadcrumbLabel: "8 Mukhi Rudraksha",
-    categorySlug: "rudraksha",
-    priceCents: 23000,
-    compareAtPriceCents: 25000,
-    stockCount: 8,
-    ratingAvg: 4.6,
-    ratingCount: 132,
-    isBestseller: true,
-    description:
-      "The 8 Mukhi (eight-faced) Rudraksha is associated with Lord Ganesha and is traditionally worn before starting new ventures, for clarity of purpose and removal of obstacles. This bead is hand-verified for authentic mukhi count and surface condition.",
-    images: [{ url: "/assets/images/about/about-p04.png", alt: "8 Mukhi Rudraksha", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["protection", "courage"],
-  },
-  {
-    slug: "9-mukhi-rudraksha",
-    name: "9 Mukhi Rudraksha",
-    breadcrumbLabel: "9 Mukhi Rudraksha",
-    categorySlug: "rudraksha",
-    priceCents: 24000,
-    compareAtPriceCents: 25000,
-    stockCount: 8,
-    ratingAvg: 4.7,
-    ratingCount: 156,
-    isBestseller: true,
-    description:
-      "The 9 Mukhi (nine-faced) Rudraksha is associated with Goddess Durga and is traditionally worn for courage, energy, and protection during demanding periods. Each bead is sourced from Nepal and checked for natural mukhi lines before listing.",
-    images: [{ url: "/assets/images/about/about-principle-3.png", alt: "9 Mukhi Rudraksha", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["courage", "wealth"],
-  },
-  {
-    slug: "12-mukhi-rudraksha",
-    name: "12 Mukhi Rudraksha",
-    breadcrumbLabel: "12 Mukhi Rudraksha",
-    categorySlug: "rudraksha",
-    priceCents: 28000,
-    compareAtPriceCents: 30000,
-    stockCount: 6,
-    ratingAvg: 4.6,
-    ratingCount: 98,
-    isBestseller: false,
-    description:
-      "The 12 Mukhi (twelve-faced) Rudraksha is associated with Surya, the Sun, and is traditionally worn to support confidence, leadership, and vitality. This bead is hand-verified for authentic mukhi structure and finish before it is listed.",
-    images: [{ url: "/assets/images/about/about-p01-3021a5.png", alt: "12 Mukhi Rudraksha", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["balance", "peace"],
-  },
+const ROLES = ["MAIN", "GALLERY_LEFT", "GALLERY_TOP_RIGHT", "GALLERY_BOTTOM_RIGHT"] as const;
 
-  // ---- Bracelets (2) --------------------------------------------------
-  {
-    slug: "rudraksha-bracelet-5-mukhi",
-    name: "Rudraksha Bracelet (5 Mukhi)",
-    breadcrumbLabel: "Rudraksha Bracelet (5 Mukhi)",
-    categorySlug: "bracelets",
-    priceCents: 12000,
-    compareAtPriceCents: 13000,
-    stockCount: 15,
-    ratingAvg: 4.7,
-    ratingCount: 264,
-    isBestseller: true,
-    description:
-      "Strung from eight 5 Mukhi Rudraksha beads on a durable elastic cord, this bracelet is designed for daily wear. Each bead is individually checked for authentic mukhi lines before stringing, and the elastic is tested for stretch and recoil so the bracelet keeps its fit over time.",
-    images: [{ url: "/assets/images/products/category-bracelets.png", alt: "Rudraksha Bracelet (5 Mukhi)", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["protection", "luck"],
-  },
-  {
-    slug: "navratna-gemstone-bracelet",
-    name: "Navratna Gemstone Bracelet",
-    breadcrumbLabel: "Navratna Gemstone Bracelet",
-    categorySlug: "bracelets",
-    priceCents: 15000,
-    compareAtPriceCents: 17000,
-    stockCount: 10,
-    ratingAvg: 4.5,
-    ratingCount: 87,
-    isBestseller: false,
-    description:
-      "This bracelet combines nine traditional gemstones—ruby, pearl, coral, emerald, yellow sapphire, diamond, blue sapphire, hessonite, and cat's eye—set in small panels on an adjustable cord. Each stone is checked for natural origin and secure setting before the bracelet is assembled.",
-    images: [{ url: "/assets/images/about/about-principle-1.png", alt: "Navratna Gemstone Bracelet", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["wealth", "balance"],
-  },
-
-  // ---- Murtis (2) -------------------------------------------------------
-  {
-    slug: "brass-lord-ganesha-murti",
-    name: "Brass Lord Ganesha Murti",
-    breadcrumbLabel: "Brass Lord Ganesha Murti",
-    categorySlug: "murtis",
-    priceCents: 18000,
-    compareAtPriceCents: 21000,
-    stockCount: 10,
-    ratingAvg: 4.8,
-    ratingCount: 142,
-    isBestseller: false,
-    description:
-      "A solid brass murti of Lord Ganesha, finished with hand-detailing on the crown, ears, and base. Suited for home altars, study tables, and gifting, this piece is checked for casting quality, finish, and stability on flat surfaces before it is listed.",
-    images: [{ url: "/assets/images/home/god.png", alt: "Brass Lord Ganesha Murti", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["peace", "health"],
-  },
-  {
-    slug: "marble-finish-shiva-murti",
-    name: "Marble-Finish Lord Shiva Murti",
-    breadcrumbLabel: "Marble-Finish Lord Shiva Murti",
-    categorySlug: "murtis",
-    priceCents: 35000,
-    compareAtPriceCents: 40000,
-    stockCount: 6,
-    ratingAvg: 4.7,
-    ratingCount: 64,
-    isBestseller: false,
-    description:
-      "This Lord Shiva murti is cast in a marble-dust composite and hand-painted for a soft, stone-like finish. It depicts Shiva in meditation posture and is sized for home temples. Each piece is checked for proportion, paint finish, and base stability before dispatch.",
-    images: [{ url: "/assets/images/about/about-founding-1.png", alt: "Marble-Finish Lord Shiva Murti", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["peace", "courage"],
-  },
-
-  // ---- Siddha Mala (2) ----------------------------------------------------
-  {
-    slug: "rudraksha-siddha-mala-108",
-    name: "Rudraksha Siddha Mala (108 Beads)",
-    breadcrumbLabel: "Rudraksha Siddha Mala (108 Beads)",
-    categorySlug: "siddha-mala",
-    priceCents: 26000,
-    compareAtPriceCents: 29000,
-    stockCount: 8,
-    ratingAvg: 4.8,
-    ratingCount: 118,
-    isBestseller: false,
-    description:
-      "A traditional 108-bead mala strung from small Rudraksha beads, hand-knotted between each bead for durability, and finished with a guru bead and cotton tassel. Suitable for japa, meditation counting, or wearing. Bead size and stringing are checked before listing.",
-    images: [{ url: "/assets/images/about/about-sacred-1.png", alt: "Rudraksha Siddha Mala (108 Beads)", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["wealth", "health"],
-  },
-  {
-    slug: "tulsi-siddha-mala-108",
-    name: "Tulsi Siddha Mala (108 Beads)",
-    breadcrumbLabel: "Tulsi Siddha Mala (108 Beads)",
-    categorySlug: "siddha-mala",
-    priceCents: 9000,
-    compareAtPriceCents: 11000,
-    stockCount: 20,
-    ratingAvg: 4.6,
-    ratingCount: 203,
-    isBestseller: false,
-    description:
-      "Strung from 108 Tulsi (holy basil) wood beads, this mala is traditionally associated with devotion and is commonly used in Vaishnav practice for japa and meditation. Each strand is hand-knotted and finished with a tassel, and checked for bead consistency before listing.",
-    images: [{ url: "/assets/images/about/about-sacred-2.png", alt: "Tulsi Siddha Mala (108 Beads)", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["peace", "love"],
-  },
-
-  // ---- Gemstones (2) ----------------------------------------------------
-  {
-    slug: "natural-yellow-sapphire-ring",
-    name: "Natural Yellow Sapphire Ring (Pukhraj)",
-    breadcrumbLabel: "Natural Yellow Sapphire Ring (Pukhraj)",
-    categorySlug: "gemstones",
-    priceCents: 32000,
-    compareAtPriceCents: 36000,
-    stockCount: 5,
-    ratingAvg: 4.7,
-    ratingCount: 76,
-    isBestseller: false,
-    description:
-      "A natural, untreated Yellow Sapphire (Pukhraj) set in a simple panchadhatu or silver mount, traditionally worn to strengthen the influence of Jupiter. The stone is checked for natural origin, clarity, and carat weight before setting, and basic guidance on wearing day and finger is included with the listing.",
-    images: [{ url: "/assets/images/about/about-p01-3021a5.png", alt: "Natural Yellow Sapphire Ring (Pukhraj)", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["wealth", "luck"],
-  },
-  {
-    slug: "natural-red-coral-ring",
-    name: "Natural Red Coral Ring (Moonga)",
-    breadcrumbLabel: "Natural Red Coral Ring (Moonga)",
-    categorySlug: "gemstones",
-    priceCents: 19000,
-    compareAtPriceCents: 21000,
-    stockCount: 9,
-    ratingAvg: 4.5,
-    ratingCount: 58,
-    isBestseller: false,
-    description:
-      "A natural Red Coral (Moonga) set in a silver mount, traditionally worn to strengthen the influence of Mars and support courage and confidence. The coral is checked for natural origin and surface quality before setting.",
-    images: [{ url: "/assets/images/products/category-rings.png", alt: "Natural Red Coral Ring (Moonga)", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["courage", "protection"],
-  },
-
-  // ---- Antiques (2) -------------------------------------------------------
-  {
-    slug: "antique-brass-rudraksha-box",
-    name: "Antique Brass Rudraksha Box",
-    breadcrumbLabel: "Antique Brass Rudraksha Box",
-    categorySlug: "antiques",
-    priceCents: 22000,
-    compareAtPriceCents: 26000,
-    stockCount: 4,
-    ratingAvg: 4.6,
-    ratingCount: 31,
-    isBestseller: false,
-    description:
-      "A hand-engraved brass box with a hinged lid, originally used to store malas and small devotional items. This piece shows natural age and patina consistent with its history, and is inspected for structural soundness and hinge function before listing. Quantities are limited.",
-    images: [{ url: "/assets/images/about/about-founding-2.png", alt: "Antique Brass Rudraksha Box", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["balance", "peace"],
-  },
-  {
-    slug: "antique-temple-bell",
-    name: "Antique Temple Bell",
-    breadcrumbLabel: "Antique Temple Bell",
-    categorySlug: "antiques",
-    priceCents: 18000,
-    compareAtPriceCents: 21000,
-    stockCount: 4,
-    ratingAvg: 4.7,
-    ratingCount: 22,
-    isBestseller: false,
-    description:
-      "A brass temple bell with a carved handle, traditionally rung at the start and close of puja. This piece carries natural wear from age and use, and is inspected for sound, casting quality, and structural condition before listing. Quantities are limited and not restocked once sold.",
-    images: [{ url: "/assets/images/about/about-founding-1.png", alt: "Antique Temple Bell", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["peace", "protection"],
-  },
-
-  // ---- Combinations (2) --------------------------------------------------
-  {
-    slug: "5-7-mukhi-combination-bracelet",
-    name: "5+7 Mukhi Combination Bracelet",
-    breadcrumbLabel: "5+7 Mukhi Combination Bracelet",
-    categorySlug: "combinations",
-    priceCents: 21000,
-    compareAtPriceCents: 23000,
-    stockCount: 12,
-    ratingAvg: 4.7,
-    ratingCount: 95,
-    isBestseller: false,
-    description:
-      "This bracelet combines 5 Mukhi (Shiva) and 7 Mukhi (Mahalakshmi) beads, a pairing traditionally worn together for balance between discipline and prosperity. Each bead is individually verified for mukhi count before being strung on a durable elastic cord.",
-    images: [{ url: "/assets/images/about/about-principle-3.png", alt: "5+7 Mukhi Combination Bracelet", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["wealth", "protection"],
-  },
-  {
-    slug: "1-4-7-mukhi-combination-pendant",
-    name: "1+4+7 Mukhi Combination Pendant",
-    breadcrumbLabel: "1+4+7 Mukhi Combination Pendant",
-    categorySlug: "combinations",
-    priceCents: 26000,
-    compareAtPriceCents: 29000,
-    stockCount: 6,
-    ratingAvg: 4.6,
-    ratingCount: 41,
-    isBestseller: false,
-    description:
-      "This pendant combines 1, 4, and 7 Mukhi Rudraksha beads in a single silver-capped setting, a combination traditionally chosen for clarity, communication, and removing obstacles together. Each bead is verified individually before being set and capped.",
-    images: [{ url: "/assets/images/about/about-principle-2.png", alt: "1+4+7 Mukhi Combination Pendant", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["luck", "courage"],
-  },
-
-  // ---- Singing Bowls (2) --------------------------------------------------
-  {
-    slug: "himalayan-singing-bowl-medium",
-    name: "Himalayan Singing Bowl (Medium)",
-    breadcrumbLabel: "Himalayan Singing Bowl (Medium)",
-    categorySlug: "singing-bowls",
-    priceCents: 18000,
-    compareAtPriceCents: 20000,
-    stockCount: 10,
-    ratingAvg: 4.8,
-    ratingCount: 89,
-    isBestseller: false,
-    description:
-      "A hand-hammered medium singing bowl suited for sound meditation and as a signal bowl in yoga practice. Each bowl is played and listened to for tone and sustain before listing, and comes with a matching wooden striker.",
-    images: [{ url: "/assets/images/about/about-p04.png", alt: "Himalayan Singing Bowl (Medium)", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["peace", "balance"],
-  },
-  {
-    slug: "seven-metal-singing-bowl-large",
-    name: "Seven Metal Singing Bowl (Large)",
-    breadcrumbLabel: "Seven Metal Singing Bowl (Large)",
-    categorySlug: "singing-bowls",
-    priceCents: 28000,
-    compareAtPriceCents: 32000,
-    stockCount: 5,
-    ratingAvg: 4.9,
-    ratingCount: 47,
-    isBestseller: false,
-    description:
-      "A large singing bowl cast from a traditional seven-metal alloy, producing a deep, sustained tone suited for group meditation or therapy room use. Each bowl is checked for balance, rim contact, and tone before listing, and includes a wooden striker and cushion.",
-    images: [{ url: "/assets/images/about/about-p02.png", alt: "Seven Metal Singing Bowl (Large)", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["balance", "health"],
-  },
-
-  // ---- Necklaces (2) -------------------------------------------------------
-  {
-    slug: "rudraksha-necklace-silver-cap",
-    name: "Rudraksha Necklace with Silver Cap",
-    breadcrumbLabel: "Rudraksha Necklace with Silver Cap",
-    categorySlug: "necklaces",
-    priceCents: 23000,
-    compareAtPriceCents: 25000,
-    stockCount: 12,
-    ratingAvg: 4.8,
-    ratingCount: 168,
-    isBestseller: true,
-    description:
-      "A single 5 Mukhi Rudraksha bead, silver-capped and strung on an adjustable black cord, designed for everyday wear under or over clothing. The bead is verified for mukhi count and the cap is checked for secure fit before assembly.",
-    images: [{ url: "/assets/images/products/category-necklace.png", alt: "Rudraksha Necklace with Silver Cap", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["love", "health"],
-  },
-  {
-    slug: "5-mukhi-pendant-necklace",
-    name: "5 Mukhi Rudraksha Pendant Necklace",
-    breadcrumbLabel: "5 Mukhi Rudraksha Pendant Necklace",
-    categorySlug: "necklaces",
-    priceCents: 15000,
-    compareAtPriceCents: 17000,
-    stockCount: 14,
-    ratingAvg: 4.6,
-    ratingCount: 73,
-    isBestseller: false,
-    description:
-      "A 5 Mukhi Rudraksha bead set in a simple silver pendant on a fine chain, designed as an everyday piece that pairs well with both traditional and contemporary outfits. The bead and chain are checked for finish and secure setting before listing.",
-    images: [{ url: "/assets/images/about/about-p03.png", alt: "5 Mukhi Rudraksha Pendant Necklace", role: "MAIN", sortOrder: 0 }],
-    collectionSlugs: ["wealth", "love"],
-  },
-
-  // ---- Additional products (see prisma/new-products.ts) -------------------
-  ...newProducts,
-];
-
-type BlogSeed = {
-  slug: string;
-  title: string;
-  excerpt: string;
-  body: string;
-  coverImage: string;
-  readTimeMinutes: number;
-  publishedAt: Date;
-  categorySlug: string | null;
+// Base price (in rupees) per category — products vary around it.
+const CATEGORY_BASE_PRICE: Record<string, number> = {
+  rudraksha: 1600,
+  "antique-collection": 3200,
+  "siddha-mala": 4500,
+  "rudraksha-kavach": 3800,
+  "japa-mala": 1200,
+  bracelets: 900,
+  "idols-singing-bowls": 2500,
+  gemstones: 5500,
+  "sphatik-collection": 1400,
+  "shree-yantra-shivling": 2100,
+  "shankh-collection": 1800,
 };
 
-const blogs: BlogSeed[] = [
-  {
-    slug: "how-to-identify-genuine-rudraksha",
-    title: "How to Identify Genuine Rudraksha: A Practical Guide",
-    excerpt:
-      "Authentication relies on examining mukhi lines, surface texture, and structural integrity — here's what that looks like in practice.",
-    body: [
-      "Authentic Rudraksha beads have natural, irregular surface texture and mukhi lines that run consistently from top to bottom without breaks or tool marks. Carved or altered beads often show smoother, more uniform lines that don't quite match natural growth patterns.",
-      "Density and weight can also be a useful indicator, though they vary by mukhi type and size, so they're best used alongside other checks rather than on their own.",
-      "Where possible, non-destructive testing such as X-ray can confirm the internal structure matches what's expected for a given mukhi count — this is part of the verification process before any bead is listed.",
-    ].join("\n\n"),
-    coverImage: "/assets/images/about/about-p02.png",
-    readTimeMinutes: 4,
-    publishedAt: new Date("2026-01-03"),
-    categorySlug: null,
-  },
-  {
-    slug: "caring-for-sacred-beads-storage-and-cleansing",
-    title: "Caring for Sacred Beads: Storage, Cleansing, and Respect",
-    excerpt: "Simple, traditional practices for storing and maintaining Rudraksha malas between uses.",
-    body: [
-      "Between uses, malas are traditionally stored in a soft pouch or cloth, away from direct sunlight and humidity, which can affect both the cord and the beads' natural oils over time.",
-      "Cleansing is usually a light, infrequent practice — a soft dry cloth for dust, and occasionally a very light wipe with a barely damp cloth if needed. Soaking or submerging beads is best avoided, as it can affect the cord and the bead's surface.",
-      "How a mala is stored and handled is often as much about respect for the practice as it is about practical upkeep, so many people keep a dedicated space for it separate from everyday jewelry.",
-    ].join("\n\n"),
-    coverImage: "/assets/images/about/about-principle-1.png",
-    readTimeMinutes: 3,
-    publishedAt: new Date("2026-01-04"),
-    categorySlug: null,
-  },
-  {
-    slug: "understanding-rudraksha-mukhi-meaning",
-    title: "Understanding Rudraksha Mukhi: What the Number of Faces Really Means",
-    excerpt:
-      "A guide to how mukhi (faces) are counted, why they matter, and how to read them honestly without overstating their significance.",
-    body: [
-      "Every Rudraksha bead is classified by its mukhi — the natural lines or segments running down its surface. These lines form during growth and are not added or carved afterward, which is why mukhi count is one of the first things examined during verification.",
-      "Different mukhi counts are traditionally associated with different forms of Shiva and different areas of focus, from grounding and routine to clarity and discipline. These associations come from long-standing tradition rather than guaranteed outcomes, and we describe them as context for your practice rather than promises.",
-      "Before a Rudraksha is listed, the mukhi lines are checked manually under good lighting and cross-checked using non-destructive testing, so the number you see described is the number that's actually present on the bead.",
-    ].join("\n\n"),
-    coverImage: "/assets/images/about/about-sacred-2.png",
-    readTimeMinutes: 5,
-    publishedAt: new Date("2026-01-15"),
-    categorySlug: "rudraksha",
-  },
-  {
-    slug: "choosing-a-rudraksha-bracelet-for-daily-wear",
-    title: "How to Choose a Rudraksha Bracelet That Fits Your Daily Routine",
-    excerpt: "From bead size to cord type, a few practical things to consider before picking a bracelet you'll wear every day.",
-    body: [
-      "A bracelet you wear daily needs to handle water, friction, and the occasional knock — so construction matters as much as the beads themselves. Look at how the beads are strung, whether the cord is elastic or fixed-knot, and how the clasp or closure is finished.",
-      "Bead size affects both comfort and how the bracelet sits on the wrist. Smaller beads tend to sit closer and feel less bulky under a sleeve, while larger beads are easier to count or rotate during a short practice.",
-      "If you're combining a bracelet with other Rudraksha or gemstone pieces, it helps to keep the overall look in mind — a silver-capped bracelet pairs differently with a chain than a plain elastic-cord one.",
-    ].join("\n\n"),
-    coverImage: "/assets/images/products/category-bracelets.png",
-    readTimeMinutes: 4,
-    publishedAt: new Date("2026-01-14"),
-    categorySlug: "bracelets",
-  },
-  {
-    slug: "caring-for-brass-and-marble-murtis",
-    title: "Caring for Brass and Marble Murtis: A Simple Maintenance Guide",
-    excerpt: "Practical, low-effort steps to keep a brass or marble-finish murti looking its best for years.",
-    body: [
-      "Brass murtis develop a natural patina over time, which many people consider part of their character. A soft, dry cloth is usually enough for regular dusting; if you want to retain the original shine, an occasional wipe with a brass-safe polish works, but avoid harsh chemical cleaners that can dull the detailing.",
-      "Marble-finish pieces are generally a resin composite rather than solid stone, so they're lighter but can chip if dropped. Keep them away from direct, prolonged sunlight, which can fade the painted finish over time.",
-      "For both materials, placement matters as much as cleaning — a stable shelf or table away from high-traffic areas reduces the risk of accidental knocks during daily handling.",
-    ].join("\n\n"),
-    coverImage: "/assets/images/home/god.png",
-    readTimeMinutes: 3,
-    publishedAt: new Date("2026-01-13"),
-    categorySlug: "murtis",
-  },
-  {
-    slug: "significance-of-the-108-bead-siddha-mala",
-    title: "108 Beads, One Practice: The Significance of the Siddha Mala",
-    excerpt: "Why malas are traditionally strung with 108 beads, and what that means for everyday use.",
-    body: [
-      "The number 108 appears across many spiritual traditions, and mala beads are traditionally strung to this count to support repeated counting during chanting or meditation. The extra guru bead at the end marks the start and end of a cycle without being counted itself.",
-      "Whether strung from Rudraksha, Tulsi, or another material, the practical role of a mala is the same — it gives your hands something to do so your mind can stay on the practice rather than on counting.",
-      "A well-made mala should sit comfortably in the hand and move smoothly bead to bead. Hand-knotting between beads helps maintain spacing and reduces wear at the connection points over years of use.",
-    ].join("\n\n"),
-    coverImage: "/assets/images/about/about-sacred-1.png",
-    readTimeMinutes: 4,
-    publishedAt: new Date("2026-01-12"),
-    categorySlug: "siddha-mala",
-  },
-  {
-    slug: "gemstone-selection-and-vedic-astrology-principles",
-    title: "Gemstone Selection Based on Vedic Astrology Principles",
-    excerpt: "An overview of how planetary associations inform gemstone choices, and why a considered approach matters.",
-    body: [
-      "In Vedic tradition, specific gemstones are associated with specific planets — Yellow Sapphire with Jupiter, Red Coral with Mars, and so on. These associations form the basis for recommending a stone based on a person's birth chart.",
-      "Because the right stone depends on individual chart details, general guidance can only go so far. Where possible, it's worth consulting someone familiar with your chart rather than choosing based on a list alone.",
-      "Once a stone is chosen, how it's set — ring, pendant, or otherwise — and which metal it's mounted in are typically guided by the same tradition, so it's worth asking about both the stone and its setting together.",
-    ].join("\n\n"),
-    coverImage: "/assets/images/about/about-p01-3021a5.png",
-    readTimeMinutes: 6,
-    publishedAt: new Date("2026-01-11"),
-    categorySlug: "gemstones",
-  },
-  {
-    slug: "reading-the-story-behind-antique-ritual-items",
-    title: "Reading the Story Behind Antique Ritual Items",
-    excerpt: "What to look for when examining brass boxes, temple bells, and figurines with history.",
-    body: [
-      "Antique ritual items carry signs of their age and use — worn edges, hand-finished surfaces, and small variations that machine-made pieces don't have. These details are part of what makes each piece distinct rather than a flaw to be corrected.",
-      "Temple bells and boxes were often made for daily handling, so a certain amount of wear is expected and doesn't affect their function. Figurines and pendants are usually more delicate and benefit from careful, infrequent handling.",
-      "When an item's exact origin or age can't be verified, we describe it honestly based on craftsmanship and condition rather than making claims we can't support.",
-    ].join("\n\n"),
-    coverImage: "/assets/images/about/about-founding-2.png",
-    readTimeMinutes: 4,
-    publishedAt: new Date("2026-01-10"),
-    categorySlug: "antiques",
-  },
-  {
-    slug: "why-combination-malas-pair-specific-mukhis",
-    title: "Why Combination Malas Pair Specific Mukhis Together",
-    excerpt: "A look at the reasoning behind common Rudraksha combinations like 5+7 mukhi or 1+4+7 mukhi.",
-    body: [
-      "Combination malas and bracelets bring together beads of different mukhi counts, each carrying its own traditional association. The idea is that wearing them together supports more than one area of focus at the same time — for example, pairing a bead associated with discipline alongside one associated with prosperity.",
-      "There's no fixed rule for how many combinations exist; over time, certain pairings have become more commonly requested because of how their traditional meanings complement each other.",
-      "If you're new to combinations, it can help to start with a pairing that addresses something specific to your routine, rather than choosing based on the number of beads alone.",
-    ].join("\n\n"),
-    coverImage: "/assets/images/about/about-principle-3.png",
-    readTimeMinutes: 4,
-    publishedAt: new Date("2026-01-09"),
-    categorySlug: "combinations",
-  },
-  {
-    slug: "traditional-craft-behind-himalayan-singing-bowls",
-    title: "The Traditional Craft Behind Himalayan Singing Bowls",
-    excerpt: "How hand-hammered bowls are made, and what affects the tone you hear.",
-    body: [
-      "Traditional singing bowls are shaped by hand-hammering a metal disc into a bowl form, a process that can take many passes to achieve an even thickness. The hammer marks left on the surface are part of the finished piece, not something polished away.",
-      "Tone is influenced by the bowl's size, thickness, and the alloy used — some bowls are cast from a blend of several metals, which traditionally produces a richer, layered sound when struck or rung around the rim.",
-      "A wooden striker suited to the bowl's size makes a noticeable difference in how easily it produces a sustained tone, which is why most bowls are paired with a matching striker and a cushion to rest on.",
-    ].join("\n\n"),
-    coverImage: "/assets/images/about/about-p04.png",
-    readTimeMinutes: 5,
-    publishedAt: new Date("2026-01-08"),
-    categorySlug: "singing-bowls",
-  },
-  {
-    slug: "wearing-rudraksha-as-a-necklace-styling-and-care",
-    title: "Wearing Rudraksha as a Necklace: Styling and Care Tips",
-    excerpt: "How to wear a Rudraksha pendant day-to-day, and how to keep the cord and bead in good condition.",
-    body: [
-      "A single Rudraksha bead set in a pendant is one of the simplest ways to wear it daily, working equally well layered under clothing or worn visibly with both traditional and everyday outfits.",
-      "Cords and chains see the most wear over time, especially if the piece is worn during exercise or sleep. Removing it before swimming or heavy activity helps the cord last longer and keeps the bead from knocking against hard surfaces.",
-      "If the bead is silver-capped, an occasional wipe with a soft cloth keeps the cap from tarnishing, while the bead itself generally just needs to be kept dry and away from strong fragrances or oils that can seep into its surface.",
-    ].join("\n\n"),
-    coverImage: "/assets/images/products/category-necklace.png",
-    readTimeMinutes: 3,
-    publishedAt: new Date("2026-01-07"),
-    categorySlug: "necklaces",
-  },
-];
+function buildProductsForSubcategory(
+  categorySlug: string,
+  sub: SubcategorySeed,
+  subIndex: number
+): GeneratedProduct[] {
+  const base = CATEGORY_BASE_PRICE[categorySlug] ?? 2000;
+  const out: GeneratedProduct[] = [];
+
+  for (let i = 0; i < PRODUCTS_PER_SUBCATEGORY; i++) {
+    const grade = GRADES[i % GRADES.length];
+    // First product keeps the canonical subcategory slug so recommendation
+    // slugs like "5-mukhi-rudraksha" resolve to a real product.
+    const slug = i === 0 ? sub.slug : `${sub.slug}-${i + 1}`;
+    const name = i === 0 ? sub.name : `${sub.name} — ${grade}`;
+    const priceRupees = base + i * Math.round(base * 0.12);
+    const priceCents = priceRupees * 100;
+    const origin = ORIGINS[(subIndex + i) % ORIGINS.length];
+    const certified = i % 2 === 0;
+    const energized = i % 3 !== 0;
+
+    const images = ROLES.map((role, r) => ({
+      url: rotationImage(subIndex + i + r),
+      alt: `${name} — ${role.toLowerCase().replace(/_/g, " ")}`,
+      role,
+      sortOrder: r,
+    }));
+
+    // Two purpose tags, rotated so every collection stays populated.
+    const collectionSlugs = [
+      COLLECTION_SLUGS[(subIndex + i) % COLLECTION_SLUGS.length],
+      COLLECTION_SLUGS[(subIndex + i + 3) % COLLECTION_SLUGS.length],
+    ].filter((v, idx, arr) => arr.indexOf(v) === idx);
+
+    out.push({
+      slug,
+      name,
+      breadcrumbLabel: sub.name,
+      categorySlug,
+      subcategorySlug: sub.slug,
+      description: `${sub.name} — ${grade.toLowerCase()} selection. Each piece is sourced from trusted suppliers, physically examined for authenticity and finish, and cared for in the traditional way before it is listed. ${
+        certified ? "This item is lab certified. " : ""
+      }${energized ? "Energized on request before dispatch. " : ""}What you see is representative of the quality you will receive.`,
+      priceCents,
+      compareAtPriceCents: Math.round(priceCents * 1.15),
+      stockCount: 4 + ((subIndex + i) % 18),
+      ratingAvg: Number((4.4 + ((i * 7) % 6) / 10).toFixed(1)),
+      ratingCount: 40 + ((subIndex * 13 + i * 7) % 360),
+      // Mark the first product of every 4th subcategory as a bestseller so the
+      // homepage bestseller row stays populated across categories.
+      isBestseller: i === 0 && subIndex % 4 === 0,
+      images,
+      collectionSlugs,
+      attrs: {
+        mukhi: sub.attrs?.mukhi ?? null,
+        origin,
+        gemstoneType: sub.attrs?.gemstoneType ?? null,
+        certified,
+        energized,
+        weightGrams: Number((3 + ((subIndex + i) % 20) * 1.5).toFixed(1)),
+        sizeMm: Number((14 + ((subIndex + i) % 14)).toFixed(1)),
+        zodiac: sub.attrs?.zodiac ?? null,
+        planet: sub.attrs?.planet ?? null,
+        chakra: sub.attrs?.chakra ?? CHAKRAS[(subIndex + i) % CHAKRAS.length],
+      },
+    });
+  }
+
+  return out;
+}
 
 async function main() {
-  // Clean slate — cascades to images/variants/addOns/sizes/reviews and the
-  // implicit product<->collection join table.
+  // Clean slate — cascades to images/variants/addOns/sizes/reviews, the
+  // implicit product<->collection join, and subcategories (FK cascade).
   await prisma.blog.deleteMany();
   await prisma.product.deleteMany();
+  await prisma.subcategory.deleteMany();
   await prisma.collection.deleteMany();
   await prisma.category.deleteMany();
 
+  // Categories + subcategories
   const categoryIdBySlug = new Map<string, string>();
-  for (const c of categories) {
+  const subcategoryIdBySlug = new Map<string, string>(); // key: `${catSlug}::${subSlug}`
+
+  for (const c of CATALOG) {
     const created = await prisma.category.create({
       data: {
         name: c.name,
@@ -1088,46 +199,119 @@ async function main() {
       },
     });
     categoryIdBySlug.set(c.slug, created.id);
+
+    for (let s = 0; s < c.subcategories.length; s++) {
+      const sub = c.subcategories[s];
+      const createdSub = await prisma.subcategory.create({
+        data: {
+          name: sub.name,
+          slug: sub.slug,
+          group: sub.group ?? null,
+          image: sub.image,
+          sortOrder: s,
+          categoryId: created.id,
+        },
+      });
+      subcategoryIdBySlug.set(`${c.slug}::${sub.slug}`, createdSub.id);
+    }
   }
 
+  // Collections
   const collectionIdBySlug = new Map<string, string>();
   for (const col of collections) {
-    const created = await prisma.collection.create({
-      data: { name: col.name, slug: col.slug, icon: col.icon, sortOrder: col.sortOrder },
-    });
+    const created = await prisma.collection.create({ data: col });
     collectionIdBySlug.set(col.slug, created.id);
   }
 
-  for (const p of products) {
-    await prisma.product.create({
-      data: {
-        slug: p.slug,
-        name: p.name,
-        breadcrumbLabel: p.breadcrumbLabel,
-        categoryId: categoryIdBySlug.get(p.categorySlug)!,
-        description: p.description,
-        shippingInfo: SHIPPING_INFO,
-        packagingInfo: PACKAGING_INFO,
-        returnsInfo: RETURNS_INFO,
-        priceCents: p.priceCents,
-        compareAtPriceCents: p.compareAtPriceCents,
-        stockCount: p.stockCount,
-        ratingAvg: p.ratingAvg,
-        ratingCount: p.ratingCount,
-        isBestseller: p.isBestseller,
-        images: { create: p.images as Prisma.ProductImageCreateWithoutProductInput[] },
-        variants: p.variants ? { create: p.variants } : undefined,
-        addOns: p.addOns ? { create: p.addOns } : undefined,
-        sizes: { create: SIZES.map((label, i) => ({ label, sortOrder: i })) },
-        reviews: p.reviews ? { create: p.reviews } : undefined,
-        collections: {
-          connect: p.collectionSlugs.map((slug) => ({ id: collectionIdBySlug.get(slug)! })),
-        },
-      },
+  // Products — generated per subcategory. Inserted in BULK (createMany) rather
+  // than nested creates, so ~1000 products seed in seconds over a remote DB.
+  const generatedAll: GeneratedProduct[] = [];
+  const usedSlugs = new Set<string>();
+  let subIndex = 0;
+  for (const c of CATALOG) {
+    for (const sub of c.subcategories) {
+      for (const p of buildProductsForSubcategory(c.slug, sub, subIndex)) {
+        if (usedSlugs.has(p.slug)) continue; // defensive: skip any slug collision
+        usedSlugs.add(p.slug);
+        generatedAll.push(p);
+      }
+      subIndex++;
+    }
+  }
+
+  // 1) Bulk insert the product rows (no relations).
+  await prisma.product.createMany({
+    data: generatedAll.map((p) => ({
+      slug: p.slug,
+      name: p.name,
+      breadcrumbLabel: p.breadcrumbLabel,
+      categoryId: categoryIdBySlug.get(p.categorySlug)!,
+      subcategoryId: subcategoryIdBySlug.get(`${p.categorySlug}::${p.subcategorySlug}`)!,
+      description: p.description,
+      shippingInfo: SHIPPING_INFO,
+      packagingInfo: PACKAGING_INFO,
+      returnsInfo: RETURNS_INFO,
+      priceCents: p.priceCents,
+      compareAtPriceCents: p.compareAtPriceCents,
+      stockCount: p.stockCount,
+      ratingAvg: p.ratingAvg,
+      ratingCount: p.ratingCount,
+      isBestseller: p.isBestseller,
+      mukhi: p.attrs.mukhi,
+      origin: p.attrs.origin,
+      gemstoneType: p.attrs.gemstoneType,
+      certified: p.attrs.certified,
+      energized: p.attrs.energized,
+      weightGrams: p.attrs.weightGrams,
+      sizeMm: p.attrs.sizeMm,
+      zodiac: p.attrs.zodiac,
+      planet: p.attrs.planet,
+      chakra: p.attrs.chakra,
+    })),
+    skipDuplicates: true,
+  });
+
+  // 2) Map slug -> id for the freshly inserted products.
+  const inserted = await prisma.product.findMany({ select: { id: true, slug: true } });
+  const idBySlug = new Map(inserted.map((p) => [p.slug, p.id]));
+
+  // 3) Bulk insert images + sizes.
+  await prisma.productImage.createMany({
+    data: generatedAll.flatMap((p) =>
+      p.images.map((img) => ({
+        productId: idBySlug.get(p.slug)!,
+        url: img.url,
+        alt: img.alt,
+        role: img.role as Prisma.ProductImageCreateManyInput["role"],
+        sortOrder: img.sortOrder,
+      }))
+    ),
+  });
+  await prisma.productSize.createMany({
+    data: generatedAll.flatMap((p) =>
+      SIZES.map((label, idx) => ({ productId: idBySlug.get(p.slug)!, label, sortOrder: idx }))
+    ),
+  });
+
+  // 4) Purpose collections: connect all products for each collection in one
+  // update (8 round trips total instead of one per product).
+  for (const col of collections) {
+    const productIds = generatedAll
+      .filter((p) => p.collectionSlugs.includes(col.slug))
+      .map((p) => ({ id: idBySlug.get(p.slug)! }));
+    if (productIds.length === 0) continue;
+    await prisma.collection.update({
+      where: { id: collectionIdBySlug.get(col.slug)! },
+      data: { products: { connect: productIds } },
     });
   }
 
+  const productCount = generatedAll.length;
+
+  // Blogs (categorySlug remapped to the new taxonomy)
   for (const b of blogs) {
+    const remapped = b.categorySlug ? BLOG_CATEGORY_REMAP[b.categorySlug] ?? b.categorySlug : null;
+    const categoryId = remapped ? categoryIdBySlug.get(remapped) ?? null : null;
     await prisma.blog.create({
       data: {
         slug: b.slug,
@@ -1137,13 +321,14 @@ async function main() {
         coverImage: b.coverImage,
         readTimeMinutes: b.readTimeMinutes,
         publishedAt: b.publishedAt,
-        categoryId: b.categorySlug ? categoryIdBySlug.get(b.categorySlug)! : null,
+        categoryId,
       },
     });
   }
 
+  const subTotal = CATALOG.reduce((n, c) => n + c.subcategories.length, 0);
   console.log(
-    `Seeded ${categories.length} categories, ${collections.length} collections, ${products.length} products, ${blogs.length} blogs.`
+    `Seeded ${CATALOG.length} categories, ${subTotal} subcategories, ${collections.length} collections, ${productCount} products, ${blogs.length} blogs.`
   );
 }
 

@@ -18,19 +18,21 @@ const CURRENCY_OPTIONS: CurrencyCode[] = ["USD", "INR"];
 
 const productColumns = [
   [
-    { name: "Rudraksha",   slug: "rudraksha",     icon: "/assets/icons/icon-rudraksha.svg" },
-    { name: "Bracelets",   slug: "bracelets",     icon: "/assets/icons/icon-bracelets.svg" },
-    { name: "Murtis",      slug: "murtis",        icon: "/assets/icons/icon-murtis.svg" },
+    { name: "Rudraksha",              slug: "rudraksha",             icon: "/assets/icons/icon-rudraksha.svg" },
+    { name: "Antique Collection",     slug: "antique-collection",    icon: "/assets/icons/icon-antiques.svg" },
+    { name: "Siddha Mala",            slug: "siddha-mala",           icon: "/assets/icons/icon-siddha-mala.svg" },
+    { name: "Rudraksha Kavach",       slug: "rudraksha-kavach",      icon: "/assets/icons/icon-combinations.svg" },
   ],
   [
-    { name: "Siddha Mala", slug: "siddha-mala",   icon: "/assets/icons/icon-siddha-mala.svg" },
-    { name: "Gemstones",   slug: "gemstones",     icon: "/assets/icons/icon-gemstones.svg" },
-    { name: "Antiques",    slug: "antiques",      icon: "/assets/icons/icon-antiques.svg" },
+    { name: "Japa Mala",              slug: "japa-mala",             icon: "/assets/icons/icon-necklaces.svg" },
+    { name: "Bracelets",              slug: "bracelets",             icon: "/assets/icons/icon-bracelets.svg" },
+    { name: "Idols & Singing Bowls",  slug: "idols-singing-bowls",   icon: "/assets/icons/icon-singing-bowls.svg" },
+    { name: "Gemstones",              slug: "gemstones",             icon: "/assets/icons/icon-gemstones.svg" },
   ],
   [
-    { name: "Combinations",  slug: "combinations",  icon: "/assets/icons/icon-combinations.svg" },
-    { name: "Singing Bowls", slug: "singing-bowls", icon: "/assets/icons/icon-singing-bowls.svg" },
-    { name: "Necklaces",     slug: "necklaces",     icon: "/assets/icons/icon-necklaces.svg" },
+    { name: "Sphatik Collection",     slug: "sphatik-collection",    icon: "/assets/icons/icon-gemstones.svg" },
+    { name: "Shree Yantra & Shivling", slug: "shree-yantra-shivling", icon: "/assets/icons/icon-murtis.svg" },
+    { name: "Shankh Collection",      slug: "shankh-collection",     icon: "/assets/icons/icon-singing-bowls.svg" },
   ],
 ];
 

@@ -42,15 +42,30 @@ function toSlug(name: string): string {
 interface ProductFormProps {
   product?: ProductForAdmin;
   categories: { id: string; name: string }[];
+  subcategories: { id: string; name: string; categoryId: string; group: string | null }[];
   collections: { id: string; name: string }[];
 }
 
-export default function ProductForm({ product, categories, collections }: ProductFormProps) {
+export default function ProductForm({ product, categories, subcategories, collections }: ProductFormProps) {
   const action = product ? updateProduct.bind(null, product.id) : createProduct;
   const [state, formAction] = useActionState(action, undefined);
 
   const [slug, setSlug] = useState(product?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(!!product?.slug);
+
+  const [categoryId, setCategoryId] = useState(product?.categoryId ?? categories[0]?.id ?? "");
+  const [subcategoryId, setSubcategoryId] = useState(product?.subcategoryId ?? "");
+
+  const categorySubs = subcategories.filter((s) => s.categoryId === categoryId);
+
+  function handleCategoryChange(value: string | null) {
+    const next = value ?? "";
+    setCategoryId(next);
+    // Reset subcategory if it no longer belongs to the chosen category.
+    if (!subcategories.some((s) => s.id === subcategoryId && s.categoryId === next)) {
+      setSubcategoryId("");
+    }
+  }
 
   function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (!slugTouched) setSlug(toSlug(e.target.value));
@@ -105,7 +120,8 @@ export default function ProductForm({ product, categories, collections }: Produc
             <Label>Category</Label>
             <Select
               name="categoryId"
-              defaultValue={product?.categoryId ?? categories[0]?.id}
+              value={categoryId}
+              onValueChange={handleCategoryChange}
               items={categories.map((c) => ({ value: c.id, label: c.name }))}
             >
               <SelectTrigger className="w-full">
@@ -123,6 +139,64 @@ export default function ProductForm({ product, categories, collections }: Produc
               <span key={msg} className="font-lato text-[13px] text-destructive">{msg}</span>
             ))}
           </div>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-1.5">
+            <Label>Subcategory (Type)</Label>
+            {/* Hidden input carries the value to the form action; empty = none. */}
+            <input type="hidden" name="subcategoryId" value={subcategoryId} />
+            <Select
+              value={subcategoryId || "__none__"}
+              onValueChange={(v) => setSubcategoryId(!v || v === "__none__" ? "" : v)}
+              items={[
+                { value: "__none__", label: "— None —" },
+                ...categorySubs.map((s) => ({ value: s.id, label: s.group ? `${s.group} › ${s.name}` : s.name })),
+              ]}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="__none__">— None —</SelectItem>
+                {categorySubs.map((s) => (
+                  <SelectItem key={s.id} value={s.id}>
+                    {s.group ? `${s.group} › ${s.name}` : s.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="font-lato text-xs text-gray-text">
+              The type this product belongs to (e.g. &quot;5 Mukhi Rudraksha&quot;). Changes with the selected category.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Attributes (filter facets) ── */}
+      <section className="flex flex-col gap-4">
+        <h2 className="font-prata text-xl text-dark">Attributes</h2>
+        <p className="font-lato text-xs text-gray-text">
+          Optional filter attributes. Leave blank when not applicable — only the ones you fill in appear as filters on the storefront.
+        </p>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <FormField label="Mukhi (faces)" name="mukhi" type="number" defaultValue={product?.mukhi ?? ""} errors={state?.errors?.mukhi} />
+          <FormField label="Origin" name="origin" defaultValue={product?.origin ?? ""} errors={state?.errors?.origin} />
+          <FormField label="Gemstone Type" name="gemstoneType" defaultValue={product?.gemstoneType ?? ""} errors={state?.errors?.gemstoneType} />
+          <FormField label="Weight (grams)" name="weightGrams" type="number" defaultValue={product?.weightGrams ?? ""} errors={state?.errors?.weightGrams} />
+          <FormField label="Size (mm)" name="sizeMm" type="number" defaultValue={product?.sizeMm ?? ""} errors={state?.errors?.sizeMm} />
+          <FormField label="Zodiac" name="zodiac" defaultValue={product?.zodiac ?? ""} errors={state?.errors?.zodiac} />
+          <FormField label="Planet (Navagraha)" name="planet" defaultValue={product?.planet ?? ""} errors={state?.errors?.planet} />
+          <FormField label="Chakra" name="chakra" defaultValue={product?.chakra ?? ""} errors={state?.errors?.chakra} />
+        </div>
+        <div className="flex flex-wrap gap-6">
+          <label className="flex items-center gap-2 font-lato text-sm text-dark">
+            <Checkbox name="certified" value="on" defaultChecked={product?.certified ?? false} />
+            Lab Certified
+          </label>
+          <label className="flex items-center gap-2 font-lato text-sm text-dark">
+            <Checkbox name="energized" value="on" defaultChecked={product?.energized ?? false} />
+            Energized
+          </label>
         </div>
       </section>
 

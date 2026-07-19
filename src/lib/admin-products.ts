@@ -25,6 +25,7 @@ export async function listProductsForAdmin({
       take: PAGE_SIZE,
       include: {
         category: true,
+        subcategory: { select: { name: true } },
         images: { where: { role: "MAIN" }, take: 1 },
       },
     }),
@@ -44,6 +45,7 @@ export async function getProductForAdmin(id: string) {
       sizes: { orderBy: { sortOrder: "asc" } },
       collections: true,
       category: true,
+      subcategory: true,
     },
   });
 }

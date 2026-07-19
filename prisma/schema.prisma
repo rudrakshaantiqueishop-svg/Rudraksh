@@ -41,10 +41,10 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  accounts  Account[]
-  addresses Address[]
-  reviews   Review[]
-  cart      Cart?
+  accounts      Account[]
+  addresses     Address[]
+  reviews       Review[]
+  cart          Cart?
   wishlistItems WishlistItem[]
   birthProfile  BirthProfile?
   blogs         Blog[]
@@ -118,11 +118,11 @@ model VerificationToken {
 // the /products/category/[slug] listing page (hero, intro, checklist,
 // and fit-check sections all come from `pageContent`).
 model Category {
-  id          String @id @default(uuid())
-  name        String
-  slug        String @unique
-  image       String
-  sortOrder   Int    @default(0)
+  id        String @id @default(uuid())
+  name      String
+  slug      String @unique
+  image     String
+  sortOrder Int    @default(0)
 
   // Shape: { heroTitle, heroSubtitle, introHeading, introDescription,
   // introImage, checklistHeading, checklist: string[5], checklistImages: [string, string],
@@ -130,10 +130,32 @@ model Category {
   // fitCheckWrongLabel, fitCheckWrongItems: string[3], fitCheckImage }
   pageContent Json
 
-  products Product[]
-  blogs    Blog[]
+  products      Product[]
+  blogs         Blog[]
+  subcategories Subcategory[]
 
   @@map("categories")
+}
+
+// A "type" within a Category (e.g. "5 Mukhi Rudraksha" under "Rudraksha").
+// `group` is an optional visual heading used to cluster subcategories on the
+// category landing page (e.g. "Rudraksha Bracelets" vs "Gemstone Bracelets").
+model Subcategory {
+  id        String  @id @default(uuid())
+  name      String
+  slug      String
+  image     String
+  group     String?
+  sortOrder Int     @default(0)
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  products Product[]
+
+  @@unique([categoryId, slug])
+  @@index([categoryId])
+  @@map("subcategories")
 }
 
 // "Shop By Purpose" tags (Wealth, Health, Love, ...) — a many-to-many
@@ -159,6 +181,9 @@ model Product {
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
 
+  subcategoryId String?
+  subcategory   Subcategory? @relation(fields: [subcategoryId], references: [id], onDelete: SetNull)
+
   description   String @db.Text
   shippingInfo  String @db.Text
   packagingInfo String @db.Text
@@ -172,19 +197,34 @@ model Product {
   ratingCount  Int     @default(0)
   isBestseller Boolean @default(false)
 
-  images      ProductImage[]
-  variants    ProductVariant[]
-  addOns      ProductAddOn[]
-  sizes       ProductSize[]
-  reviews     Review[]
-  collections Collection[]
-  cartItems   CartItem[]
+  // ── Filter attributes ("Pro Tip" facets). All optional / category-specific.
+  // Purpose is modelled by the many-to-many `collections`; availability is
+  // derived from `stockCount`.
+  mukhi        Int? // Rudraksha faces (null for Gauri Shankar / non-rudraksha)
+  origin       String? // Nepal | Indonesia | India | ...
+  gemstoneType String? // Ruby | Emerald | ... (gemstone products)
+  certified    Boolean @default(false) // Lab Certified
+  energized    Boolean @default(false) // Energized vs Non-Energized
+  weightGrams  Float?
+  sizeMm       Float?
+  zodiac       String?
+  planet       String? // Navagraha
+  chakra       String?
+
+  images        ProductImage[]
+  variants      ProductVariant[]
+  addOns        ProductAddOn[]
+  sizes         ProductSize[]
+  reviews       Review[]
+  collections   Collection[]
+  cartItems     CartItem[]
   wishlistItems WishlistItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([categoryId])
+  @@index([subcategoryId])
   @@index([isBestseller])
   @@map("products")
 }
@@ -276,15 +316,15 @@ model Review {
 // ---------------------------------------------------------------------
 
 model Blog {
-  id              String   @id @default(uuid())
-  slug            String   @unique
+  id              String  @id @default(uuid())
+  slug            String  @unique
   title           String
-  excerpt         String   @db.Text
-  body            String   @db.Text
+  excerpt         String  @db.Text
+  body            String  @db.Text
   coverImage      String
   coverImageAlt   String?
-  author          String   @default("Rudraksha Antiquei")
-  readTimeMinutes Int      @default(5)
+  author          String  @default("Rudraksha Antiquei")
+  readTimeMinutes Int     @default(5)
 
   status          BlogStatus @default(PUBLISHED)
   tags            String[]   @default([])
@@ -380,9 +420,9 @@ model WishlistItem {
 // Number so their Rudraksha recommendation persists across visits.
 // Guests keep the same shape in localStorage until they log in.
 model BirthProfile {
-  id             String  @id @default(uuid())
-  userId         String  @unique
-  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   fullName       String
   dob            String
@@ -401,7 +441,7 @@ model BirthProfile {
 // ---------------------------------------------------------------------
 
 model ConsultationRequest {
-  id              String   @id @default(uuid())
+  id              String @id @default(uuid())
   name            String
   email           String
   phone           String
@@ -410,11 +450,11 @@ model ConsultationRequest {
   pob             String
   appointmentDate String
   kundaliUrl      String
-  
-  status          String   @default("PENDING")
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  status String @default("PENDING")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("consultation_requests")
 }

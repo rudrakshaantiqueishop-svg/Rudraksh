@@ -75,6 +75,7 @@ export default async function AdminProductsPage({
               <TableHead>
                 <TableCategoryFilter categories={categories} currentCategoryId={categoryId} />
               </TableHead>
+              <TableHead>Type</TableHead>
               <TableHead>Price</TableHead>
               <TableHead>Stock</TableHead>
               <TableHead>Bestseller</TableHead>
@@ -94,6 +95,9 @@ export default async function AdminProductsPage({
                 <TableCell className="font-lato text-sm text-dark">{product.name}</TableCell>
                 <TableCell className="font-lato text-sm text-gray-text">
                   {product.category.name}
+                </TableCell>
+                <TableCell className="font-lato text-sm text-gray-text">
+                  {product.subcategory?.name ?? "—"}
                 </TableCell>
                 <TableCell className="font-lato text-sm text-dark">
                   {formatPrice(product.priceCents, "USD")}
@@ -120,7 +124,7 @@ export default async function AdminProductsPage({
             ))}
             {products.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7} className="text-center font-lato text-sm text-gray-text">
+                <TableCell colSpan={8} className="text-center font-lato text-sm text-gray-text">
                   No products found.
                 </TableCell>
               </TableRow>

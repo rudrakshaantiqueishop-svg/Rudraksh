@@ -96,6 +96,62 @@ export async function getProductsByCategory(categorySlug: string) {
   });
 }
 
+// ── Subcategories ──────────────────────────────────────────────────────
+
+// Category + its subcategories (for the category landing page grid).
+export async function getCategoryWithSubcategories(slug: string) {
+  return prisma.category.findUnique({
+    where: { slug },
+    include: {
+      subcategories: {
+        orderBy: { sortOrder: "asc" },
+        include: { _count: { select: { products: true } } },
+      },
+    },
+  });
+}
+
+// Flat list of every subcategory with its parent category id — used by the
+// admin product form to populate a category-dependent subcategory select.
+export async function getAllSubcategories() {
+  return prisma.subcategory.findMany({
+    orderBy: [{ categoryId: "asc" }, { sortOrder: "asc" }],
+    select: { id: true, name: true, slug: true, categoryId: true, group: true },
+  });
+}
+
+export async function getSubcategoriesByCategory(categorySlug: string) {
+  return prisma.subcategory.findMany({
+    where: { category: { slug: categorySlug } },
+    orderBy: { sortOrder: "asc" },
+  });
+}
+
+// A subcategory resolved within its parent category (slugs are unique per
+// category, so both are required).
+export async function getSubcategoryBySlug(categorySlug: string, subSlug: string) {
+  const category = await prisma.category.findUnique({ where: { slug: categorySlug }, select: { id: true } });
+  if (!category) return null;
+  return prisma.subcategory.findUnique({
+    where: { categoryId_slug: { categoryId: category.id, slug: subSlug } },
+    include: { category: true },
+  });
+}
+
+// All products in a subcategory, with the data the listing + facet helpers
+// need (images, sizes, collections). Filtering/faceting happens in memory.
+export async function getProductsBySubcategory(categorySlug: string, subSlug: string) {
+  return prisma.product.findMany({
+    where: { category: { slug: categorySlug }, subcategory: { slug: subSlug } },
+    orderBy: { createdAt: "asc" },
+    include: {
+      images: { orderBy: { sortOrder: "asc" } },
+      sizes: { orderBy: { sortOrder: "asc" } },
+      collections: { select: { slug: true, name: true } },
+    },
+  });
+}
+
 export async function getCategoriesWithProductCounts() {
   const categories = await prisma.category.findMany({
     orderBy: { sortOrder: "asc" },

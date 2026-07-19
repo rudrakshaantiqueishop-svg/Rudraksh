@@ -46,6 +46,21 @@ export const productSchema = z.object({
   slug: slugSchema,
   breadcrumbLabel: z.string().trim().min(1, { error: "Breadcrumb label is required." }),
   categoryId: z.string().trim().min(1, { error: "Category is required." }),
+  subcategoryId: z
+    .union([z.string().trim().min(1), z.null()])
+    .optional(),
+
+  // ── Filter attributes (all optional) ──
+  mukhi: z.union([z.coerce.number().int().min(1), z.null()]).optional(),
+  origin: z.union([z.string().trim().min(1), z.null()]).optional(),
+  gemstoneType: z.union([z.string().trim().min(1), z.null()]).optional(),
+  certified: z.boolean(),
+  energized: z.boolean(),
+  weightGrams: z.union([z.coerce.number().min(0), z.null()]).optional(),
+  sizeMm: z.union([z.coerce.number().min(0), z.null()]).optional(),
+  zodiac: z.union([z.string().trim().min(1), z.null()]).optional(),
+  planet: z.union([z.string().trim().min(1), z.null()]).optional(),
+  chakra: z.union([z.string().trim().min(1), z.null()]).optional(),
   description: z.string().trim().min(1, { error: "Description is required." }),
   shippingInfo: z.string().trim().min(1, { error: "Shipping info is required." }),
   packagingInfo: z.string().trim().min(1, { error: "Packaging info is required." }),

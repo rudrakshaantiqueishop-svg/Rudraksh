@@ -41,11 +41,33 @@ function parseProductFormData(formData: FormData) {
     priceDeltaCents: Math.round(Number(a.priceDeltaCents) * 100) || 0
   }));
 
+  // Optional string attribute → null when blank.
+  const str = (key: string) => {
+    const v = formData.get(key);
+    return v && String(v).trim() !== "" ? String(v).trim() : null;
+  };
+  // Optional numeric attribute → null when blank.
+  const numOrNull = (key: string) => {
+    const v = formData.get(key);
+    return v && String(v).trim() !== "" ? Number(v) : null;
+  };
+
   return {
     name: formData.get("name"),
     slug: formData.get("slug"),
     breadcrumbLabel: formData.get("breadcrumbLabel"),
     categoryId: formData.get("categoryId"),
+    subcategoryId: str("subcategoryId"),
+    mukhi: numOrNull("mukhi"),
+    origin: str("origin"),
+    gemstoneType: str("gemstoneType"),
+    certified: formData.get("certified") === "on",
+    energized: formData.get("energized") === "on",
+    weightGrams: numOrNull("weightGrams"),
+    sizeMm: numOrNull("sizeMm"),
+    zodiac: str("zodiac"),
+    planet: str("planet"),
+    chakra: str("chakra"),
     description: formData.get("description"),
     shippingInfo: formData.get("shippingInfo"),
     packagingInfo: formData.get("packagingInfo"),
@@ -62,6 +84,18 @@ function parseProductFormData(formData: FormData) {
   };
 }
 
+// When a subcategory is chosen, its parent category is authoritative — keep
+// categoryId in sync so a stale client form can't mismatch the two.
+async function reconcileCategory(data: { categoryId: string; subcategoryId?: string | null }) {
+  if (data.subcategoryId) {
+    const sub = await prisma.subcategory.findUnique({
+      where: { id: data.subcategoryId },
+      select: { categoryId: true },
+    });
+    if (sub) data.categoryId = sub.categoryId;
+  }
+}
+
 export async function createProduct(
   _prevState: ProductFormState,
   formData: FormData
@@ -74,6 +108,7 @@ export async function createProduct(
   }
 
   const { images, variants, addOns, sizes, collectionIds, ...data } = result.data;
+  await reconcileCategory(data);
 
   try {
     await prisma.product.create({
@@ -111,6 +146,7 @@ export async function updateProduct(
   }
 
   const { images, variants, addOns, sizes, collectionIds, ...data } = result.data;
+  await reconcileCategory(data);
 
   try {
     await prisma.$transaction([

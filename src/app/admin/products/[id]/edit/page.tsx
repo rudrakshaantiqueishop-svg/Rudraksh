@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getCategories, getCollections } from "@/lib/products";
+import { getCategories, getCollections, getAllSubcategories } from "@/lib/products";
 import { getProductForAdmin } from "@/lib/admin-products";
 import ProductForm from "@/components/admin/ProductForm";
 import { requireAdmin } from "@/lib/dal";
@@ -11,9 +11,10 @@ export default async function EditProductPage({
 }) {
   await requireAdmin();
   const { id } = await params;
-  const [product, categories, collections] = await Promise.all([
+  const [product, categories, subcategories, collections] = await Promise.all([
     getProductForAdmin(id),
     getCategories(),
+    getAllSubcategories(),
     getCollections(),
   ]);
 
@@ -24,7 +25,7 @@ export default async function EditProductPage({
   return (
     <div className="flex flex-col gap-6">
       <h1 className="font-prata text-2xl text-dark">Edit Product</h1>
-      <ProductForm product={product} categories={categories} collections={collections} />
+      <ProductForm product={product} categories={categories} subcategories={subcategories} collections={collections} />
     </div>
   );
 }
