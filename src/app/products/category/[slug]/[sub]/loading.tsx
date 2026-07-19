@@ -4,14 +4,14 @@ export default function SubcategoryLoading() {
   return (
     <div style={{ background: "#FEF9F2", overflowX: "hidden" }}>
       {/* Breadcrumb + title */}
-      <div className="mx-auto w-full max-w-[1280px] px-4 pt-8 sm:px-6">
+      <div className="mx-auto w-full max-w-[1280px] px-3 pt-8 sm:px-6">
         <Skeleton className="h-3 w-64" />
         <Skeleton className="mt-4 h-8 w-72" />
         <Skeleton className="mt-2 h-4 w-40" />
       </div>
 
       {/* Sidebar + grid */}
-      <section className="mx-auto w-full max-w-[1280px] px-4 py-10 sm:px-6">
+      <section className="mx-auto w-full max-w-[1280px] px-3 py-10 sm:px-6">
         <div className="mb-4 flex items-center justify-between lg:hidden">
           <Skeleton className="h-9 w-28 rounded" />
           <Skeleton className="h-4 w-20" />
@@ -53,7 +53,7 @@ export default function SubcategoryLoading() {
             <div className="mb-4 hidden lg:flex">
               <Skeleton className="h-4 w-20" />
             </div>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3">
+            <div className="grid grid-cols-2 gap-x-2.5 gap-y-8 sm:gap-x-4 md:grid-cols-3">
               {Array.from({ length: 9 }).map((_, i) => (
                 <div key={i} className="flex flex-col gap-3">
                   <Skeleton className="aspect-[4/5] w-full" />

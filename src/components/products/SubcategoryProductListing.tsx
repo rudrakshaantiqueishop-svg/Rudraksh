@@ -157,7 +157,7 @@ export default function SubcategoryProductListing({
   );
 
   return (
-    <section className="mx-auto w-full max-w-[1280px] px-4 py-10 sm:px-6">
+    <section className="mx-auto w-full max-w-[1280px] px-3 py-10 sm:px-6">
       {/* Mobile filter toggle */}
       <div className="mb-4 flex items-center justify-between lg:hidden">
         <button
@@ -203,7 +203,7 @@ export default function SubcategoryProductListing({
               </button>
             </p>
           ) : (
-            <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3">
+            <div className="grid grid-cols-2 gap-x-2.5 gap-y-8 sm:gap-x-4 md:grid-cols-3">
               {products.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}

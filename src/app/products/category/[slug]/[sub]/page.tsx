@@ -28,7 +28,7 @@ export default async function SubcategoryPage({
   return (
     <div style={{ background: "#FEF9F2", overflowX: "hidden" }}>
       {/* Breadcrumb + hero */}
-      <div className="mx-auto w-full max-w-[1280px] px-4 pt-8 sm:px-6">
+      <div className="mx-auto w-full max-w-[1280px] px-3 pt-8 sm:px-6">
         <nav className="font-lato text-xs text-gray-text">
           <Link href="/" className="hover:text-dark">Home</Link>
           {" › "}

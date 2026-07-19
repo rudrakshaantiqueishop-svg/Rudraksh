@@ -38,7 +38,7 @@ export default function SubcategoryGrid({
   const groups = groupSubcategories(subcategories);
 
   return (
-    <section className="mx-auto w-full max-w-[1280px] px-4 py-12 sm:px-6 sm:py-16">
+    <section className="mx-auto w-full max-w-[1280px] px-3 py-12 sm:px-6 sm:py-16">
       <h2 className="mb-2 text-center font-prata text-[30px] leading-tight text-dark">
         Explore {categoryName}
       </h2>
@@ -52,7 +52,7 @@ export default function SubcategoryGrid({
             {g.group && (
               <h3 className="mb-6 border-b border-[#E7DFD6] pb-2 font-prata text-xl text-dark">{g.group}</h3>
             )}
-            <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-x-2.5 gap-y-8 sm:grid-cols-3 sm:gap-x-4 lg:grid-cols-4">
               {g.items.map((sub) => (
                 <Link
                   key={sub.id}
