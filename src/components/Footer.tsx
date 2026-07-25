@@ -79,7 +79,10 @@ export default function Footer() {
         {/* LEFT — Contact */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", minWidth: "160px" }}>
           <p className="font-lato" style={{ fontSize: "18px", fontWeight: 400, color: "#0B0404", letterSpacing: "0.05em", textTransform: "uppercase" }}>CONTACT US</p>
-          <p className="font-lato" style={{ fontSize: "16px", color: "#78716C" }}>+91 8798334560</p>
+          <p className="font-lato" style={{ fontSize: "16px", color: "#78716C", textAlign: "center" }}>
+            +91 95573 66978<br />
+            +91 93894 03190
+          </p>
         </div>
 
         {/* CENTER — Newsletter (bordered left+right) */}
