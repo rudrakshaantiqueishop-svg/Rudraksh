@@ -14,7 +14,7 @@ export default function EnergisationHero() {
       />
       
       <div
-        className="absolute flex flex-col items-center text-center left-5 right-5 bottom-8 lg:bottom-[140px] lg:left-1/2 lg:right-auto lg:-translate-x-1/2 lg:w-[686px]"
+        className="absolute flex flex-col items-start text-left left-4 right-4 bottom-8 md:left-10 md:right-auto md:bottom-[100px] lg:left-[70px] lg:bottom-[140px] lg:-translate-x-0 lg:w-[686px]"
         style={{ gap: "clamp(24px, 3vw, 40px)" }}
       >
         <div className="flex flex-col" style={{ gap: "clamp(12px, 1.5vw, 16px)" }}>

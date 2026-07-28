@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/dal";
+import { requireUser, requireAdmin } from "@/lib/dal";
 import { reviewSchema } from "@/lib/validations/review";
 
 export type ReviewFormState =
@@ -23,6 +23,7 @@ export async function createReview(
 
   const parsed = reviewSchema.safeParse({
     rating: formData.get("rating"),
+    email: formData.get("email"),
     title: formData.get("title"),
     body: formData.get("body"),
   });
@@ -39,6 +40,19 @@ export async function createReview(
   const existing = await prisma.review.findFirst({ where: { productId, userId: user.id } });
   if (existing) {
     return { message: "You've already reviewed this product." };
+  }
+
+  if (user.email !== parsed.data.email) {
+    const existingEmailUser = await prisma.user.findUnique({
+      where: { email: parsed.data.email },
+    });
+    if (existingEmailUser) {
+      return { message: "This email address is already in use by another account." };
+    }
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { email: parsed.data.email },
+    });
   }
 
   await prisma.$transaction(async (tx) => {
@@ -71,3 +85,44 @@ export async function createReview(
   revalidatePath(`/products/${slug}`);
   return { success: true, message: "Thanks for your review!" };
 }
+
+export async function deleteReview(id: string) {
+  await requireAdmin();
+
+  try {
+    const review = await prisma.review.findUnique({
+      where: { id },
+      select: { productId: true, product: { select: { slug: true } } },
+    });
+
+    if (!review) return;
+
+    const productId = review.productId;
+    const slug = review.product.slug;
+
+    await prisma.$transaction(async (tx) => {
+      await tx.review.delete({ where: { id } });
+
+      const agg = await tx.review.aggregate({
+        where: { productId },
+        _avg: { rating: true },
+        _count: { rating: true },
+      });
+
+      await tx.product.update({
+        where: { id: productId },
+        data: {
+          ratingAvg: agg._avg.rating ?? 0,
+          ratingCount: agg._count.rating,
+        },
+      });
+    });
+
+    revalidatePath(`/products/${slug}`);
+    revalidatePath("/admin/reviews");
+  } catch (error) {
+    console.error("Failed to delete review:", error);
+    throw error;
+  }
+}
+

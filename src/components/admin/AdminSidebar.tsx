@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Package, Newspaper, Users, Calendar, FolderTree } from "lucide-react";
+import { LayoutDashboard, Package, Newspaper, Users, Calendar, FolderTree, Mail, Star } from "lucide-react";
 import type { Role } from "@/generated/prisma/client";
 
 const adminNavItems = [
@@ -12,6 +12,8 @@ const adminNavItems = [
   { href: "/admin/blog", label: "Blog", icon: Newspaper },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/consultations", label: "Consults", icon: Calendar },
+  { href: "/admin/contact-messages", label: "Messages", icon: Mail },
+  { href: "/admin/reviews", label: "Reviews", icon: Star },
 ];
 
 // Writers only manage blog content.

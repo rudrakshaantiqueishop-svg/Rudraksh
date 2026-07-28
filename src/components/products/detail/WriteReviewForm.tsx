@@ -19,7 +19,7 @@ import { createReview } from "@/app/actions/reviews";
 import { MAX_REVIEW_BODY_LENGTH } from "@/lib/validations/review";
 
 export default function WriteReviewForm({ productId, slug }: { productId: string; slug: string }) {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
@@ -85,6 +85,16 @@ export default function WriteReviewForm({ productId, slug }: { productId: string
               </span>
             ))}
           </div>
+
+          <FormField
+            label="Email Address"
+            name="email"
+            type="email"
+            placeholder="your.email@example.com"
+            defaultValue={session?.user?.email || ""}
+            required
+            errors={state?.errors?.email}
+          />
 
           <FormField
             label="Title"

@@ -2463,15 +2463,13 @@
 /* Hero */
 .htc-hero-content {
   position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
+  left: 70px;
   bottom: 80px;
   max-width: 560px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
   gap: 16px;
 }
 .htc-hero-title {
@@ -2579,10 +2577,12 @@
     padding: 80px 40px;
   }
   .htc-hero-content {
-    left: 0;
-    right: 0;
+    left: 40px;
+    right: auto;
     bottom: 56px;
     max-width: 480px;
+    align-items: flex-start;
+    text-align: left;
   }
   .htc-confusion-row {
     flex-direction: column;
@@ -2607,10 +2607,12 @@
     padding: 60px 20px;
   }
   .htc-hero-content {
-    left: 0;
-    right: 0;
+    left: 16px;
+    right: auto;
     bottom: 36px;
-    max-width: calc(100% - 48px);
+    max-width: calc(100% - 32px);
+    align-items: flex-start;
+    text-align: left;
   }
   .htc-checklist {
     grid-template-columns: 1fr;

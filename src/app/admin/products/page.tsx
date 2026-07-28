@@ -30,10 +30,11 @@ import AdminThumbnail from "@/components/admin/AdminThumbnail";
 export default async function AdminProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; category?: string; page?: string }>;
+  searchParams: Promise<{ q?: string; category?: string; page?: string; currency?: string }>;
 }) {
   await requireAdmin();
-  const { q, category, page } = await searchParams;
+  const { q, category, page, currency } = await searchParams;
+  const currentCurrency = (currency === "INR" || currency === "USD") ? (currency as "INR" | "USD") : "USD";
   const currentPage = Math.max(1, Number(page) || 1);
   const categoryId = category && category !== "all" ? category : undefined;
   const [{ products, total, pageSize }, categories] = await Promise.all([
@@ -53,18 +54,43 @@ export default async function AdminProductsPage({
         </Link>
       </div>
 
-      <form className="flex flex-wrap gap-2">
-        <Input
-          type="search"
-          name="q"
-          placeholder="Search by name..."
-          defaultValue={q ?? ""}
-          className="flex-1"
-        />
-        <Button type="submit" variant="outline">
-          Search
-        </Button>
-      </form>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <form className="flex flex-1 min-w-[280px] gap-2">
+          <Input
+            type="search"
+            name="q"
+            placeholder="Search by name..."
+            defaultValue={q ?? ""}
+            className="flex-1"
+          />
+          {categoryId && <input type="hidden" name="category" value={categoryId} />}
+          <input type="hidden" name="currency" value={currentCurrency} />
+          <Button type="submit" variant="outline">
+            Search
+          </Button>
+        </form>
+
+        <div className="flex items-center gap-2 bg-[#FEF9F2] p-1 rounded border border-[#E7DFD6]">
+          <Link
+            href={`/admin/products?${new URLSearchParams({ ...baseParams, currency: "USD" })}`}
+            className={cn(
+              "px-3 py-1 text-xs font-semibold rounded font-lato transition-colors",
+              currentCurrency === "USD" ? "bg-brown text-cream" : "text-gray-text hover:text-dark"
+            )}
+          >
+            USD ($)
+          </Link>
+          <Link
+            href={`/admin/products?${new URLSearchParams({ ...baseParams, currency: "INR" })}`}
+            className={cn(
+              "px-3 py-1 text-xs font-semibold rounded font-lato transition-colors",
+              currentCurrency === "INR" ? "bg-brown text-cream" : "text-gray-text hover:text-dark"
+            )}
+          >
+            INR (₹)
+          </Link>
+        </div>
+      </div>
 
       <div className="border border-border overflow-x-auto">
         <Table>
@@ -100,7 +126,7 @@ export default async function AdminProductsPage({
                   {product.subcategory?.name ?? "—"}
                 </TableCell>
                 <TableCell className="font-lato text-sm text-dark">
-                  {formatPrice(product.priceCents, "USD")}
+                  {formatPrice(product.priceCents, currentCurrency)}
                 </TableCell>
                 <TableCell className="font-lato text-sm text-dark">{product.stockCount}</TableCell>
                 <TableCell className="font-lato text-sm text-dark">
@@ -137,7 +163,7 @@ export default async function AdminProductsPage({
         <div className="flex items-center justify-center gap-4 font-lato text-sm text-dark">
           {currentPage > 1 ? (
             <Link
-              href={`/admin/products?${new URLSearchParams({ ...baseParams, page: String(currentPage - 1) })}`}
+              href={`/admin/products?${new URLSearchParams({ ...baseParams, currency: currentCurrency, page: String(currentPage - 1) })}`}
               className="text-brown underline-offset-4 hover:underline"
             >
               Previous
@@ -150,7 +176,7 @@ export default async function AdminProductsPage({
           </span>
           {currentPage < totalPages ? (
             <Link
-              href={`/admin/products?${new URLSearchParams({ ...baseParams, page: String(currentPage + 1) })}`}
+              href={`/admin/products?${new URLSearchParams({ ...baseParams, currency: currentCurrency, page: String(currentPage + 1) })}`}
               className="text-brown underline-offset-4 hover:underline"
             >
               Next

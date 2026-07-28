@@ -33,6 +33,7 @@ const productColumns = [
     { name: "Sphatik Collection",     slug: "sphatik-collection",    icon: "/assets/icons/icon-gemstones.svg" },
     { name: "Shree Yantra & Shivling", slug: "shree-yantra-shivling", icon: "/assets/icons/icon-murtis.svg" },
     { name: "Shankh Collection",      slug: "shankh-collection",     icon: "/assets/icons/icon-singing-bowls.svg" },
+    { name: "Consultancy",            href: "/consultation",         icon: "/assets/icons/icon-combinations.svg" },
   ],
 ];
 
@@ -291,7 +292,7 @@ export default function Header({ activePage }: { activePage?: string }) {
                 {col.map((item) => (
                   <Link
                     key={item.name}
-                    href={`/products/category/${item.slug}`}
+                    href={("href" in item && item.href) ? item.href : `/products/category/${item.slug || ""}`}
                     className="group/item"
                     onClick={() => setActiveDropdown(null)}
                     style={{ display: "flex", alignItems: "center", gap: "16px", textDecoration: "none" }}
@@ -477,7 +478,7 @@ export default function Header({ activePage }: { activePage?: string }) {
                   {productColumns.flat().map((item) => (
                     <Link
                       key={item.name}
-                      href={`/products/category/${item.slug}`}
+                      href={("href" in item && item.href) ? item.href : `/products/category/${item.slug || ""}`}
                       className="flex items-center gap-4 text-decoration-none group"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >

@@ -41,15 +41,43 @@ const contactItems = [
   },
 ];
 
+import { submitContactMessage } from "@/app/actions/contact";
+
 export default function GetInTouch() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
+  const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setSubmitting(true);
+    setStatus(null);
+
+    const formData = new FormData();
+    formData.append("name", form.name);
+    formData.append("email", form.email);
+    formData.append("phone", form.phone);
+    formData.append("subject", form.subject);
+    formData.append("message", form.message);
+
+    try {
+      const res = await submitContactMessage(formData);
+      if (res.success) {
+        setStatus({ type: "success", message: "Your message has been sent successfully!" });
+        setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+      } else {
+        setStatus({ type: "error", message: res.error || "Failed to send message." });
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus({ type: "error", message: "An error occurred. Please try again." });
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -164,12 +192,28 @@ export default function GetInTouch() {
             </div>
           </div>
 
+          {status && (
+            <div
+              className="font-lato text-sm"
+              style={{
+                color: status.type === "success" ? "#15803d" : "#b91c1c",
+                padding: "8px 12px",
+                borderRadius: "4px",
+                background: status.type === "success" ? "#f0fdf4" : "#fef2f2",
+                border: status.type === "success" ? "1px solid #bbf7d0" : "1px solid #fecaca",
+              }}
+            >
+              {status.message}
+            </div>
+          )}
+
           <button
             type="submit"
-            className="font-lato"
+            disabled={submitting}
+            className="font-lato disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ width: "100%", padding: "16px 24px", background: "#552912", color: "#FFFFFF", fontSize: "16px", lineHeight: "150%", letterSpacing: "0.08em", textTransform: "uppercase", border: "none", cursor: "pointer" }}
           >
-            SUBMIT
+            {submitting ? "SUBMITTING..." : "SUBMIT"}
           </button>
         </form>
 

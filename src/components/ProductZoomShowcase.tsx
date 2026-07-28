@@ -1,17 +1,32 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const SRC = "/assets/images/products/category-bracelets.png";
 const ZOOM = 1.6; // magnification inside the lens
-const LENS = 240; // lens diameter in px
+const DEFAULT_LENS = 240; // default lens diameter in px
+const MOBILE_LENS = 120; // mobile lens diameter in px
 
 export default function ProductZoomShowcase() {
   const frameRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
+  const [lensSize, setLensSize] = useState(DEFAULT_LENS);
   // Cursor position within the frame (px) + current frame size (px).
   const [lens, setLens] = useState({ x: 0, y: 0, w: 0, h: 0 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setLensSize(MOBILE_LENS);
+      } else {
+        setLensSize(DEFAULT_LENS);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const track = (clientX: number, clientY: number) => {
     const el = frameRef.current;
@@ -28,7 +43,7 @@ export default function ProductZoomShowcase() {
     setLens({ x, y, w: r.width, h: r.height });
   };
 
-  const radius = LENS / 2;
+  const radius = lensSize / 2;
 
   return (
     <section
@@ -79,8 +94,8 @@ export default function ProductZoomShowcase() {
                 position: "absolute",
                 left: `${lens.x - radius}px`,
                 top: `${lens.y - radius}px`,
-                width: `${LENS}px`,
-                height: `${LENS}px`,
+                width: `${lensSize}px`,
+                height: `${lensSize}px`,
                 borderRadius: "50%",
                 overflow: "hidden",
                 border: "2px solid rgba(255,255,255,0.85)",

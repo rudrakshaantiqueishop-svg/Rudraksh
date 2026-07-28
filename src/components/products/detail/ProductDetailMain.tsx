@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import SmartImage from "@/components/ui/SmartImage";
 import Link from "next/link";
 import { Star, Eye, Heart, ShieldCheck, Lock, Award, Truck, Mail, ChevronDown, Plus, Minus } from "lucide-react";
@@ -22,6 +22,44 @@ export default function ProductDetailMain({ product }: { product: Product }) {
   const [selectedSize, setSelectedSize] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [openSection, setOpenSection] = useState(0);
+
+  const mainImageRef = useRef<HTMLDivElement>(null);
+  const [zoomActive, setZoomActive] = useState(false);
+  const [zoomLens, setZoomLens] = useState({ x: 0, y: 0, w: 0, h: 0 });
+  const [lensSize, setLensSize] = useState(240);
+
+  const ZOOM = 1.6;
+  const DEFAULT_LENS = 240;
+  const MOBILE_LENS = 120;
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setLensSize(MOBILE_LENS);
+      } else {
+        setLensSize(DEFAULT_LENS);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const trackZoom = (clientX: number, clientY: number) => {
+    const el = mainImageRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = clientX - r.left;
+    const y = clientY - r.top;
+    if (x < 0 || y < 0 || x > r.width || y > r.height) {
+      setZoomActive(false);
+      return;
+    }
+    setZoomActive(true);
+    setZoomLens({ x, y, w: r.width, h: r.height });
+  };
+
+  const radius = lensSize / 2;
 
   const images = product.images;
   const mainImage = getMainImage(images);
@@ -83,9 +121,62 @@ export default function ProductDetailMain({ product }: { product: Product }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
         {/* Gallery */}
         <div className="flex flex-col gap-3">
-          <div className="relative aspect-square overflow-hidden bg-secondary">
+          <div
+            ref={mainImageRef}
+            onMouseEnter={(e) => trackZoom(e.clientX, e.clientY)}
+            onMouseMove={(e) => trackZoom(e.clientX, e.clientY)}
+            onMouseLeave={() => setZoomActive(false)}
+            onTouchStart={(e) => {
+              const t = e.touches[0];
+              trackZoom(t.clientX, t.clientY);
+            }}
+            onTouchMove={(e) => {
+              const t = e.touches[0];
+              trackZoom(t.clientX, t.clientY);
+            }}
+            onTouchEnd={() => setZoomActive(false)}
+            onTouchCancel={() => setZoomActive(false)}
+            className="relative aspect-square overflow-hidden bg-secondary"
+            style={{ cursor: "zoom-in", touchAction: "none" }}
+          >
             {mainImage && (
               <SmartImage src={mainImage.url} alt={mainImage.alt} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" priority />
+            )}
+
+            {/* Magnifier lens — a small circle that follows the cursor */}
+            {zoomActive && zoomLens.w > 0 && mainImage && (
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  left: `${zoomLens.x - radius}px`,
+                  top: `${zoomLens.y - radius}px`,
+                  width: `${lensSize}px`,
+                  height: `${lensSize}px`,
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                  border: "2px solid rgba(255,255,255,0.85)",
+                  boxShadow: "0 4px 18px rgba(0,0,0,0.35)",
+                  pointerEvents: "none",
+                  zIndex: 10,
+                }}
+              >
+                {/* Enlarged copy, shifted so the cursor point sits at the lens centre */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={mainImage.url}
+                  alt=""
+                  style={{
+                    position: "absolute",
+                    width: `${zoomLens.w * ZOOM}px`,
+                    height: `${zoomLens.h * ZOOM}px`,
+                    maxWidth: "none",
+                    objectFit: "cover",
+                    left: `${radius - zoomLens.x * ZOOM}px`,
+                    top: `${radius - zoomLens.y * ZOOM}px`,
+                  }}
+                />
+              </div>
             )}
           </div>
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-[330px_1fr] lg:grid-rows-2 lg:h-[576px]">
