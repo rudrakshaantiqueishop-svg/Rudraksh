@@ -1,10 +1,18 @@
 import { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
-import { Trash2, Star, Search } from "lucide-react";
+import { Trash2, Star } from "lucide-react";
 import { deleteReview } from "@/app/actions/reviews";
 import { requireAdmin } from "@/lib/dal";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import RatingHeaderFilter from "@/components/admin/RatingHeaderFilter";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export const metadata: Metadata = {
   title: "Product Reviews | Admin",
@@ -53,98 +61,81 @@ export default async function ReviewsAdminPage({
         <h2 className="font-prata text-2xl text-dark">Product Reviews</h2>
       </div>
 
-      <form className="flex flex-wrap gap-2 items-center">
+      <form className="flex gap-2 items-center">
         <Input
           type="search"
           name="q"
           placeholder="Search reviews by product name, customer, title, or body..."
           defaultValue={q ?? ""}
-          className="flex-1 min-w-[280px]"
+          className="flex-1"
         />
-
-        <select
-          name="rating"
-          defaultValue={rating ?? "all"}
-          className="h-10 rounded-md border border-[#E7DFD6] bg-white px-3 py-2 text-sm font-lato text-dark outline-none focus-visible:ring-1 focus-visible:ring-brown"
-        >
-          <option value="all">All Stars</option>
-          <option value="5">5 Stars</option>
-          <option value="4">4 Stars</option>
-          <option value="3">3 Stars</option>
-          <option value="2">2 Stars</option>
-          <option value="1">1 Star</option>
-        </select>
-
-        <Button type="submit" variant="outline">
-          Filter
-        </Button>
       </form>
 
-      <div className="rounded-lg border border-[#E7DFD6] bg-white overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left font-lato">
-            <thead className="border-b border-[#E7DFD6] bg-[#FEF9F2] text-xs font-bold uppercase tracking-[0.06em] text-gray-text">
-              <tr>
-                <th className="px-6 py-4">Date</th>
-                <th className="px-6 py-4">Product</th>
-                <th className="px-6 py-4">Customer</th>
-                <th className="px-6 py-4">Rating</th>
-                <th className="px-6 py-4">Review Details</th>
-                <th className="px-6 py-4 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#E7DFD6]">
-              {reviews.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-sm text-gray-text">
-                    No reviews found.
-                  </td>
-                </tr>
-              ) : (
-                reviews.map((review) => (
-                  <tr key={review.id} className="hover:bg-secondary/50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-dark whitespace-nowrap align-top">
-                      {new Date(review.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-dark font-medium align-top max-w-[200px] truncate">
-                      {review.product.name}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-dark align-top whitespace-nowrap">
-                      {review.authorName}
-                    </td>
-                    <td className="px-6 py-4 align-top whitespace-nowrap">
-                      <div className="flex items-center gap-0.5 text-amber-500">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star
-                            key={i}
-                            size={14}
-                            fill={i < review.rating ? "currentColor" : "none"}
-                            className={i < review.rating ? "text-amber-500" : "text-gray-300"}
-                          />
-                        ))}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 align-top max-w-md">
-                      <div className="font-semibold text-sm text-dark">{review.title}</div>
-                      <div className="text-sm text-gray-text mt-1 whitespace-pre-wrap">{review.body}</div>
-                    </td>
-                    <td className="px-6 py-4 text-right align-top">
-                      <form action={deleteReview.bind(null, review.id)}>
-                        <button
-                          type="submit"
-                          className="inline-flex items-center text-gray-text hover:text-destructive text-sm font-medium transition-colors"
-                          title="Delete Review"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+      <div className="border border-border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="px-6 py-4">Date</TableHead>
+              <TableHead className="px-6 py-4">Product</TableHead>
+              <TableHead className="px-6 py-4">Customer</TableHead>
+              <TableHead className="px-6 py-4">
+                <RatingHeaderFilter />
+              </TableHead>
+              <TableHead className="px-6 py-4">Review Details</TableHead>
+              <TableHead className="px-6 py-4 text-right">Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {reviews.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center font-lato text-sm text-gray-text py-8">
+                  No reviews found.
+                </TableCell>
+              </TableRow>
+            ) : (
+              reviews.map((review) => (
+                <TableRow key={review.id}>
+                  <TableCell className="px-6 py-4 text-sm text-dark align-top">
+                    {new Date(review.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="px-6 py-4 text-sm text-dark font-medium align-top max-w-[200px] truncate">
+                    {review.product.name}
+                  </TableCell>
+                  <TableCell className="px-6 py-4 text-sm text-dark align-top">
+                    {review.authorName}
+                  </TableCell>
+                  <TableCell className="px-6 py-4 align-top">
+                    <div className="flex items-center gap-0.5 text-amber-500">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          size={14}
+                          fill={i < review.rating ? "currentColor" : "none"}
+                          className={i < review.rating ? "text-amber-500" : "text-gray-300"}
+                        />
+                      ))}
+                    </div>
+                  </TableCell>
+                  <TableCell className="px-6 py-4 align-top max-w-md">
+                    <div className="font-semibold text-sm text-dark">{review.title}</div>
+                    <div className="text-sm text-gray-text mt-1 whitespace-pre-wrap">{review.body}</div>
+                  </TableCell>
+                  <TableCell className="px-6 py-4 text-right align-top">
+                    <form action={deleteReview.bind(null, review.id)}>
+                      <button
+                        type="submit"
+                        className="inline-flex items-center text-gray-text hover:text-destructive text-sm font-medium transition-colors"
+                        title="Delete Review"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </form>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

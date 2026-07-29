@@ -126,3 +126,50 @@ export async function deleteReview(id: string) {
   }
 }
 
+export async function updateReviewRating(id: string, formData: FormData) {
+  await requireAdmin();
+  const ratingValue = Number(formData.get("rating"));
+  if (isNaN(ratingValue) || ratingValue < 1 || ratingValue > 5) {
+    throw new Error("Invalid rating value.");
+  }
+
+  try {
+    const review = await prisma.review.findUnique({
+      where: { id },
+      select: { productId: true, product: { select: { slug: true } } },
+    });
+
+    if (!review) return;
+
+    const productId = review.productId;
+    const slug = review.product.slug;
+
+    await prisma.$transaction(async (tx) => {
+      await tx.review.update({
+        where: { id },
+        data: { rating: ratingValue },
+      });
+
+      const agg = await tx.review.aggregate({
+        where: { productId },
+        _avg: { rating: true },
+        _count: { rating: true },
+      });
+
+      await tx.product.update({
+        where: { id: productId },
+        data: {
+          ratingAvg: agg._avg.rating ?? 0,
+          ratingCount: agg._count.rating,
+        },
+      });
+    });
+
+    revalidatePath(`/products/${slug}`);
+    revalidatePath("/admin/reviews");
+  } catch (error) {
+    console.error("Failed to update review rating:", error);
+    throw error;
+  }
+}
+

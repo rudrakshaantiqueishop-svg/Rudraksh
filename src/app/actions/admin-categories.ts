@@ -103,6 +103,53 @@ export async function deleteCategory(id: string): Promise<void> {
   revalidatePath("/products");
 }
 
+export async function moveCategoryUp(id: string): Promise<void> {
+  await requireAdmin();
+  const current = await prisma.category.findUnique({ where: { id } });
+  if (!current) return;
+
+  const prevCategory = await prisma.category.findFirst({
+    where: { sortOrder: { lt: current.sortOrder } },
+    orderBy: { sortOrder: "desc" },
+  });
+
+  if (prevCategory) {
+    const currentOrder = current.sortOrder;
+    const prevOrder = prevCategory.sortOrder;
+
+    await prisma.$transaction([
+      prisma.category.update({ where: { id: current.id }, data: { sortOrder: prevOrder } }),
+      prisma.category.update({ where: { id: prevCategory.id }, data: { sortOrder: currentOrder } }),
+    ]);
+  }
+  revalidatePath("/admin/categories");
+  revalidatePath("/products");
+}
+
+export async function moveCategoryDown(id: string): Promise<void> {
+  await requireAdmin();
+  const current = await prisma.category.findUnique({ where: { id } });
+  if (!current) return;
+
+  const nextCategory = await prisma.category.findFirst({
+    where: { sortOrder: { gt: current.sortOrder } },
+    orderBy: { sortOrder: "asc" },
+  });
+
+  if (nextCategory) {
+    const currentOrder = current.sortOrder;
+    const nextOrder = nextCategory.sortOrder;
+
+    await prisma.$transaction([
+      prisma.category.update({ where: { id: current.id }, data: { sortOrder: nextOrder } }),
+      prisma.category.update({ where: { id: nextCategory.id }, data: { sortOrder: currentOrder } }),
+    ]);
+  }
+  revalidatePath("/admin/categories");
+  revalidatePath("/products");
+}
+
+
 // ── Subcategories ──────────────────────────────────────────────────────
 
 function parseSubcategory(formData: FormData) {

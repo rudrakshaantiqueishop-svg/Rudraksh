@@ -16,7 +16,7 @@ import { CurrencyCode } from "@/lib/currency";
 
 const CURRENCY_OPTIONS: CurrencyCode[] = ["USD", "INR"];
 
-const productColumns = [
+const DEFAULT_PRODUCT_COLUMNS = [
   [
     { name: "Rudraksha",              slug: "rudraksha",             icon: "/assets/icons/icon-rudraksha.svg" },
     { name: "Antique Collection",     slug: "antique-collection",    icon: "/assets/icons/icon-antiques.svg" },
@@ -37,6 +37,20 @@ const productColumns = [
   ],
 ];
 
+const iconMap: Record<string, string> = {
+  "rudraksha": "/assets/icons/icon-rudraksha.svg",
+  "antique-collection": "/assets/icons/icon-antiques.svg",
+  "siddha-mala": "/assets/icons/icon-siddha-mala.svg",
+  "rudraksha-kavach": "/assets/icons/icon-combinations.svg",
+  "japa-mala": "/assets/icons/icon-necklaces.svg",
+  "bracelets": "/assets/icons/icon-bracelets.svg",
+  "idols-singing-bowls": "/assets/icons/icon-singing-bowls.svg",
+  "gemstones": "/assets/icons/icon-gemstones.svg",
+  "sphatik-collection": "/assets/icons/icon-gemstones.svg",
+  "shree-yantra-shivling": "/assets/icons/icon-murtis.svg",
+  "shankh-collection": "/assets/icons/icon-singing-bowls.svg",
+};
+
 const aboutLinks = [
   { name: "Authenticity & Certification", href: "/authenticity" },
   { name: "Energisation Process", href: "/energisation-process" },
@@ -56,6 +70,33 @@ export default function Header({ activePage }: { activePage?: string }) {
   const staffLabel = isAdmin ? "ADMIN" : "WRITER";
   const accountHref = isLoggedIn ? "/account" : "/login";
   const currentPage = activePage ?? (pathname === "/" ? "home" : pathname === "/about" ? "about" : pathname === "/contact" ? "contact" : pathname?.startsWith("/products") ? "products" : "home");
+  const [productColumns, setProductColumns] = useState(DEFAULT_PRODUCT_COLUMNS);
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then((res) => res.json())
+      .then((categories) => {
+        if (Array.isArray(categories) && categories.length > 0) {
+          const items = categories.map((cat) => ({
+            name: cat.name,
+            slug: cat.slug,
+            icon: iconMap[cat.slug] || "/assets/icons/icon-combinations.svg",
+          }));
+          const cols: typeof DEFAULT_PRODUCT_COLUMNS = [[], [], []];
+          items.forEach((item, index) => {
+            cols[index % 3].push(item);
+          });
+          cols[2].push({
+            name: "Consultancy",
+            href: "/consultation",
+            icon: "/assets/icons/icon-combinations.svg",
+          } as any);
+          setProductColumns(cols);
+        }
+      })
+      .catch((err) => console.error("Error loading categories for header:", err));
+  }, []);
+
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false); // Default open in mobile as per image
