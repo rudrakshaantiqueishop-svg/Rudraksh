@@ -1,4 +1,5 @@
 import { Trash2 } from "lucide-react";
+import type { Address } from "@/generated/prisma/client";
 import { requireUser } from "@/lib/dal";
 import { deleteAddress } from "@/app/actions/account";
 import { MAX_ADDRESSES } from "@/lib/validations/account";
@@ -19,7 +20,7 @@ export default async function AddressesPage() {
           </p>
         ) : (
           <div className="flex flex-col gap-4">
-            {user.addresses.map((address) => (
+            {user.addresses.map((address: Address) => (
               <div
                 key={address.id}
                 className="flex items-start justify-between gap-4 border-b border-border pb-4 last:border-0 last:pb-0"

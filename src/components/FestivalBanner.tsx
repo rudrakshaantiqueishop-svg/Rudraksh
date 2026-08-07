@@ -1,17 +1,55 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getBannerByKey } from "@/lib/banners";
 
-export default function FestivalBanner() {
+function renderHighlightedTitle(title: string, highlight?: string | null, gradientFrom = "#298FC2", gradientTo = "#FFFFFF") {
+  if (!highlight || !title.toLowerCase().includes(highlight.toLowerCase())) {
+    return title;
+  }
+
+  const idx = title.toLowerCase().indexOf(highlight.toLowerCase());
+  const before = title.slice(0, idx);
+  const matched = title.slice(idx, idx + highlight.length);
+  const after = title.slice(idx + highlight.length);
+
   return (
-    <section className="relative w-full overflow-hidden" style={{ height: "560px" }}>
+    <>
+      {before}
+      <span
+        style={{
+          background: `linear-gradient(90deg, ${gradientFrom} 0%, ${gradientTo} 100%)`,
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+        }}
+      >
+        {matched}
+      </span>
+      {after}
+    </>
+  );
+}
 
+export default async function FestivalBanner() {
+  const banner = await getBannerByKey("festival_banner");
+
+  const ctaWords = (banner.ctaText || "SHOP NOW").split(" ");
+  const firstCtaWord = ctaWords[0] || "SHOP";
+  const restCtaWords = ctaWords.slice(1).join(" ");
+
+  const gradientFrom = banner.gradientFrom || "#298FC2";
+  const gradientTo = banner.gradientTo || "#FFFFFF";
+
+  return (
+    <section className="fb-section relative w-full overflow-hidden" style={{ height: "560px" }}>
       {/* Background image */}
       <Image
-        src="/assets/images/home/god.png"
-        alt="Shivratri divine blessings"
+        src={banner.imageUrl}
+        alt={banner.title}
         fill
         className="object-cover object-center"
         loading="lazy"
+        unoptimized={banner.imageUrl.startsWith("http")}
       />
 
       {/* Content */}
@@ -19,7 +57,7 @@ export default function FestivalBanner() {
         className="fb-content absolute inset-0 flex flex-col items-center text-center justify-center h-px-section"
         style={{ paddingTop: 0, paddingBottom: 0 }}
       >
-        {/* Title — max ~680px wide */}
+        {/* Title */}
         <h2
           className="fb-title font-prata"
           style={{
@@ -31,39 +69,28 @@ export default function FestivalBanner() {
             maxWidth: "680px",
           }}
         >
-          This{" "}
-          {/* "Shivratri" with gradient #298FC2 → #FFFFFF */}
-          <span
-            style={{
-              background: "linear-gradient(90deg, #298FC2 0%, #FFFFFF 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            Shivratri
-          </span>
-          , get the divine blessings of Bhagwaan Shiv
+          {renderHighlightedTitle(banner.title, banner.titleHighlight, gradientFrom, gradientTo)}
         </h2>
 
         {/* Description */}
-        <p
-          className="font-lato text-white"
-          style={{
-            fontSize: "15px",
-            lineHeight: "160%",
-            margin: "0 0 40px 0",
-            maxWidth: "620px",
-            opacity: 0.9,
-          }}
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua.
-        </p>
+        {banner.subtitle && (
+          <p
+            className="font-lato text-white"
+            style={{
+              fontSize: "15px",
+              lineHeight: "160%",
+              margin: "0 0 40px 0",
+              maxWidth: "620px",
+              opacity: 0.9,
+            }}
+          >
+            {banner.subtitle}
+          </p>
+        )}
 
         {/* CTA */}
         <Link
-          href="#"
+          href={banner.ctaLink || "#"}
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -75,7 +102,6 @@ export default function FestivalBanner() {
           }}
           className="group/cta"
         >
-          {/* "SHOP" in gradient, "NOW" in white */}
           <span
             className="font-lato"
             style={{
@@ -87,26 +113,28 @@ export default function FestivalBanner() {
           >
             <span
               style={{
-                background: "linear-gradient(90deg, #298FC2 0%, #FFFFFF 100%)",
+                background: `linear-gradient(90deg, ${gradientFrom} 0%, ${gradientTo} 100%)`,
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
               }}
             >
-              SHOP
+              {firstCtaWord}
             </span>
-            <span className="text-white"> NOW</span>
+            {restCtaWords ? <span className="text-white"> {restCtaWords}</span> : null}
           </span>
           <svg
-            width="18" height="18" viewBox="0 0 24 24" fill="none"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
             className="group-hover/cta:opacity-75 transition-opacity"
           >
-            <path d="M17 7L7 17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M8 7H17V16" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M17 7L7 17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M8 7H17V16" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </Link>
       </div>
-
     </section>
   );
 }

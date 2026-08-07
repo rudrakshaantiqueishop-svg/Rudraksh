@@ -17,6 +17,7 @@ function parseCategory(formData: FormData) {
     slug: formData.get("slug"),
     image: formData.get("image"),
     sortOrder: formData.get("sortOrder") ?? 0,
+    isActive: formData.get("isActive") === "true" || formData.get("isActive") === "on",
     heroTitle: formData.get("heroTitle"),
     heroSubtitle: formData.get("heroSubtitle"),
     introHeading: formData.get("introHeading"),
@@ -42,6 +43,7 @@ export async function createCategory(_prev: FormState, formData: FormData): Prom
         slug: d.slug,
         image: d.image,
         sortOrder: d.sortOrder,
+        isActive: d.isActive ?? true,
         pageContent: pageContent as unknown as Prisma.InputJsonValue,
       },
     });
@@ -76,6 +78,7 @@ export async function updateCategory(id: string, _prev: FormState, formData: For
         slug: d.slug,
         image: d.image,
         sortOrder: d.sortOrder,
+        isActive: d.isActive ?? true,
         pageContent: pageContent as unknown as Prisma.InputJsonValue,
       },
     });
@@ -89,6 +92,23 @@ export async function updateCategory(id: string, _prev: FormState, formData: For
   revalidatePath("/admin/categories");
   revalidatePath(`/products/category/${d.slug}`);
   redirect("/admin/categories");
+}
+
+export async function toggleCategoryActive(id: string, currentIsActive: boolean): Promise<void> {
+  await requireAdmin();
+  try {
+    const updated = await prisma.category.update({
+      where: { id },
+      data: { isActive: !currentIsActive },
+      select: { slug: true },
+    });
+    revalidatePath("/admin/categories");
+    revalidatePath("/products");
+    revalidatePath(`/products/category/${updated.slug}`);
+    revalidatePath("/");
+  } catch (err) {
+    console.error("Failed to toggle category active status:", err);
+  }
 }
 
 export async function deleteCategory(id: string): Promise<void> {

@@ -40,6 +40,35 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === "" ? 1 : 0.8,
   }));
 
+  // Fetch all active categories & subcategories
+  const categories = await prisma.category.findMany({
+    where: { isActive: true },
+    select: {
+      slug: true,
+      subcategories: {
+        select: { slug: true },
+      },
+    },
+  });
+
+  // Map category routes
+  const categoryRoutes = categories.map((cat) => ({
+    url: `${baseUrl}/products/category/${cat.slug}`,
+    lastModified: new Date().toISOString(),
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+  }));
+
+  // Map subcategory routes
+  const subcategoryRoutes = categories.flatMap((cat) =>
+    cat.subcategories.map((sub) => ({
+      url: `${baseUrl}/products/category/${cat.slug}/${sub.slug}`,
+      lastModified: new Date().toISOString(),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    }))
+  );
+
   // Map product routes
   const productRoutes = products.map((product) => ({
     url: `${baseUrl}/products/${product.slug}`,
@@ -56,5 +85,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...routes, ...productRoutes, ...blogRoutes];
+  return [...routes, ...categoryRoutes, ...subcategoryRoutes, ...productRoutes, ...blogRoutes];
 }

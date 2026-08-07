@@ -13,6 +13,7 @@ export const categorySchema = z.object({
   slug: slugSchema,
   image: z.string().trim().min(1, { error: "Image URL is required." }),
   sortOrder: z.coerce.number().int().min(0),
+  isActive: z.boolean().optional().default(true),
   heroTitle: z.string().trim().min(1, { error: "Hero title is required." }),
   heroSubtitle: z.string().trim().min(1, { error: "Hero subtitle is required." }),
   introHeading: z.string().trim().min(1, { error: "Intro heading is required." }),

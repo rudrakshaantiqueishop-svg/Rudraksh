@@ -118,11 +118,12 @@ model VerificationToken {
 // the /products/category/[slug] listing page (hero, intro, checklist,
 // and fit-check sections all come from `pageContent`).
 model Category {
-  id        String @id @default(uuid())
+  id        String  @id @default(uuid())
   name      String
-  slug      String @unique
+  slug      String  @unique
   image     String
-  sortOrder Int    @default(0)
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
 
   // Shape: { heroTitle, heroSubtitle, introHeading, introDescription,
   // introImage, checklistHeading, checklist: string[5], checklistImages: [string, string],
@@ -219,6 +220,7 @@ model Product {
   collections   Collection[]
   cartItems     CartItem[]
   wishlistItems WishlistItem[]
+  inspiredItems InspiredItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -470,4 +472,55 @@ model ContactMessage {
 
   @@map("contact_messages")
 }
+
+// ---------------------------------------------------------------------
+// Homepage / Promotional Banners (CMS)
+// ---------------------------------------------------------------------
+
+model Banner {
+  id             String   @id @default(uuid())
+  key            String   @unique // e.g. "festival_banner", "indramala_banner"
+  name           String   // e.g. "Festival Banner (Shivratri)", "Indramala Banner"
+  title          String
+  titleHighlight String?  // text inside title to render with gradient highlight
+  subtitle       String?  @db.Text
+  imageUrl       String
+  ctaText        String   @default("SHOP NOW")
+  ctaLink        String   @default("#")
+  gradientFrom   String?  @default("#298FC2") // primary gradient highlight color
+  gradientTo     String?  @default("#FFFFFF") // secondary gradient highlight color
+  isActive       Boolean  @default(true)
+  sortOrder      Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("banners")
+}
+
+// ---------------------------------------------------------------------
+// Get Inspired (CMS Video & Showcase Cards)
+// ---------------------------------------------------------------------
+
+model InspiredItem {
+  id              String   @id @default(uuid())
+  title           String
+  type            String   @default("video") // "video" | "image"
+  videoUrl        String?  // YouTube Short or video URL
+  imageUrl        String   // Cover / background image
+  productImageUrl String?  // Top-left inset thumbnail product image
+  price           String?
+  originalPrice   String?
+  sortOrder       Int      @default(0)
+  isActive        Boolean  @default(true)
+
+  productId       String?
+  product         Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("inspired_items")
+}
+
+
 

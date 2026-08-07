@@ -120,13 +120,56 @@
   .wwa-img {
     width: 100% !important;
     flex: none !important;
-    height: 320px !important;
+    height: 460px !important;
   }
   .wwa-content {
     padding-left: 0 !important;
   }
   .wwa-features {
     grid-template-columns: 1fr !important;
+  }
+}
+@media (max-width: 767px) {
+  .wwa-img {
+    height: 440px !important;
+  }
+}
+
+/* ProductZoomShowcase hotspot photo on mobile */
+@media (max-width: 767px) {
+  .pzs-frame {
+    aspect-ratio: 4 / 3 !important;
+    min-height: 380px !important;
+  }
+}
+
+/* FestivalBanner */
+@media (max-width: 767px) {
+  .fb-section {
+    height: 560px !important;
+    min-height: 520px !important;
+  }
+  .fb-content {
+    text-align: center !important;
+    align-items: center !important;
+    padding: 0 20px !important;
+  }
+  .fb-title {
+    font-size: clamp(26px, 7vw, 40px) !important;
+  }
+}
+
+/* IndramalaBanner */
+@media (max-width: 767px) {
+  .ib-section {
+    height: 520px !important;
+    min-height: 500px !important;
+  }
+  .ib-content {
+    padding: 0 20px !important;
+  }
+  .ib-title {
+    font-size: clamp(32px, 9vw, 56px) !important;
   }
 }
 

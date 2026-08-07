@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
-import { getCategoryWithSubcategories, getPageContent } from "@/lib/products";
+import CategoryDisabledView from "@/components/products/CategoryDisabledView";
+import { getCategoryWithSubcategories, getPageContent, getCategories } from "@/lib/products";
 import ProductsHero from "@/components/products/ProductsHero";
 import CategoryIntro from "@/components/products/CategoryIntro";
 import SubcategoryGrid from "@/components/products/SubcategoryGrid";
@@ -18,6 +19,18 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
 
   if (!category) {
     notFound();
+  }
+
+  if (category.isActive === false) {
+    const allCategories = await getCategories();
+    const activeAlternatives = allCategories.filter((c) => c.slug !== category.slug && (c.isActive ?? true));
+    return (
+      <CategoryDisabledView
+        categoryName={category.name}
+        categoryImage={category.image}
+        otherCategories={activeAlternatives}
+      />
+    );
   }
 
   const pageContent = getPageContent(category);

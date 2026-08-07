@@ -53,6 +53,7 @@ export default function ProductZoomShowcase() {
       <div style={{ maxWidth: "1300px", margin: "0 auto" }}>
         <div
           ref={frameRef}
+          className="pzs-frame"
           onMouseEnter={(e) => track(e.clientX, e.clientY)}
           onMouseMove={(e) => track(e.clientX, e.clientY)}
           onMouseLeave={() => setActive(false)}

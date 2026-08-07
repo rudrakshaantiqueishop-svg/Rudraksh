@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getSubcategoryBySlug, getProductsBySubcategory } from "@/lib/products";
+import CategoryDisabledView from "@/components/products/CategoryDisabledView";
+import { getSubcategoryBySlug, getProductsBySubcategory, getCategories } from "@/lib/products";
 import { computeFacets, filterProducts, parseFilters, getPriceBounds } from "@/lib/product-utils";
 import SubcategoryProductListing from "@/components/products/SubcategoryProductListing";
 
@@ -17,6 +18,18 @@ export default async function SubcategoryPage({
   const subcategory = await getSubcategoryBySlug(slug, sub);
   if (!subcategory) {
     notFound();
+  }
+
+  if (subcategory.category.isActive === false) {
+    const allCategories = await getCategories();
+    const activeAlternatives = allCategories.filter((c) => c.slug !== slug && (c.isActive ?? true));
+    return (
+      <CategoryDisabledView
+        categoryName={subcategory.category.name}
+        categoryImage={subcategory.category.image}
+        otherCategories={activeAlternatives}
+      />
+    );
   }
 
   const allProducts = await getProductsBySubcategory(slug, sub);
