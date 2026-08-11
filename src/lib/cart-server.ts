@@ -16,7 +16,7 @@ export async function getCartItems(userId: string): Promise<CartItem[]> {
     include: {
       items: {
         include: {
-          product: { include: { images: true } },
+          product: { include: { images: true, category: true } },
           variant: true,
           addOn: true,
           size: true,

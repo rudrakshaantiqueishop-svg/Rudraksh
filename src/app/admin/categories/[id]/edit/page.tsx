@@ -29,7 +29,7 @@ export default async function EditCategoryPage({ params }: { params: Promise<{ i
           name: category.name,
           slug: category.slug,
           image: category.image,
-          sortOrder: category.sortOrder,
+          isActive: category.isActive,
           pageContent: category.pageContent,
         }}
       />

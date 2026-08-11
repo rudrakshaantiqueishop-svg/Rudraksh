@@ -170,6 +170,22 @@ export default function Header({ activePage }: { activePage?: string }) {
               HOME
             </Link>
 
+            {/* Products trigger */}
+            <div
+              className={`relative flex items-center gap-1.5 xl:gap-2 font-lato text-[13px] xl:text-base font-normal h-full transition-colors cursor-pointer ${activeDropdown === "products" || currentPage === "products" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
+              onMouseEnter={() => setActiveDropdown("products")}
+              onMouseLeave={() => setActiveDropdown(null)}
+            >
+              <Link href="/products" className="flex items-center h-full">
+                PRODUCTS
+              </Link>
+              <ChevronDown
+                size={15}
+                strokeWidth={1.5}
+                className={`transition-transform duration-200 ${activeDropdown === "products" ? "rotate-180" : ""}`}
+              />
+            </div>
+
             {/* About Us trigger */}
             <div
               className={`relative flex items-center gap-1.5 xl:gap-2 font-lato text-[13px] xl:text-base font-normal h-full transition-colors cursor-pointer ${activeDropdown === "about" || currentPage === "about" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
@@ -202,22 +218,6 @@ export default function Header({ activePage }: { activePage?: string }) {
                   ))}
                 </div>
               )}
-            </div>
-
-            {/* Products trigger */}
-            <div
-              className={`relative flex items-center gap-1.5 xl:gap-2 font-lato text-[13px] xl:text-base font-normal h-full transition-colors cursor-pointer ${activeDropdown === "products" || currentPage === "products" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
-              onMouseEnter={() => setActiveDropdown("products")}
-              onMouseLeave={() => setActiveDropdown(null)}
-            >
-              <Link href="/products" className="flex items-center h-full">
-                PRODUCTS
-              </Link>
-              <ChevronDown
-                size={15}
-                strokeWidth={1.5}
-                className={`transition-transform duration-200 ${activeDropdown === "products" ? "rotate-180" : ""}`}
-              />
             </div>
 
             <Link href="/contact" className={`font-lato text-[13px] xl:text-base font-normal flex items-center h-full uppercase transition-colors ${currentPage === "contact" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}>
@@ -466,39 +466,6 @@ export default function Header({ activePage }: { activePage?: string }) {
 
             <div className="flex flex-col">
               <div className="flex justify-between items-center font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase">
-                <Link href="/about" onClick={() => setIsMobileMenuOpen(false)}>
-                  ABOUT US
-                </Link>
-                <button
-                  aria-label="Toggle about menu"
-                  onClick={() => setIsMobileAboutOpen(!isMobileAboutOpen)}
-                >
-                  {isMobileAboutOpen ? (
-                    <Minus size={16} strokeWidth={1.5} />
-                  ) : (
-                    <Plus size={16} strokeWidth={1.5} />
-                  )}
-                </button>
-              </div>
-
-              {isMobileAboutOpen && (
-                <div className="flex flex-col gap-6 mt-6 pl-4">
-                  {aboutLinks.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="font-lato font-normal text-[#44403C] text-[15px] hover:text-[#BB5A28] transition-colors uppercase"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="flex flex-col">
-              <div className="flex justify-between items-center font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase">
                 <Link href="/products" onClick={() => setIsMobileMenuOpen(false)}>
                   PRODUCTS
                 </Link>
@@ -532,6 +499,39 @@ export default function Header({ activePage }: { activePage?: string }) {
                       <div className="ml-auto flex-shrink-0 opacity-50">
                         <Image src="/assets/icons/icon-arrow.svg" alt="" width={20} height={20} />
                       </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col">
+              <div className="flex justify-between items-center font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase">
+                <Link href="/about" onClick={() => setIsMobileMenuOpen(false)}>
+                  ABOUT US
+                </Link>
+                <button
+                  aria-label="Toggle about menu"
+                  onClick={() => setIsMobileAboutOpen(!isMobileAboutOpen)}
+                >
+                  {isMobileAboutOpen ? (
+                    <Minus size={16} strokeWidth={1.5} />
+                  ) : (
+                    <Plus size={16} strokeWidth={1.5} />
+                  )}
+                </button>
+              </div>
+
+              {isMobileAboutOpen && (
+                <div className="flex flex-col gap-6 mt-6 pl-4">
+                  {aboutLinks.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="font-lato font-normal text-[#44403C] text-[15px] hover:text-[#BB5A28] transition-colors uppercase"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {item.name}
                     </Link>
                   ))}
                 </div>

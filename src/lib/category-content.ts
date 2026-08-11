@@ -1,19 +1,34 @@
 import type { CategoryPageContent } from "@/lib/product-utils";
 
 // The editable subset of pageContent exposed in the admin category form.
+// The four copy fields are optional — when the admin leaves them blank we
+// generate readable defaults from the category name (see defaultCopy).
 export type CategoryContentInput = {
   name: string;
   image: string;
-  heroTitle: string;
-  heroSubtitle: string;
-  introHeading: string;
-  introDescription: string;
+  heroTitle?: string;
+  heroSubtitle?: string;
+  introHeading?: string;
+  introDescription?: string;
 };
 
 const DEFAULT_CHECKLIST_IMAGES: [string, string] = [
   "/assets/images/about/about-sacred-1.png",
   "/assets/images/about/about-sacred-2.png",
 ];
+
+// Landing-page copy generated from the category name alone. Shown as
+// placeholder text in the admin form so the admin can see what they'd get
+// before deciding to write their own.
+export function defaultCopy(name: string) {
+  const trimmed = name.trim() || "This Collection";
+  return {
+    heroTitle: `Authentic ${trimmed}, Chosen with Care`,
+    heroSubtitle: `Every ${trimmed} piece listed here is physically examined, verified, and handled with traditional respect—so you can explore with confidence, not confusion.`,
+    introHeading: trimmed,
+    introDescription: `Explore our ${trimmed.toLowerCase()} collection, carefully sourced and quality-checked, so you can make an informed choice without pressure.`,
+  };
+}
 
 // Builds a complete CategoryPageContent from the handful of fields the admin
 // edits, merging over any existing content so unedited sections (checklist,
@@ -22,11 +37,14 @@ export function buildPageContent(
   input: CategoryContentInput,
   existing?: Partial<CategoryPageContent>
 ): CategoryPageContent {
+  const fallback = defaultCopy(input.name);
+
   return {
-    heroTitle: input.heroTitle,
-    heroSubtitle: input.heroSubtitle,
-    introHeading: input.introHeading,
-    introDescription: input.introDescription,
+    heroTitle: input.heroTitle ?? existing?.heroTitle ?? fallback.heroTitle,
+    heroSubtitle: input.heroSubtitle ?? existing?.heroSubtitle ?? fallback.heroSubtitle,
+    introHeading: input.introHeading ?? existing?.introHeading ?? fallback.introHeading,
+    introDescription:
+      input.introDescription ?? existing?.introDescription ?? fallback.introDescription,
     introImage: input.image,
     checklistHeading: existing?.checklistHeading ?? `Every ${input.name} Item You See Here Is`,
     checklist:

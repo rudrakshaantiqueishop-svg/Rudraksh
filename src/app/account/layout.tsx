@@ -9,10 +9,10 @@ export default async function AccountLayout({
   const user = await requireUser();
 
   return (
-    <section className="bg-cream" style={{ height: "calc(100vh - 72px)" }}>
-      <div className="flex h-full w-full flex-col gap-4 px-6 py-[10px] md:flex-row md:gap-12">
+    <section className="bg-cream min-h-[calc(100vh-72px)] py-6 sm:py-10">
+      <div className="flex w-full flex-col gap-6 px-4 sm:px-6 lg:px-8 md:flex-row md:gap-10">
         <AccountSidebar name={user.name} email={user.email} />
-        <main className="min-w-0 flex-1 overflow-y-auto pb-24 md:pb-0">{children}</main>
+        <main className="min-w-0 flex-1">{children}</main>
       </div>
     </section>
   );

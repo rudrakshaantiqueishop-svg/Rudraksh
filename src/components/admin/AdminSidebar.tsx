@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Package, Newspaper, Users, Calendar, FolderTree, Mail, Star, Image as ImageIcon, Video } from "lucide-react";
+import { LayoutDashboard, Package, Newspaper, Users, Calendar, FolderTree, Mail, Star, Image as ImageIcon, Video, ShoppingBag } from "lucide-react";
 import type { Role } from "@/generated/prisma/client";
 
 const adminNavItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/orders", label: "Orders", icon: ShoppingBag },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/categories", label: "Categories", icon: FolderTree },
   { href: "/admin/banners", label: "Banners", icon: ImageIcon },

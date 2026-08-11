@@ -28,7 +28,15 @@ export default async function CheckoutPage() {
 
       <h1 className="font-prata text-3xl lg:text-[34px] text-dark m-0 mb-8">Checkout</h1>
 
-      <CheckoutView items={items} addresses={user.addresses} itemCount={itemCount} subtotalCents={subtotalCents} />
+      <CheckoutView
+        items={items}
+        addresses={user.addresses}
+        itemCount={itemCount}
+        subtotalCents={subtotalCents}
+        customerName={user.name}
+        customerEmail={user.email}
+        customerPhone={user.phone}
+      />
     </section>
   );
 }

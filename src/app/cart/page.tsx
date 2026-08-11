@@ -3,9 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Minus, Plus, Trash2, ShoppingBag, AlertCircle } from "lucide-react";
+import { Trash2, ShoppingBag, AlertCircle } from "lucide-react";
 import { useCart } from "@/components/CartProvider";
 import { useCurrency } from "@/components/CurrencyProvider";
+import QuantityStepper from "@/components/ui/QuantityStepper";
 
 export default function CartPage() {
   const { items, itemCount, subtotalCents, isLoading, removeItem, updateQuantity, clearCart } = useCart();
@@ -85,15 +86,11 @@ export default function CartPage() {
                 )}
                 <span className="font-lato text-sm font-bold text-dark mt-1">{formatPrice(item.unitPriceCents)}</span>
                 <div className="flex items-center justify-between mt-2 gap-3">
-                  <div className="flex items-center border border-[#E7DFD6]">
-                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="p-2 text-dark" aria-label="Decrease quantity">
-                      <Minus size={14} />
-                    </button>
-                    <span className="font-lato text-sm text-dark w-8 text-center">{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="p-2 text-dark" aria-label="Increase quantity">
-                      <Plus size={14} />
-                    </button>
-                  </div>
+                  <QuantityStepper
+                    quantity={item.quantity}
+                    onChange={(next) => updateQuantity(item.id, next)}
+                    label={`Quantity for ${item.name}`}
+                  />
                   <button
                     onClick={() => removeItem(item.id)}
                     className="flex items-center gap-1.5 text-gray-text hover:text-brown transition-colors font-lato text-xs font-bold tracking-[0.5px]"

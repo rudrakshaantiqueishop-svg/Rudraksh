@@ -27,7 +27,6 @@ export default function InspiredForm({ item, catalog = [] }: InspiredFormProps) 
   const [price, setPrice] = useState(item?.price ?? "");
   const [originalPrice, setOriginalPrice] = useState(item?.originalPrice ?? "");
   const [isActive, setIsActive] = useState(item?.isActive ?? true);
-  const [sortOrder, setSortOrder] = useState<number>(item?.sortOrder ?? 0);
 
   // Compute initial Category & Subcategory from linked productId
   const initialCategoryAndSubcategory = useMemo(() => {
@@ -259,62 +258,88 @@ export default function InspiredForm({ item, catalog = [] }: InspiredFormProps) 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {/* Main Cover Image */}
           <div className="flex flex-col gap-2">
-            <Label htmlFor="imageUrl">Cover / Background Image URL</Label>
-            <div className="flex gap-2">
-              <Input
-                id="imageUrl"
-                name="imageUrl"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                placeholder="/assets/images/about/about-sacred-1.png or Cloudinary URL"
-                required
-              />
-              <CloudinaryUploadButton onUpload={(url) => setImageUrl(url)} label="Upload" />
-            </div>
+            <Label>Cover / Background Image</Label>
+            <input type="hidden" name="imageUrl" value={imageUrl} />
+
+            {!imageUrl ? (
+              <div className="flex flex-col items-start gap-2">
+                <CloudinaryUploadButton onUpload={(url) => setImageUrl(url)} label="Upload Image" />
+                <span className="text-xs text-stone-400">
+                  A tall (portrait) image works best for these cards.
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-end gap-3">
+                <div className="relative h-32 w-24 overflow-hidden rounded border bg-stone-100 shadow-sm">
+                  <Image src={imageUrl} alt="Cover Preview" fill className="object-cover" unoptimized />
+                </div>
+                <div className="flex flex-col items-start gap-2">
+                  <CloudinaryUploadButton onUpload={(url) => setImageUrl(url)} label="Change" />
+                  <button
+                    type="button"
+                    onClick={() => setImageUrl("")}
+                    className="text-xs text-red-600 hover:underline"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            )}
+
             {state?.errors?.imageUrl?.map((m) => (
               <span key={m} className="text-[13px] text-destructive">{m}</span>
             ))}
-
-            {imageUrl && (
-              <div className="mt-2 relative h-32 w-24 overflow-hidden rounded border bg-stone-100 shadow-sm">
-                <Image src={imageUrl} alt="Cover Preview" fill className="object-cover" unoptimized />
-              </div>
-            )}
           </div>
 
           {/* Inset Product Image */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="productImageUrl">Top-Left Product Thumbnail Image (For Review)</Label>
+              <Label>Small Product Thumbnail (shown on the card)</Label>
               {selectedProductId && (
                 <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                   🔒 Synced from Product Catalog
                 </span>
               )}
             </div>
-            <div className="flex gap-2">
-              <Input
-                id="productImageUrl"
-                name="productImageUrl"
-                value={productImageUrl}
-                onChange={(e) => setProductImageUrl(e.target.value)}
-                readOnly={!!selectedProductId}
-                placeholder="Auto-synced from product selection"
-                className={selectedProductId ? "bg-stone-100/80 cursor-not-allowed text-stone-600" : ""}
-              />
-              {!selectedProductId && (
-                <CloudinaryUploadButton onUpload={(url) => setProductImageUrl(url)} label="Upload" />
+            <input type="hidden" name="productImageUrl" value={productImageUrl} />
+
+            <div className="flex items-end gap-3">
+              {productImageUrl ? (
+                <div className="relative h-20 w-20 overflow-hidden rounded border-2 border-stone-200 bg-stone-100 shadow-sm">
+                  <Image src={productImageUrl} alt="Product Inset Preview" fill className="object-cover" unoptimized />
+                </div>
+              ) : (
+                <div className="flex h-20 w-20 items-center justify-center rounded border-2 border-dashed border-stone-200 text-center text-[10px] text-stone-400">
+                  No image
+                </div>
+              )}
+
+              {selectedProductId ? (
+                <p className="text-xs text-gray-text">
+                  Taken automatically from the product you picked above.
+                </p>
+              ) : (
+                <div className="flex flex-col items-start gap-2">
+                  <CloudinaryUploadButton
+                    onUpload={(url) => setProductImageUrl(url)}
+                    label={productImageUrl ? "Change" : "Upload Image"}
+                  />
+                  {productImageUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setProductImageUrl("")}
+                      className="text-xs text-red-600 hover:underline"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
               )}
             </div>
+
             {state?.errors?.productImageUrl?.map((m) => (
               <span key={m} className="text-[13px] text-destructive">{m}</span>
             ))}
-
-            {productImageUrl && (
-              <div className="mt-2 relative h-20 w-20 overflow-hidden rounded border-2 border-stone-200 bg-stone-100 shadow-sm">
-                <Image src={productImageUrl} alt="Product Inset Preview" fill className="object-cover" unoptimized />
-              </div>
-            )}
           </div>
         </div>
       </section>
@@ -323,7 +348,7 @@ export default function InspiredForm({ item, catalog = [] }: InspiredFormProps) 
       <section className="flex flex-col gap-4 border-t pt-6">
         <h2 className="font-prata text-xl text-dark">4. Price & Display Settings</h2>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="price">Price</Label>
@@ -364,17 +389,12 @@ export default function InspiredForm({ item, catalog = [] }: InspiredFormProps) 
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="sortOrder">Sort Order</Label>
-            <Input
-              id="sortOrder"
-              name="sortOrder"
-              type="number"
-              value={sortOrder}
-              onChange={(e) => setSortOrder(parseInt(e.target.value || "0", 10))}
-            />
-          </div>
         </div>
+
+        <p className="rounded-md bg-stone-50 px-3 py-2 text-xs text-gray-text">
+          The position of this card is set with the up/down arrows on the Get Inspired list — new
+          cards are added at the end.
+        </p>
 
         <div className="flex items-center gap-3 mt-2">
           <input

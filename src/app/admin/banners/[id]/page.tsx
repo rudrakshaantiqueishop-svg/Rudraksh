@@ -25,7 +25,7 @@ export default async function EditBannerPage({ params }: { params: Promise<{ id:
         </Link>
         <div>
           <h1 className="font-prata text-2xl text-dark">Edit Banner</h1>
-          <p className="font-mono text-xs text-gray-text mt-0.5">{banner.key}</p>
+          <p className="font-lato text-sm text-gray-text mt-0.5">{banner.name}</p>
         </div>
       </div>
 

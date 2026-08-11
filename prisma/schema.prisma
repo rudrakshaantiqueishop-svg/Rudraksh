@@ -48,6 +48,7 @@ model User {
   wishlistItems WishlistItem[]
   birthProfile  BirthProfile?
   blogs         Blog[]
+  orders        Order[]
 
   @@map("users")
 }
@@ -91,6 +92,7 @@ model Address {
   updatedAt DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
 
   @@map("addresses")
 }
@@ -221,6 +223,7 @@ model Product {
   cartItems     CartItem[]
   wishlistItems WishlistItem[]
   inspiredItems InspiredItem[]
+  orderItems    OrderItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -520,6 +523,88 @@ model InspiredItem {
   updatedAt       DateTime @updatedAt
 
   @@map("inspired_items")
+}
+
+// ---------------------------------------------------------------------
+// Orders & Razorpay Payments
+// ---------------------------------------------------------------------
+
+// Payment state, driven by Razorpay.
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELLED
+}
+
+// Shipping state, driven by the admin. Kept separate from payment state so
+// "did the money arrive" and "where is the parcel" never overwrite each other.
+enum FulfillmentStatus {
+  PLACED
+  SHIPPED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+model Order {
+  id                String            @id @default(uuid())
+  userId            String
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  addressId         String?
+  address           Address?          @relation(fields: [addressId], references: [id], onDelete: SetNull)
+  razorpayOrderId   String?           @unique
+  razorpayPaymentId String?
+  status            OrderStatus       @default(PENDING)
+  fulfillmentStatus FulfillmentStatus @default(PLACED)
+  totalCents        Int
+  currency          String            @default("INR")
+  paidAt            DateTime?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  items  OrderItem[]
+  events OrderEvent[]
+
+  @@index([userId])
+  @@index([status])
+  @@map("orders")
+}
+
+// One row per shipping-status change, so the customer sees a dated timeline
+// rather than just the current state.
+model OrderEvent {
+  id        String            @id @default(uuid())
+  orderId   String
+  order     Order             @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    FulfillmentStatus
+  note      String?
+  createdAt DateTime          @default(now())
+
+  @@index([orderId])
+  @@map("order_events")
+}
+
+model OrderItem {
+  id         String   @id @default(uuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity   Int
+  priceCents Int
+  createdAt  DateTime @default(now())
+
+  // Snapshot of what was actually bought. Prices and options can change (or be
+  // deleted) later, so the order must not depend on the live product to be
+  // packed correctly.
+  productName  String?
+  variantLabel String?
+  sizeLabel    String?
+  addOnLabel   String?
+
+  @@index([orderId])
+  @@map("order_items")
 }
 
 

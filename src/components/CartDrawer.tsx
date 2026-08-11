@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Minus, Plus, X, ShoppingBag } from "lucide-react";
+import { X, ShoppingBag } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useCart } from "@/components/CartProvider";
 import { useCurrency } from "@/components/CurrencyProvider";
+import QuantityStepper from "@/components/ui/QuantityStepper";
 
 export default function CartDrawer() {
   const { items, itemCount, subtotalCents, isOpen, closeCart, removeItem, updateQuantity } = useCart();
@@ -66,23 +67,12 @@ export default function CartDrawer() {
                       </p>
                     )}
                     <div className="flex items-center justify-between mt-1 gap-2">
-                      <div className="flex items-center border border-[#E7DFD6]">
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="p-1.5 text-dark"
-                          aria-label="Decrease quantity"
-                        >
-                          <Minus size={12} />
-                        </button>
-                        <span className="font-lato text-xs text-dark w-6 text-center">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="p-1.5 text-dark"
-                          aria-label="Increase quantity"
-                        >
-                          <Plus size={12} />
-                        </button>
-                      </div>
+                      <QuantityStepper
+                        quantity={item.quantity}
+                        onChange={(next) => updateQuantity(item.id, next)}
+                        size="sm"
+                        label={`Quantity for ${item.name}`}
+                      />
                       <span className="font-lato text-sm font-bold text-dark whitespace-nowrap">
                         {formatPrice(item.unitPriceCents * item.quantity)}
                       </span>

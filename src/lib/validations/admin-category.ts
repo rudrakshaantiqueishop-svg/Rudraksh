@@ -3,30 +3,32 @@ import * as z from "zod";
 const slugSchema = z
   .string()
   .trim()
-  .min(1, { error: "Slug is required." })
+  .min(1, { error: "Web address is required." })
   .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, {
-    error: "Slug must be lowercase letters, numbers, and hyphens only.",
+    error: "Web address can only use lowercase letters, numbers, and hyphens.",
   });
+
+// Landing-page copy is optional in the admin form: blank fields are filled with
+// sensible defaults derived from the category name (see buildPageContent).
+const optionalText = z.string().trim().min(1).optional();
 
 export const categorySchema = z.object({
   name: z.string().trim().min(1, { error: "Name is required." }),
   slug: slugSchema,
-  image: z.string().trim().min(1, { error: "Image URL is required." }),
-  sortOrder: z.coerce.number().int().min(0),
+  image: z.string().trim().min(1, { error: "Please upload a category image." }),
   isActive: z.boolean().optional().default(true),
-  heroTitle: z.string().trim().min(1, { error: "Hero title is required." }),
-  heroSubtitle: z.string().trim().min(1, { error: "Hero subtitle is required." }),
-  introHeading: z.string().trim().min(1, { error: "Intro heading is required." }),
-  introDescription: z.string().trim().min(1, { error: "Intro description is required." }),
+  heroTitle: optionalText,
+  heroSubtitle: optionalText,
+  introHeading: optionalText,
+  introDescription: optionalText,
 });
 
 export const subcategorySchema = z.object({
   categoryId: z.string().trim().min(1, { error: "Category is required." }),
   name: z.string().trim().min(1, { error: "Name is required." }),
   slug: slugSchema,
-  image: z.string().trim().min(1, { error: "Image URL is required." }),
+  image: z.string().trim().min(1, { error: "Please upload an image." }),
   group: z.union([z.string().trim().min(1), z.null()]).optional(),
-  sortOrder: z.coerce.number().int().min(0),
 });
 
 export type CategoryInput = z.infer<typeof categorySchema>;

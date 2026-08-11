@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Pencil } from "lucide-react";
+import { useTransition } from "react";
+import { Pencil, ArrowUp, ArrowDown } from "lucide-react";
 import DeleteButton from "@/components/admin/DeleteButton";
-import { deleteBanner } from "@/app/actions/admin-banners";
+import { deleteBanner, moveBannerUp, moveBannerDown } from "@/app/actions/admin-banners";
 import {
   Table,
   TableBody,
@@ -20,28 +21,37 @@ interface BannerTableProps {
 }
 
 export default function BannerTable({ banners }: BannerTableProps) {
+  const [isPending, startTransition] = useTransition();
+
+  const move = (id: string, direction: "up" | "down") => {
+    startTransition(async () => {
+      await (direction === "up" ? moveBannerUp(id) : moveBannerDown(id));
+    });
+  };
+
   return (
     <div className="rounded-lg border bg-white shadow-sm overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Preview</TableHead>
-            <TableHead>Banner Name & Key</TableHead>
+            <TableHead>Banner Name</TableHead>
             <TableHead>Title</TableHead>
-            <TableHead>CTA Link</TableHead>
+            <TableHead>Button Goes To</TableHead>
             <TableHead className="w-[100px] text-center">Status</TableHead>
+            <TableHead className="w-[90px]">Order</TableHead>
             <TableHead className="w-[120px] text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {banners.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="h-24 text-center text-gray-text font-lato">
+              <TableCell colSpan={7} className="h-24 text-center text-gray-text font-lato">
                 No banners found. Create one using the button above.
               </TableCell>
             </TableRow>
           ) : (
-            banners.map((banner) => (
+            banners.map((banner, index) => (
               <TableRow key={banner.id}>
                 <TableCell>
                   <div className="relative h-14 w-24 overflow-hidden rounded bg-stone-100">
@@ -55,10 +65,7 @@ export default function BannerTable({ banners }: BannerTableProps) {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="flex flex-col">
-                    <span className="font-lato font-medium text-dark">{banner.name}</span>
-                    <span className="font-mono text-xs text-gray-text">{banner.key}</span>
-                  </div>
+                  <span className="font-lato font-medium text-dark">{banner.name}</span>
                 </TableCell>
                 <TableCell className="max-w-[240px] truncate font-lato text-sm text-dark">
                   {banner.title}
@@ -74,6 +81,31 @@ export default function BannerTable({ banners }: BannerTableProps) {
                   >
                     {banner.isActive ? "Active" : "Inactive"}
                   </span>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <span className="min-w-[16px] font-lato text-sm text-gray-text">{index + 1}</span>
+                    <div className="flex flex-col gap-0.5">
+                      <button
+                        type="button"
+                        onClick={() => move(banner.id, "up")}
+                        disabled={index === 0 || isPending}
+                        title="Move up"
+                        className="rounded p-0.5 text-gray-text transition-colors hover:bg-stone-200/50 hover:text-dark disabled:opacity-30 disabled:hover:bg-transparent"
+                      >
+                        <ArrowUp size={14} strokeWidth={2.5} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => move(banner.id, "down")}
+                        disabled={index === banners.length - 1 || isPending}
+                        title="Move down"
+                        className="rounded p-0.5 text-gray-text transition-colors hover:bg-stone-200/50 hover:text-dark disabled:opacity-30 disabled:hover:bg-transparent"
+                      >
+                        <ArrowDown size={14} strokeWidth={2.5} />
+                      </button>
+                    </div>
+                  </div>
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-2">

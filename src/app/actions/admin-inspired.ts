@@ -7,6 +7,13 @@ import { requireAdmin } from "@/lib/dal";
 
 export type FormState = { errors?: Record<string, string[] | undefined>; message?: string } | undefined;
 
+// Display order is never typed by hand — new cards go to the end of the list and
+// the admin reorders them with the arrows on the listing page.
+async function nextSortOrder(): Promise<number> {
+  const { _max } = await prisma.inspiredItem.aggregate({ _max: { sortOrder: true } });
+  return (_max.sortOrder ?? -1) + 1;
+}
+
 export async function createInspiredItem(_prev: FormState, formData: FormData): Promise<FormState> {
   await requireAdmin();
 
@@ -19,11 +26,10 @@ export async function createInspiredItem(_prev: FormState, formData: FormData): 
   const originalPrice = (formData.get("originalPrice") as string)?.trim() || null;
   const productId = (formData.get("productId") as string)?.trim() || null;
   const isActive = formData.get("isActive") === "true" || formData.get("isActive") === "on";
-  const sortOrder = parseInt((formData.get("sortOrder") as string) || "0", 10);
 
   const errors: Record<string, string[]> = {};
   if (!title) errors.title = ["Title is required"];
-  if (!imageUrl) errors.imageUrl = ["Cover Image URL is required"];
+  if (!imageUrl) errors.imageUrl = ["Please upload a cover image"];
 
   if (Object.keys(errors).length > 0) {
     return { errors, message: "Please fix the errors below." };
@@ -32,6 +38,7 @@ export async function createInspiredItem(_prev: FormState, formData: FormData): 
   try {
     await prisma.inspiredItem.create({
       data: {
+        sortOrder: await nextSortOrder(),
         title,
         type,
         videoUrl,
@@ -41,7 +48,6 @@ export async function createInspiredItem(_prev: FormState, formData: FormData): 
         originalPrice,
         productId,
         isActive,
-        sortOrder,
       },
     });
   } catch (err) {
@@ -66,11 +72,10 @@ export async function updateInspiredItem(id: string, _prev: FormState, formData:
   const originalPrice = (formData.get("originalPrice") as string)?.trim() || null;
   const productId = (formData.get("productId") as string)?.trim() || null;
   const isActive = formData.get("isActive") === "true" || formData.get("isActive") === "on";
-  const sortOrder = parseInt((formData.get("sortOrder") as string) || "0", 10);
 
   const errors: Record<string, string[]> = {};
   if (!title) errors.title = ["Title is required"];
-  if (!imageUrl) errors.imageUrl = ["Cover Image URL is required"];
+  if (!imageUrl) errors.imageUrl = ["Please upload a cover image"];
 
   if (Object.keys(errors).length > 0) {
     return { errors, message: "Please fix the errors below." };
@@ -89,7 +94,7 @@ export async function updateInspiredItem(id: string, _prev: FormState, formData:
         originalPrice,
         productId,
         isActive,
-        sortOrder,
+        // sortOrder is owned by the reorder arrows on the listing page.
       },
     });
   } catch (err) {
@@ -100,6 +105,38 @@ export async function updateInspiredItem(id: string, _prev: FormState, formData:
   revalidatePath("/admin/inspired");
   revalidatePath("/");
   redirect("/admin/inspired");
+}
+
+// Reorders by list position and renumbers every row, so it stays correct even
+// when several rows share the same sortOrder.
+async function moveInspiredItem(id: string, direction: -1 | 1): Promise<void> {
+  const items = await prisma.inspiredItem.findMany({
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+    select: { id: true },
+  });
+
+  const index = items.findIndex((i) => i.id === id);
+  const target = index + direction;
+  if (index === -1 || target < 0 || target >= items.length) return;
+
+  [items[index], items[target]] = [items[target], items[index]];
+
+  await prisma.$transaction(
+    items.map((item, i) => prisma.inspiredItem.update({ where: { id: item.id }, data: { sortOrder: i } }))
+  );
+
+  revalidatePath("/admin/inspired");
+  revalidatePath("/");
+}
+
+export async function moveInspiredItemUp(id: string): Promise<void> {
+  await requireAdmin();
+  await moveInspiredItem(id, -1);
+}
+
+export async function moveInspiredItemDown(id: string): Promise<void> {
+  await requireAdmin();
+  await moveInspiredItem(id, 1);
 }
 
 export async function deleteInspiredItem(id: string) {

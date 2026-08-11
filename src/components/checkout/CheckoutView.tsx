@@ -5,7 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCurrency } from "@/components/CurrencyProvider";
 import PayWithRazorpayButton from "@/components/checkout/PayWithRazorpayButton";
+import { formatPrice as formatINRPrice } from "@/lib/currency";
 import type { CartItem } from "@/lib/cart";
+
+const formatINR = (cents: number) => formatINRPrice(cents, "INR");
 
 type AddressLite = {
   id: string;
@@ -26,13 +29,19 @@ export default function CheckoutView({
   addresses,
   itemCount,
   subtotalCents,
+  customerName,
+  customerEmail,
+  customerPhone,
 }: {
   items: CartItem[];
   addresses: AddressLite[];
   itemCount: number;
   subtotalCents: number;
+  customerName?: string | null;
+  customerEmail?: string | null;
+  customerPhone?: string | null;
 }) {
-  const { formatPrice } = useCurrency();
+  const { formatPrice, currency } = useCurrency();
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
     addresses.find((a) => a.isDefault)?.id ?? addresses[0]?.id ?? null
   );
@@ -64,10 +73,19 @@ export default function CheckoutView({
           ))}
         </div>
         <div className="flex items-center justify-between font-lato text-sm pt-2 border-t border-[#E7DFD6]">
-          <span className="text-dark font-semibold">Subtotal ({itemCount} items)</span>
+          <span className="text-dark font-semibold">Total ({itemCount} items)</span>
           <span className="text-dark font-bold">{formatPrice(subtotalCents)}</span>
         </div>
-        <p className="font-lato text-xs text-gray-text m-0">Shipping & taxes calculated at payment.</p>
+        {/* Prices can be browsed in USD, but the charge is always in INR — say so
+            here rather than surprising the customer inside the payment window. */}
+        {currency !== "INR" && (
+          <p className="font-lato text-xs text-gray-text m-0">
+            You&apos;ll be charged {formatINR(subtotalCents)} — payments are processed in Indian Rupees.
+          </p>
+        )}
+        <p className="font-lato text-xs text-gray-text m-0">
+          Free shipping. No additional taxes at payment.
+        </p>
       </div>
 
       {/* Address + Pay */}
@@ -122,7 +140,12 @@ export default function CheckoutView({
           </div>
         )}
 
-        <PayWithRazorpayButton addressId={selectedAddressId} />
+        <PayWithRazorpayButton
+          addressId={selectedAddressId}
+          customerName={customerName}
+          customerEmail={customerEmail}
+          customerPhone={customerPhone}
+        />
       </div>
     </div>
   );

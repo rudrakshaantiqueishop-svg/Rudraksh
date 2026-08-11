@@ -76,21 +76,166 @@ export async function sendPasswordResetEmail(email: string, token: string) {
   });
 }
 
-export async function sendOrderConfirmationEmail(email: string, orderDetails: { orderId: string; totalAmount: string }) {
+export type OrderConfirmationDetails = {
+  orderId: string;
+  orderNumber: string;
+  customerName: string;
+  placedOn: string;
+  totalAmount: string;
+  paymentReference?: string | null;
+  items: {
+    name: string;
+    options?: string;
+    quantity: number;
+    lineTotal: string;
+    imageUrl?: string;
+  }[];
+  address?: {
+    fullName: string;
+    line1: string;
+    line2?: string | null;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+    phone: string;
+  } | null;
+};
+
+// Escapes values that come from the database (product names, addresses) before
+// they are dropped into the email markup.
+function esc(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+export async function sendOrderConfirmationEmail(email: string, order: OrderConfirmationDetails) {
+  const trackUrl = `${appUrl}/account/orders/${order.orderId}`;
+
   if (!process.env.RESEND_API_KEY) {
-    console.log(`[email] Order confirmation for ${email}: Order #${orderDetails.orderId}, Total: ${orderDetails.totalAmount}`);
+    console.log(
+      `[email] Order confirmation for ${email}: ${order.orderNumber}, ${order.totalAmount}, ${trackUrl}`
+    );
     return;
   }
+
+  // Tables, not flexbox — Outlook and several mobile clients ignore flex.
+  const itemRows = order.items
+    .map(
+      (item) => `
+      <tr>
+        <td style="padding: 12px 0; border-bottom: 1px solid #EFE1CF; width: 64px; vertical-align: top;">
+          ${
+            item.imageUrl
+              ? `<img src="${esc(item.imageUrl)}" alt="${esc(item.name)}" width="56" height="56" style="width:56px;height:56px;object-fit:cover;border-radius:6px;border:1px solid #EADFD1;display:block;" />`
+              : `<div style="width:56px;height:56px;background-color:#F5EADF;border-radius:6px;border:1px solid #EADFD1;"></div>`
+          }
+        </td>
+        <td style="padding: 12px 12px; border-bottom: 1px solid #EFE1CF; vertical-align: top;">
+          <div style="font-size:14px;color:#0B0404;font-weight:600;">${esc(item.name)}</div>
+          ${item.options ? `<div style="font-size:12px;color:#8B7355;margin-top:3px;">${esc(item.options)}</div>` : ""}
+          <div style="font-size:12px;color:#8B7355;margin-top:3px;">Qty: ${item.quantity}</div>
+        </td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #EFE1CF; text-align: right; vertical-align: top; white-space: nowrap;">
+          <span style="font-size:14px;font-weight:bold;color:#0B0404;">${esc(item.lineTotal)}</span>
+        </td>
+      </tr>`
+    )
+    .join("");
+
+  const addressBlock = order.address
+    ? `
+      <div style="margin-top:24px;padding:16px;background-color:#FDF6ED;border:1px solid #EADFD1;border-radius:8px;">
+        <p style="margin:0 0 8px 0;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;color:#8B7355;">Delivering to</p>
+        <p style="margin:0;font-size:14px;line-height:1.6;color:#44403C;">
+          <strong style="color:#0B0404;">${esc(order.address.fullName)}</strong><br />
+          ${esc(order.address.line1)}${order.address.line2 ? `, ${esc(order.address.line2)}` : ""}<br />
+          ${esc(order.address.city)}, ${esc(order.address.state)} ${esc(order.address.postalCode)}<br />
+          ${esc(order.address.country)}<br />
+          ${esc(order.address.phone)}
+        </p>
+      </div>`
+    : "";
+
+  const plainText = [
+    `Thank you for your order, ${order.customerName}!`,
+    ``,
+    `Order ${order.orderNumber} — placed ${order.placedOn}`,
+    `Total paid: ${order.totalAmount}`,
+    ``,
+    ...order.items.map(
+      (i) => `- ${i.name}${i.options ? ` (${i.options})` : ""} x${i.quantity} — ${i.lineTotal}`
+    ),
+    ``,
+    `Track your order: ${trackUrl}`,
+  ].join("\n");
 
   await getResend().emails.send({
     from: ORDERS_SENDER,
     to: email,
-    subject: `Order Confirmation #${orderDetails.orderId} — Rudraksh Antiquei`,
+    subject: `Order ${order.orderNumber} confirmed — Rudraksh Antiquei`,
+    text: plainText,
     html: `
-      <h2>Thank you for your order!</h2>
-      <p>Your order #${orderDetails.orderId} has been successfully received and is being processed.</p>
-      <p>Total amount paid: <strong>${orderDetails.totalAmount}</strong></p>
-      <p>We will email you the tracking details as soon as your items ship.</p>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #FEF9F2; color: #44403C; padding: 30px;">
+        <div style="text-align:center;margin-bottom:28px;">
+          <h1 style="color:#552912;font-size:24px;margin:0 0 6px 0;">Rudraksh Antiquei</h1>
+          <p style="font-size:12px;color:#8B7355;margin:0;letter-spacing:0.08em;text-transform:uppercase;">Sacred &amp; Authentic Beads</p>
+        </div>
+
+        <div style="background:#FFFDF9;border-radius:10px;padding:28px;border:1px solid #EADFD1;">
+          <div style="text-align:center;padding-bottom:20px;border-bottom:1px solid #EFE1CF;">
+            <h2 style="color:#552912;font-size:20px;margin:0 0 8px 0;">Thank you for your order!</h2>
+            <p style="font-size:14px;color:#57534E;margin:0;">
+              We&rsquo;ve received your payment and started getting your order ready.
+            </p>
+          </div>
+
+          <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin-top:20px;">
+            <tr>
+              <td style="font-size:13px;color:#8B7355;padding:4px 0;">Order number</td>
+              <td style="font-size:13px;color:#0B0404;font-weight:bold;text-align:right;padding:4px 0;">${esc(order.orderNumber)}</td>
+            </tr>
+            <tr>
+              <td style="font-size:13px;color:#8B7355;padding:4px 0;">Placed on</td>
+              <td style="font-size:13px;color:#0B0404;text-align:right;padding:4px 0;">${esc(order.placedOn)}</td>
+            </tr>
+            ${
+              order.paymentReference
+                ? `<tr>
+              <td style="font-size:13px;color:#8B7355;padding:4px 0;">Payment reference</td>
+              <td style="font-size:12px;color:#0B0404;text-align:right;padding:4px 0;font-family:monospace;">${esc(order.paymentReference)}</td>
+            </tr>`
+                : ""
+            }
+          </table>
+
+          <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin-top:20px;border-top:1px solid #EFE1CF;">
+            ${itemRows}
+            <tr>
+              <td colspan="2" style="padding:16px 0 0 0;font-size:15px;font-weight:bold;color:#0B0404;">Total Paid</td>
+              <td style="padding:16px 0 0 0;text-align:right;font-size:17px;font-weight:bold;color:#552912;">${esc(order.totalAmount)}</td>
+            </tr>
+          </table>
+
+          ${addressBlock}
+
+          <div style="text-align:center;margin-top:28px;">
+            <a href="${trackUrl}" style="display:inline-block;background-color:#552912;color:#FFFFFF;font-size:15px;font-weight:bold;text-decoration:none;padding:14px 32px;border-radius:6px;letter-spacing:0.05em;text-transform:uppercase;">Track My Order</a>
+          </div>
+
+          <p style="font-size:13px;color:#78716C;text-align:center;margin:20px 0 0 0;line-height:1.6;">
+            You can follow your parcel from Order Placed through to Delivered on the order page.
+          </p>
+        </div>
+
+        <div style="text-align:center;margin-top:26px;font-size:12px;color:#8B7355;">
+          <p style="margin:0 0 6px 0;">Need help with this order? Just reply to this email.</p>
+          <p style="margin:0;">&copy; ${new Date().getFullYear()} Rudraksh Antiquei. All rights reserved.</p>
+        </div>
+      </div>
     `,
   });
 }

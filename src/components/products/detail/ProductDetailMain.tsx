@@ -7,6 +7,7 @@ import { Star, Eye, Heart, ShieldCheck, Lock, Award, Truck, Mail, ChevronDown, P
 import { useCurrency } from "@/components/CurrencyProvider";
 import { useCart } from "@/components/CartProvider";
 import { useWishlist } from "@/components/WishlistProvider";
+import QuantityStepper from "@/components/ui/QuantityStepper";
 import { getMainImage } from "@/lib/product-utils";
 import type { getProductBySlug } from "@/lib/products";
 
@@ -329,15 +330,7 @@ export default function ProductDetailMain({ product }: { product: Product }) {
 
           {/* Quantity + Add to Cart */}
           <div className="flex items-center gap-3">
-            <div className="flex items-center border border-[#E7DFD6]">
-              <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="p-3 text-dark" aria-label="Decrease quantity">
-                <Minus size={14} />
-              </button>
-              <span className="font-lato text-sm text-dark w-8 text-center">{quantity}</span>
-              <button onClick={() => setQuantity((q) => q + 1)} className="p-3 text-dark" aria-label="Increase quantity">
-                <Plus size={14} />
-              </button>
-            </div>
+            <QuantityStepper quantity={quantity} onChange={setQuantity} />
             <button onClick={handleAddToCart} className="flex-1 bg-brown text-white font-lato text-sm font-bold tracking-[0.5px] py-3.5">
               ADD TO CART
             </button>

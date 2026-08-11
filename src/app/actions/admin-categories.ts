@@ -11,18 +11,39 @@ import type { CategoryPageContent } from "@/lib/product-utils";
 
 export type FormState = { errors?: Record<string, string[] | undefined>; message?: string } | undefined;
 
+// Blank optional inputs arrive as "" from FormData; treat them as "not provided"
+// so the schema's optional fields fall through to generated defaults.
+function optional(value: FormDataEntryValue | null): string | undefined {
+  const text = typeof value === "string" ? value.trim() : "";
+  return text === "" ? undefined : text;
+}
+
 function parseCategory(formData: FormData) {
   return {
     name: formData.get("name"),
     slug: formData.get("slug"),
     image: formData.get("image"),
-    sortOrder: formData.get("sortOrder") ?? 0,
     isActive: formData.get("isActive") === "true" || formData.get("isActive") === "on",
-    heroTitle: formData.get("heroTitle"),
-    heroSubtitle: formData.get("heroSubtitle"),
-    introHeading: formData.get("introHeading"),
-    introDescription: formData.get("introDescription"),
+    heroTitle: optional(formData.get("heroTitle")),
+    heroSubtitle: optional(formData.get("heroSubtitle")),
+    introHeading: optional(formData.get("introHeading")),
+    introDescription: optional(formData.get("introDescription")),
   };
+}
+
+// Display order is never typed by hand — new rows go to the end of the list and
+// the admin reorders with the up/down arrows on the listing page.
+async function nextCategorySortOrder(): Promise<number> {
+  const { _max } = await prisma.category.aggregate({ _max: { sortOrder: true } });
+  return (_max.sortOrder ?? -1) + 1;
+}
+
+async function nextSubcategorySortOrder(categoryId: string): Promise<number> {
+  const { _max } = await prisma.subcategory.aggregate({
+    where: { categoryId },
+    _max: { sortOrder: true },
+  });
+  return (_max.sortOrder ?? -1) + 1;
 }
 
 // ── Categories ─────────────────────────────────────────────────────────
@@ -42,7 +63,7 @@ export async function createCategory(_prev: FormState, formData: FormData): Prom
         name: d.name,
         slug: d.slug,
         image: d.image,
-        sortOrder: d.sortOrder,
+        sortOrder: await nextCategorySortOrder(),
         isActive: d.isActive ?? true,
         pageContent: pageContent as unknown as Prisma.InputJsonValue,
       },
@@ -77,7 +98,7 @@ export async function updateCategory(id: string, _prev: FormState, formData: For
         name: d.name,
         slug: d.slug,
         image: d.image,
-        sortOrder: d.sortOrder,
+        // sortOrder is intentionally untouched — it is owned by the reorder arrows.
         isActive: d.isActive ?? true,
         pageContent: pageContent as unknown as Prisma.InputJsonValue,
       },
@@ -123,50 +144,39 @@ export async function deleteCategory(id: string): Promise<void> {
   revalidatePath("/products");
 }
 
-export async function moveCategoryUp(id: string): Promise<void> {
-  await requireAdmin();
-  const current = await prisma.category.findUnique({ where: { id } });
-  if (!current) return;
-
-  const prevCategory = await prisma.category.findFirst({
-    where: { sortOrder: { lt: current.sortOrder } },
-    orderBy: { sortOrder: "desc" },
+// Swaps a row with its neighbour by position in the ordered list, then rewrites
+// every sortOrder to 0..n-1. Working by position rather than by comparing
+// sortOrder values keeps reordering correct even when rows share a value
+// (e.g. rows created before ordering was automatic, which all sat at 0).
+async function moveCategory(id: string, direction: -1 | 1): Promise<void> {
+  const categories = await prisma.category.findMany({
+    orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+    select: { id: true },
   });
 
-  if (prevCategory) {
-    const currentOrder = current.sortOrder;
-    const prevOrder = prevCategory.sortOrder;
+  const index = categories.findIndex((c) => c.id === id);
+  const target = index + direction;
+  if (index === -1 || target < 0 || target >= categories.length) return;
 
-    await prisma.$transaction([
-      prisma.category.update({ where: { id: current.id }, data: { sortOrder: prevOrder } }),
-      prisma.category.update({ where: { id: prevCategory.id }, data: { sortOrder: currentOrder } }),
-    ]);
-  }
+  [categories[index], categories[target]] = [categories[target], categories[index]];
+
+  await prisma.$transaction(
+    categories.map((c, i) => prisma.category.update({ where: { id: c.id }, data: { sortOrder: i } }))
+  );
+
   revalidatePath("/admin/categories");
   revalidatePath("/products");
+  revalidatePath("/");
+}
+
+export async function moveCategoryUp(id: string): Promise<void> {
+  await requireAdmin();
+  await moveCategory(id, -1);
 }
 
 export async function moveCategoryDown(id: string): Promise<void> {
   await requireAdmin();
-  const current = await prisma.category.findUnique({ where: { id } });
-  if (!current) return;
-
-  const nextCategory = await prisma.category.findFirst({
-    where: { sortOrder: { gt: current.sortOrder } },
-    orderBy: { sortOrder: "asc" },
-  });
-
-  if (nextCategory) {
-    const currentOrder = current.sortOrder;
-    const nextOrder = nextCategory.sortOrder;
-
-    await prisma.$transaction([
-      prisma.category.update({ where: { id: current.id }, data: { sortOrder: nextOrder } }),
-      prisma.category.update({ where: { id: nextCategory.id }, data: { sortOrder: currentOrder } }),
-    ]);
-  }
-  revalidatePath("/admin/categories");
-  revalidatePath("/products");
+  await moveCategory(id, 1);
 }
 
 
@@ -180,7 +190,6 @@ function parseSubcategory(formData: FormData) {
     slug: formData.get("slug"),
     image: formData.get("image"),
     group: group && String(group).trim() !== "" ? String(group).trim() : null,
-    sortOrder: formData.get("sortOrder") ?? 0,
   };
 }
 
@@ -200,12 +209,12 @@ export async function createSubcategory(_prev: FormState, formData: FormData): P
         slug: d.slug,
         image: d.image,
         group: d.group ?? null,
-        sortOrder: d.sortOrder,
+        sortOrder: await nextSubcategorySortOrder(d.categoryId),
       },
     });
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
-      return { message: "A subcategory with this slug already exists in this category." };
+      return { message: "A subcategory with this web address already exists in this category." };
     }
     throw err;
   }
@@ -231,12 +240,12 @@ export async function updateSubcategory(id: string, _prev: FormState, formData: 
         slug: d.slug,
         image: d.image,
         group: d.group ?? null,
-        sortOrder: d.sortOrder,
+        // sortOrder is owned by the reorder arrows on the category edit page.
       },
     });
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
-      return { message: "A subcategory with this slug already exists in this category." };
+      return { message: "A subcategory with this web address already exists in this category." };
     }
     throw err;
   }
@@ -244,6 +253,40 @@ export async function updateSubcategory(id: string, _prev: FormState, formData: 
   revalidatePath(`/admin/categories/${d.categoryId}/edit`);
   revalidatePath("/products");
   redirect(`/admin/categories/${d.categoryId}/edit`);
+}
+
+async function moveSubcategory(id: string, direction: -1 | 1): Promise<void> {
+  const sub = await prisma.subcategory.findUnique({ where: { id }, select: { categoryId: true } });
+  if (!sub) return;
+
+  const siblings = await prisma.subcategory.findMany({
+    where: { categoryId: sub.categoryId },
+    orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+    select: { id: true },
+  });
+
+  const index = siblings.findIndex((s) => s.id === id);
+  const target = index + direction;
+  if (index === -1 || target < 0 || target >= siblings.length) return;
+
+  [siblings[index], siblings[target]] = [siblings[target], siblings[index]];
+
+  await prisma.$transaction(
+    siblings.map((s, i) => prisma.subcategory.update({ where: { id: s.id }, data: { sortOrder: i } }))
+  );
+
+  revalidatePath(`/admin/categories/${sub.categoryId}/edit`);
+  revalidatePath("/products");
+}
+
+export async function moveSubcategoryUp(id: string): Promise<void> {
+  await requireAdmin();
+  await moveSubcategory(id, -1);
+}
+
+export async function moveSubcategoryDown(id: string): Promise<void> {
+  await requireAdmin();
+  await moveSubcategory(id, 1);
 }
 
 export async function deleteSubcategory(id: string): Promise<void> {

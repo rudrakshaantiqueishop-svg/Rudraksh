@@ -29,30 +29,17 @@ export default function BannerForm({ banner }: BannerFormProps) {
       <section className="flex flex-col gap-4">
         <h2 className="font-prata text-xl text-dark">Banner Information</h2>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FormField
-            label="Banner Name"
-            name="name"
-            defaultValue={banner?.name}
-            placeholder="e.g. Festival Banner (Shivratri)"
-            required
-            errors={state?.errors?.name}
-          />
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="key">System Key</Label>
-            <Input
-              id="key"
-              name="key"
-              defaultValue={banner?.key}
-              required
-              placeholder="e.g. festival_banner or indramala_banner"
-            />
-            <p className="font-lato text-xs text-gray-text">Unique key used in components (e.g. festival_banner or indramala_banner)</p>
-            {state?.errors?.key?.map((m) => (
-              <span key={m} className="font-lato text-[13px] text-destructive">{m}</span>
-            ))}
-          </div>
-        </div>
+        <FormField
+          label="Banner Name"
+          name="name"
+          defaultValue={banner?.name}
+          placeholder="e.g. Festival Banner (Shivratri)"
+          required
+          errors={state?.errors?.name}
+        />
+        <p className="-mt-2 font-lato text-xs text-gray-text">
+          For your own reference in this list — customers never see this name.
+        </p>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <FormField
@@ -85,27 +72,37 @@ export default function BannerForm({ banner }: BannerFormProps) {
         <h2 className="font-prata text-xl text-dark">Background & Styling</h2>
 
         <div className="flex flex-col gap-2">
-          <Label htmlFor="imageUrl">Background Image URL</Label>
-          <div className="flex gap-2">
-            <Input
-              id="imageUrl"
-              name="imageUrl"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="/assets/images/home/god.png or Cloudinary URL"
-              required
-            />
-            <CloudinaryUploadButton onUpload={(url) => setImageUrl(url)} label="Upload Image" />
-          </div>
+          <Label>Background Image</Label>
+          <input type="hidden" name="imageUrl" value={imageUrl} />
+
+          {!imageUrl ? (
+            <div className="flex flex-col items-start gap-2">
+              <CloudinaryUploadButton onUpload={(url) => setImageUrl(url)} label="Upload Image" />
+              <span className="font-lato text-xs text-stone-400">
+                A wide image works best — it sits behind the banner text.
+              </span>
+            </div>
+          ) : (
+            <div className="flex flex-col items-start gap-3">
+              <div className="relative h-36 w-full max-w-md overflow-hidden rounded border bg-stone-100">
+                <Image src={imageUrl} alt="Banner Preview" fill className="object-cover" unoptimized />
+              </div>
+              <div className="flex items-center gap-3">
+                <CloudinaryUploadButton onUpload={(url) => setImageUrl(url)} label="Change Image" />
+                <button
+                  type="button"
+                  onClick={() => setImageUrl("")}
+                  className="font-lato text-xs text-red-600 hover:underline"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          )}
+
           {state?.errors?.imageUrl?.map((m) => (
             <span key={m} className="font-lato text-[13px] text-destructive">{m}</span>
           ))}
-
-          {imageUrl && (
-            <div className="mt-2 relative h-36 w-full max-w-md overflow-hidden rounded border bg-stone-100">
-              <Image src={imageUrl} alt="Banner Preview" fill className="object-cover" unoptimized />
-            </div>
-          )}
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -151,29 +148,27 @@ export default function BannerForm({ banner }: BannerFormProps) {
       <section className="flex flex-col gap-4 border-t pt-6">
         <h2 className="font-prata text-xl text-dark">CTA & Settings</h2>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <FormField
-            label="CTA Text"
+            label="Button Text"
             name="ctaText"
             defaultValue={banner?.ctaText ?? "SHOP NOW"}
             placeholder="SHOP NOW"
             errors={state?.errors?.ctaText}
           />
           <FormField
-            label="CTA Link"
+            label="Button Goes To"
             name="ctaLink"
             defaultValue={banner?.ctaLink ?? "#"}
-            placeholder="/products or #"
+            placeholder="/products"
             errors={state?.errors?.ctaLink}
           />
-          <FormField
-            label="Sort Order"
-            name="sortOrder"
-            type="number"
-            defaultValue={banner?.sortOrder ?? 0}
-            errors={state?.errors?.sortOrder}
-          />
         </div>
+
+        <p className="rounded-md bg-stone-50 px-3 py-2 font-lato text-xs text-gray-text">
+          The position of this banner is set with the up/down arrows on the Banners list — new
+          banners are added at the end.
+        </p>
 
         <div className="flex items-center gap-3 mt-2">
           <input

@@ -54,49 +54,21 @@ export default function CategoryTable({ initialCategories }: CategoryTableProps)
     });
   };
 
-  const handleMoveUp = (id: string, index: number) => {
-    if (index === 0) return;
+  const handleMove = (id: string, index: number, direction: -1 | 1) => {
+    const target = index + direction;
+    if (target < 0 || target >= categories.length) return;
 
+    // Optimistic swap of positions only — sortOrder values are re-numbered
+    // server-side, so the list order is the single thing worth mirroring here.
     const updated = [...categories];
-    const temp = updated[index];
-    updated[index] = updated[index - 1];
-    updated[index - 1] = temp;
-
-    const tempOrder = updated[index].sortOrder;
-    updated[index].sortOrder = updated[index - 1].sortOrder;
-    updated[index - 1].sortOrder = tempOrder;
-
+    [updated[index], updated[target]] = [updated[target], updated[index]];
     setCategories(updated);
 
     startTransition(async () => {
       try {
-        await moveCategoryUp(id);
+        await (direction === -1 ? moveCategoryUp(id) : moveCategoryDown(id));
       } catch (err) {
-        console.error("Failed to move category up:", err);
-        setCategories(initialCategories);
-      }
-    });
-  };
-
-  const handleMoveDown = (id: string, index: number) => {
-    if (index === categories.length - 1) return;
-
-    const updated = [...categories];
-    const temp = updated[index];
-    updated[index] = updated[index + 1];
-    updated[index + 1] = temp;
-
-    const tempOrder = updated[index].sortOrder;
-    updated[index].sortOrder = updated[index + 1].sortOrder;
-    updated[index + 1].sortOrder = tempOrder;
-
-    setCategories(updated);
-
-    startTransition(async () => {
-      try {
-        await moveCategoryDown(id);
-      } catch (err) {
-        console.error("Failed to move category down:", err);
+        console.error("Failed to reorder category:", err);
         setCategories(initialCategories);
       }
     });
@@ -108,7 +80,7 @@ export default function CategoryTable({ initialCategories }: CategoryTableProps)
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Slug</TableHead>
+            <TableHead>Page Link</TableHead>
             <TableHead>Subcategories</TableHead>
             <TableHead>Products</TableHead>
             <TableHead className="w-[120px] text-center">Visibility</TableHead>
@@ -147,10 +119,10 @@ export default function CategoryTable({ initialCategories }: CategoryTableProps)
 
                 <TableCell className="font-lato text-dark">
                   <div className="flex items-center gap-2">
-                    <span className="min-w-[20px]">{c.sortOrder}</span>
+                    <span className="min-w-[20px] text-sm text-gray-text">{index + 1}</span>
                     <div className="flex flex-col gap-0.5">
                       <button
-                        onClick={() => handleMoveUp(c.id, index)}
+                        onClick={() => handleMove(c.id, index, -1)}
                         disabled={index === 0 || isPending}
                         className="p-0.5 hover:bg-stone-200/50 rounded transition-colors text-gray-text hover:text-dark disabled:opacity-30 disabled:hover:bg-transparent"
                         title="Move up"
@@ -158,7 +130,7 @@ export default function CategoryTable({ initialCategories }: CategoryTableProps)
                         <ArrowUp size={14} strokeWidth={2.5} />
                       </button>
                       <button
-                        onClick={() => handleMoveDown(c.id, index)}
+                        onClick={() => handleMove(c.id, index, 1)}
                         disabled={index === categories.length - 1 || isPending}
                         className="p-0.5 hover:bg-stone-200/50 rounded transition-colors text-gray-text hover:text-dark disabled:opacity-30 disabled:hover:bg-transparent"
                         title="Move down"
