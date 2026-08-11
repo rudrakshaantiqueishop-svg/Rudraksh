@@ -204,18 +204,27 @@ export default function ProductForm({ product, categories, subcategories, collec
       <section className="flex flex-col gap-4">
         <h2 className="font-prata text-xl text-dark">Pricing &amp; Stock</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {/* step="0.01" is required: a number input defaults to step="1",
+              which rejects paise and bases its "valid values" on whatever the
+              field loaded with. min="0" pins that base to zero. */}
           <FormField
             label="Price (₹)"
             name="priceRupees"
             type="number"
+            step="0.01"
+            min="0"
+            placeholder="e.g. 900"
             defaultValue={product ? product.priceCents / 100 : ""}
             required
             errors={state?.errors?.priceCents}
           />
           <FormField
-            label="Compare-at Price (₹)"
+            label="Original Price (₹)"
             name="compareAtPriceRupees"
             type="number"
+            step="0.01"
+            min="0"
+            placeholder="Leave blank if not on offer"
             defaultValue={product?.compareAtPriceCents ? product.compareAtPriceCents / 100 : ""}
             errors={state?.errors?.compareAtPriceCents}
           />
@@ -223,6 +232,8 @@ export default function ProductForm({ product, categories, subcategories, collec
             label="Stock Count"
             name="stockCount"
             type="number"
+            step="1"
+            min="0"
             defaultValue={product?.stockCount ?? 0}
             required
             errors={state?.errors?.stockCount}
@@ -293,7 +304,7 @@ export default function ProductForm({ product, categories, subcategories, collec
           label="Variant"
           fields={[
             { key: "label", label: "Label", placeholder: "e.g. Silver Cap" },
-            { key: "priceDeltaCents", label: "Extra price (₹)", type: "number" },
+            { key: "priceDeltaCents", label: "Extra price (₹)", type: "number", step: "0.01", min: "0" },
             { key: "image", label: "Image URL", placeholder: "/assets/images/...", preview: true },
           ]}
           defaultItems={
@@ -319,7 +330,7 @@ export default function ProductForm({ product, categories, subcategories, collec
           label="Add-On"
           fields={[
             { key: "label", label: "Label", placeholder: "e.g. Vedic Puja Energization" },
-            { key: "priceDeltaCents", label: "Extra price (₹)", type: "number" },
+            { key: "priceDeltaCents", label: "Extra price (₹)", type: "number", step: "0.01", min: "0" },
           ]}
           defaultItems={
             product?.addOns.map(({ label, priceDeltaCents }) => ({ 

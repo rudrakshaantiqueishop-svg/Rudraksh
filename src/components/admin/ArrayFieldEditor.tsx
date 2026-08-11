@@ -21,6 +21,10 @@ export interface ArrayFieldConfig {
   options?: { value: string; label: string }[];
   placeholder?: string;
   preview?: boolean;
+  /** Number inputs only. Defaults to "any" so decimals are accepted. */
+  step?: string;
+  /** Number inputs only. Also fixes the browser's step base. */
+  min?: string;
 }
 
 interface ArrayFieldEditorProps {
@@ -132,6 +136,10 @@ export default function ArrayFieldEditor({
               ) : (
                 <Input
                   type={field.type === "number" ? "number" : "text"}
+                  /* Number inputs default to step="1" and reject decimals.
+                     "any" lifts that unless a field asks for something stricter. */
+                  step={field.type === "number" ? (field.step ?? "any") : undefined}
+                  min={field.type === "number" ? field.min : undefined}
                   value={String(item[field.key] ?? "")}
                   placeholder={field.placeholder}
                   onChange={(e) => updateItem(index, field.key, e.target.value)}
