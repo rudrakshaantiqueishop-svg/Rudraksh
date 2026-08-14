@@ -55,29 +55,34 @@ export default async function AdminProductsPage({
         </Link>
       </div>
 
-      {/* Search Bar & Currency Toggle Pill */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <form className="flex flex-1 min-w-[280px] gap-2">
+      {/* Search Bar, Category Filter & Currency Toggle Pill */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <form className="flex flex-1 min-w-[240px] gap-2">
           <Input
             type="search"
             name="q"
             placeholder="Search by product title or keyword..."
             defaultValue={q ?? ""}
-            className="flex-1 rounded-xl bg-white"
+            className="flex-1 h-10 rounded-xl bg-white border border-stone-200 shadow-2xs font-lato text-sm px-4"
           />
           {categoryId && <input type="hidden" name="category" value={categoryId} />}
           <input type="hidden" name="currency" value={currentCurrency} />
-          <Button type="submit" variant="outline" className="rounded-xl">
+          <Button type="submit" variant="outline" className="h-10 rounded-xl px-4 font-lato text-xs font-bold tracking-[0.5px]">
             Search
           </Button>
         </form>
 
+        {/* Category Filter Dropdown */}
+        <div className="w-full sm:w-auto">
+          <TableCategoryFilter categories={categories} currentCategoryId={categoryId} variant="select" />
+        </div>
+
         {/* Currency Segmented Control Pill */}
-        <div className="flex items-center gap-1 bg-stone-100/90 p-1 rounded-xl border border-stone-200/80 shadow-inner">
+        <div className="flex h-10 items-center gap-1 bg-stone-100/90 p-1 rounded-xl border border-stone-200/80 shadow-inner shrink-0">
           <Link
             href={`/admin/products?${new URLSearchParams({ ...baseParams, currency: "USD" })}`}
             className={cn(
-              "px-3.5 py-1.5 text-xs font-semibold rounded-lg font-lato transition-all",
+              "px-3.5 py-1 text-xs font-semibold rounded-lg font-lato transition-all flex items-center justify-center h-full",
               currentCurrency === "USD" ? "bg-brown text-cream shadow-xs" : "text-stone-600 hover:text-dark"
             )}
           >
@@ -86,7 +91,7 @@ export default async function AdminProductsPage({
           <Link
             href={`/admin/products?${new URLSearchParams({ ...baseParams, currency: "INR" })}`}
             className={cn(
-              "px-3.5 py-1.5 text-xs font-semibold rounded-lg font-lato transition-all",
+              "px-3.5 py-1 text-xs font-semibold rounded-lg font-lato transition-all flex items-center justify-center h-full",
               currentCurrency === "INR" ? "bg-brown text-cream shadow-xs" : "text-stone-600 hover:text-dark"
             )}
           >

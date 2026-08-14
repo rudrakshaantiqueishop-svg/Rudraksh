@@ -76,85 +76,94 @@ export default function CategoryTable({ initialCategories }: CategoryTableProps)
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Mobile Card Layout with Shadcn Card & Badge */}
-      <div className="grid grid-cols-1 gap-4 md:hidden">
+      {/* Minimized Mobile Card Layout */}
+      <div className="grid grid-cols-1 gap-3 md:hidden">
         {categories.map((c, index) => {
           const active = c.isActive ?? true;
           return (
             <Card
               key={c.id}
-              className={`p-5 flex flex-col justify-between gap-4 bg-white transition-all duration-200 hover:border-amber-900/30 hover:shadow-md ${
-                !active ? "bg-stone-50/80 opacity-85 border-dashed" : ""
+              className={`p-3.5 flex items-center justify-between gap-3 bg-white transition-all duration-200 hover:border-amber-900/30 ${
+                !active ? "bg-stone-50/80 opacity-80 border-dashed" : ""
               }`}
             >
-              {/* Header: Title, Slug & Visibility Badge */}
-              <div className="flex items-start justify-between gap-3 border-b border-stone-100 pb-3.5">
-                <div>
-                  <h3 className="font-prata text-base sm:text-lg font-medium text-dark leading-snug">
+              {/* Left Info: Title, slug, counts */}
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className="font-prata text-base font-medium text-dark truncate m-0">
                     {c.name}
                   </h3>
-                  <span className="font-lato text-xs text-stone-500 font-medium">/{c.slug}</span>
+                  <span className="font-lato text-xs text-stone-400 font-medium truncate">/{c.slug}</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => handleToggleActive(c.id, active)}
-                  className="shrink-0 transition-transform active:scale-95"
-                >
-                  <Badge variant={active ? "success" : "amber"} className="cursor-pointer gap-1 py-1">
-                    {active ? <Eye size={13} /> : <EyeOff size={13} />}
-                    {active ? "Visible" : "Hidden"}
-                  </Badge>
-                </button>
+                <div className="mt-1 flex items-center gap-1.5 font-lato text-[11px] text-stone-500">
+                  <span>{c._count.subcategories} subcats</span>
+                  <span>•</span>
+                  <span>{c._count.products} prods</span>
+                  <span>•</span>
+                  <span className="font-semibold text-stone-700">#{index + 1}</span>
+                </div>
               </div>
 
-              {/* Counts & Sort Controls */}
-              <div className="flex flex-wrap items-center justify-between gap-2.5 font-lato text-xs">
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary">
-                    {c._count.subcategories} {c._count.subcategories === 1 ? "subcategory" : "subcategories"}
-                  </Badge>
-                  <Badge variant="outline">
-                    {c._count.products} products
-                  </Badge>
-                </div>
-
-                <div className="flex items-center gap-1.5 bg-stone-100/90 rounded-lg px-2 py-1 border border-stone-200/70">
-                  <span className="font-semibold text-stone-600">Order #{index + 1}</span>
+              {/* Right Action Icons: Reorder, Visibility, Edit, Delete */}
+              <div className="flex items-center gap-1.5 shrink-0">
+                {/* Order Up/Down Icons */}
+                <div className="flex items-center bg-stone-100/90 rounded-md p-0.5 border border-stone-200/70">
                   <button
+                    type="button"
                     onClick={() => handleMove(c.id, index, -1)}
                     disabled={index === 0 || isPending}
                     className="p-1 hover:bg-stone-200 rounded text-stone-700 disabled:opacity-30 transition-colors"
                     title="Move up"
+                    aria-label="Move up"
                   >
-                    <ArrowUp size={14} />
+                    <ArrowUp size={13} />
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleMove(c.id, index, 1)}
                     disabled={index === categories.length - 1 || isPending}
                     className="p-1 hover:bg-stone-200 rounded text-stone-700 disabled:opacity-30 transition-colors"
                     title="Move down"
+                    aria-label="Move down"
                   >
-                    <ArrowDown size={14} />
+                    <ArrowDown size={13} />
                   </button>
                 </div>
-              </div>
 
-              {/* Actions Row */}
-              <div className="flex items-center justify-end gap-3 border-t border-stone-100 pt-3.5">
+                {/* Visibility Toggle Icon */}
+                <button
+                  type="button"
+                  onClick={() => handleToggleActive(c.id, active)}
+                  className={`p-1.5 rounded-md border transition-colors ${
+                    active ? "bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100" : "bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100"
+                  }`}
+                  title={active ? "Visible (Click to hide)" : "Hidden (Click to show)"}
+                  aria-label={active ? "Hide category" : "Show category"}
+                >
+                  {active ? <Eye size={15} /> : <EyeOff size={15} />}
+                </button>
+
+                {/* Edit Icon */}
                 <Link
                   href={`/admin/categories/${c.id}/edit`}
-                  className="flex items-center gap-1 text-xs font-semibold text-brown hover:underline"
+                  className="p-1.5 rounded-md border border-stone-200 bg-white text-brown hover:bg-stone-100 transition-colors flex items-center justify-center"
+                  title="Edit category"
+                  aria-label="Edit category"
                 >
-                  <Pencil size={14} /> Edit
+                  <Pencil size={15} />
                 </Link>
-                <DeleteButton
-                  action={deleteCategory.bind(null, c.id)}
-                  confirmText={
-                    c._count.products > 0
-                      ? `"${c.name}" has ${c._count.products} products and cannot be deleted.`
-                      : `Delete "${c.name}"?`
-                  }
-                />
+
+                {/* Delete Icon */}
+                <div className="p-1.5 rounded-md border border-stone-200 bg-white hover:bg-red-50 hover:border-red-200 transition-colors flex items-center justify-center">
+                  <DeleteButton
+                    action={deleteCategory.bind(null, c.id)}
+                    confirmText={
+                      c._count.products > 0
+                        ? `"${c.name}" has ${c._count.products} products and cannot be deleted.`
+                        : `Delete "${c.name}"?`
+                    }
+                  />
+                </div>
               </div>
             </Card>
           );

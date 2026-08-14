@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import SmartImage from "@/components/ui/SmartImage";
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import { useCurrency } from "@/components/CurrencyProvider";
 import { useCart } from "@/components/CartProvider";
 import { useWishlist } from "@/components/WishlistProvider";
@@ -28,12 +29,31 @@ export default function ProductCard({
   className?: string;
   imageClassName?: string;
 }) {
+  const router = useRouter();
   const { formatPrice } = useCurrency();
   const { addItem } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
   const [quantity, setQuantity] = useState(1);
   const image = getMainImage(product.images);
   const wishlisted = isWishlisted(product.id);
+
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(
+      {
+        id: product.id,
+        productId: product.id,
+        slug: product.slug,
+        name: product.name,
+        image: image?.url ?? "",
+        unitPriceCents: product.priceCents,
+      },
+      quantity
+    );
+    setQuantity(1);
+    router.push("/checkout");
+  };
 
   return (
     <Link href={`/products/${product.slug}`} className={`flex flex-col gap-3 group/card ${className}`}>
@@ -48,26 +68,53 @@ export default function ProductCard({
           />
         )}
 
-        {/* Wishlist icon - top right - always visible */}
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleWishlist(product.id);
-          }}
-          className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform z-10"
-          aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-        >
-          <Heart size={16} className={wishlisted ? "fill-[#BB5A28] text-[#BB5A28]" : "text-dark"} />
-        </button>
+        {/* Top Right Action Icons: Add to Cart + Wishlist */}
+        <div className="absolute top-3 right-3 flex items-center gap-2 z-10" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addItem(
+                {
+                  id: product.id,
+                  productId: product.id,
+                  slug: product.slug,
+                  name: product.name,
+                  image: image?.url ?? "",
+                  unitPriceCents: product.priceCents,
+                },
+                quantity
+              );
+              setQuantity(1);
+            }}
+            className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
+            aria-label="Add to Cart"
+            title="Add to Cart"
+          >
+            <ShoppingBag size={16} className="text-dark" />
+          </button>
 
-        {/* Bottom Bar: Quantity Adjuster + Add to Cart */}
-        <div className="absolute bottom-0 left-0 right-0 flex h-12 z-10" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
-          {/* Quantity adjuster (15%) */}
-          <div className="w-[15%] bg-[#FEF9F2] flex items-center justify-between border-t border-r border-[#E7DFD6] text-dark">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleWishlist(product.id);
+            }}
+            className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
+            aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            title={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          >
+            <Heart size={16} className={wishlisted ? "fill-[#BB5A28] text-[#BB5A28]" : "text-dark"} />
+          </button>
+        </div>
+
+        {/* Bottom Bar: Quantity Adjuster + Buy Now (Full Remaining Width) */}
+        <div className="absolute bottom-0 left-0 right-0 flex h-11 sm:h-12 z-10" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+          {/* Quantity adjuster (20%) */}
+          <div className="w-[20%] bg-[#FEF9F2] flex items-center justify-between border-t border-r border-[#E7DFD6] text-dark shrink-0">
             <button 
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); setQuantity((q) => Math.max(1, q - 1)); }}
-              className="flex-1 h-full flex items-center justify-center font-lato text-base hover:bg-black/5 transition-colors"
+              className="flex-1 h-full flex items-center justify-center font-lato text-sm sm:text-base hover:bg-black/5 transition-colors"
               aria-label="Decrease quantity"
             >
               -
@@ -75,31 +122,19 @@ export default function ProductCard({
             <span className="font-lato text-xs font-bold text-center flex-shrink-0">{quantity}</span>
             <button 
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); setQuantity((q) => q + 1); }}
-              className="flex-1 h-full flex items-center justify-center font-lato text-base hover:bg-black/5 transition-colors"
+              className="flex-1 h-full flex items-center justify-center font-lato text-sm sm:text-base hover:bg-black/5 transition-colors"
               aria-label="Increase quantity"
             >
               +
             </button>
           </div>
           
-          {/* Add to Cart button (85%) */}
+          {/* Buy Now button (Full Remaining Width) */}
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              addItem({
-                id: product.id,
-                productId: product.id,
-                slug: product.slug,
-                name: product.name,
-                image: image?.url ?? "",
-                unitPriceCents: product.priceCents,
-              }, quantity);
-              setQuantity(1); // Reset after adding
-            }}
-            className="w-[85%] bg-brown text-white font-lato text-xs font-bold tracking-[0.8px] hover:bg-[#431f0d] transition-colors"
+            onClick={handleBuyNow}
+            className="flex-1 bg-brown text-white font-lato text-xs sm:text-sm font-bold tracking-[0.8px] hover:bg-[#431f0d] transition-colors flex items-center justify-center text-center px-2"
           >
-            ADD TO CART
+            BUY NOW
           </button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import SmartImage from "@/components/ui/SmartImage";
 import Link from "next/link";
 import { Star, Eye, Heart, ShieldCheck, Lock, Award, Truck, Mail, ChevronDown, Plus, Minus } from "lucide-react";
@@ -14,6 +15,7 @@ import type { getProductBySlug } from "@/lib/products";
 type Product = NonNullable<Awaited<ReturnType<typeof getProductBySlug>>>;
 
 export default function ProductDetailMain({ product }: { product: Product }) {
+  const router = useRouter();
   const { formatPrice } = useCurrency();
   const { addItem } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
@@ -97,6 +99,11 @@ export default function ProductDetailMain({ product }: { product: Product }) {
       },
       quantity
     );
+  };
+
+  const handleBuyNow = () => {
+    handleAddToCart();
+    router.push("/checkout");
   };
 
   const accordionSections = [
@@ -344,7 +351,10 @@ export default function ProductDetailMain({ product }: { product: Product }) {
           </div>
 
           {/* Buy Now */}
-          <button className="border border-brown text-brown font-lato text-sm font-bold tracking-[0.5px] py-3.5">
+          <button
+            onClick={handleBuyNow}
+            className="w-full border border-brown text-brown font-lato text-sm font-bold tracking-[0.5px] py-3.5 hover:bg-brown hover:text-white transition-colors"
+          >
             BUY NOW
           </button>
 
