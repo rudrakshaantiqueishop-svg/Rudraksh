@@ -4,6 +4,8 @@ import { Trash2, Star } from "lucide-react";
 import { deleteReview } from "@/app/actions/reviews";
 import { requireAdmin } from "@/lib/dal";
 import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import RatingHeaderFilter from "@/components/admin/RatingHeaderFilter";
 import {
   Table,
@@ -57,8 +59,11 @@ export default async function ReviewsAdminPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
-        <h2 className="font-prata text-2xl text-dark">Product Reviews</h2>
+      <div>
+        <h2 className="font-prata text-2xl sm:text-3xl text-dark font-normal">Product Reviews</h2>
+        <p className="mt-1 font-lato text-sm text-gray-text">
+          Moderate customer product ratings, feedback, and reviews.
+        </p>
       </div>
 
       <form className="flex gap-2 items-center">
@@ -67,11 +72,66 @@ export default async function ReviewsAdminPage({
           name="q"
           placeholder="Search reviews by product name, customer, title, or body..."
           defaultValue={q ?? ""}
-          className="flex-1"
+          className="flex-1 rounded-xl bg-white"
         />
       </form>
 
-      <div className="border border-border">
+      {/* Mobile Review Cards */}
+      <div className="grid grid-cols-1 gap-4 md:hidden">
+        {reviews.map((review) => (
+          <Card
+            key={review.id}
+            className="p-5 flex flex-col justify-between gap-4 bg-white hover:border-amber-900/30 hover:shadow-md transition-all duration-200"
+          >
+            <div className="flex items-center justify-between border-b border-stone-100 pb-3.5">
+              <div className="flex items-center gap-1 text-amber-500">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star
+                    key={i}
+                    size={15}
+                    fill={i < review.rating ? "currentColor" : "none"}
+                    className={i < review.rating ? "text-amber-500" : "text-stone-300"}
+                  />
+                ))}
+              </div>
+              <span className="font-lato text-xs text-stone-400">
+                {new Date(review.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+
+            <div>
+              <Badge variant="amber" className="mb-1.5">
+                Product: {review.product.name}
+              </Badge>
+              <h4 className="font-prata font-medium text-dark text-base mt-1">{review.title}</h4>
+              <p className="font-lato text-xs text-stone-600 mt-1.5 whitespace-pre-wrap leading-relaxed">
+                {review.body}
+              </p>
+            </div>
+
+            <div className="flex items-center justify-between border-t border-stone-100 pt-3.5">
+              <span className="font-lato text-xs text-stone-500">By <strong className="text-stone-700">{review.authorName}</strong></span>
+              <form action={deleteReview.bind(null, review.id)}>
+                <button
+                  type="submit"
+                  className="flex items-center gap-1 font-lato text-xs font-semibold text-stone-400 hover:text-destructive transition-colors"
+                  title="Delete Review"
+                >
+                  <Trash2 size={15} /> Delete
+                </button>
+              </form>
+            </div>
+          </Card>
+        ))}
+        {reviews.length === 0 && (
+          <div className="rounded-2xl border border-dashed border-stone-300 bg-white/60 p-10 text-center font-lato text-sm text-stone-500">
+            No reviews found.
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Reviews Table View */}
+      <div className="hidden md:block border border-border overflow-hidden rounded-2xl bg-white shadow-xs">
         <Table>
           <TableHeader>
             <TableRow>

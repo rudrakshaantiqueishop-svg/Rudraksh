@@ -8,6 +8,8 @@ import { requireStaff } from "@/lib/dal";
 import DeleteButton from "@/components/admin/DeleteButton";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -146,7 +148,72 @@ async function BlogTableSection({
 
   return (
     <>
-      <div className="border border-border overflow-x-auto">
+      {/* Mobile Blog Post Cards */}
+      <div className="grid grid-cols-1 gap-4 md:hidden">
+        {posts.map((post) => (
+          <Card
+            key={post.id}
+            className="p-5 flex flex-col justify-between gap-4 bg-white hover:border-amber-900/30 hover:shadow-md transition-all duration-200"
+          >
+            <div className="flex items-start gap-3.5">
+              <div className="shrink-0 overflow-hidden rounded-xl border border-stone-100">
+                <AdminThumbnail src={post.coverImage} alt={post.title} />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="font-prata text-base font-medium text-dark leading-snug line-clamp-2">{post.title}</h3>
+                <div className="mt-2 flex flex-wrap items-center gap-1.5 font-lato text-xs">
+                  <Badge variant={post.status === "PUBLISHED" ? "success" : post.status === "REVIEW" ? "amber" : "secondary"}>
+                    {STATUS_LABEL[post.status]}
+                  </Badge>
+                  {post.category && (
+                    <Badge variant="outline">
+                      {post.category.name}
+                    </Badge>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between border-t border-stone-100 pt-3.5 font-lato text-xs text-stone-500">
+              <span>By <strong className="text-stone-700">{post.authorUser?.name ?? post.authorUser?.email ?? post.author}</strong></span>
+              <span>{post.publishedAt.toLocaleDateString()}</span>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 border-t border-stone-100 pt-3">
+              {isAdmin && post.status === "REVIEW" && (
+                <form action={publishBlog.bind(null, post.id)}>
+                  <button
+                    type="submit"
+                    className="flex items-center gap-1 font-lato text-xs font-semibold text-emerald-700 hover:underline"
+                  >
+                    <CheckCircle2 size={14} /> Approve
+                  </button>
+                </form>
+              )}
+              <Link
+                href={`/admin/blog/${post.id}/edit`}
+                className="font-lato text-xs font-semibold text-brown hover:underline"
+              >
+                Edit
+              </Link>
+              {isAdmin && (
+                <DeleteButton
+                  action={deleteBlog.bind(null, post.id)}
+                  confirmText={`Delete "${post.title}"? This cannot be undone.`}
+                />
+              )}
+            </div>
+          </Card>
+        ))}
+        {posts.length === 0 && (
+          <div className="rounded-2xl border border-dashed border-stone-300 bg-white/60 p-10 text-center font-lato text-sm text-stone-500">
+            No blog posts found.
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Blog Table View */}
+      <div className="hidden md:block border border-border overflow-hidden rounded-2xl bg-white shadow-xs">
         <Table>
           <TableHeader>
             <TableRow>

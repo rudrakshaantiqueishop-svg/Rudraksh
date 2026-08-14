@@ -3,6 +3,8 @@ import { requireAdmin } from "@/lib/dal";
 import { listUsersForAdmin } from "@/lib/admin-users";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -25,16 +27,61 @@ export default async function AdminUsersPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="font-prata text-2xl text-dark">Users</h1>
+      <div>
+        <h1 className="font-prata text-2xl sm:text-3xl text-dark font-normal">Users</h1>
+        <p className="mt-1 font-lato text-sm text-gray-text">
+          Manage registered user accounts, customer profiles, and staff roles.
+        </p>
+      </div>
 
       <form className="flex gap-2">
-        <Input type="search" name="q" placeholder="Search by name or email..." defaultValue={q ?? ""} />
-        <Button type="submit" variant="outline">
+        <Input type="search" name="q" placeholder="Search by name or email address..." defaultValue={q ?? ""} className="rounded-xl bg-white" />
+        <Button type="submit" variant="outline" className="rounded-xl">
           Search
         </Button>
       </form>
 
-      <div className="border border-border overflow-x-auto">
+      {/* Mobile User Cards */}
+      <div className="grid grid-cols-1 gap-4 md:hidden">
+        {users.map((user) => (
+          <Card
+            key={user.id}
+            className="p-5 flex flex-col justify-between gap-4 bg-white hover:border-amber-900/30 hover:shadow-md transition-all duration-200"
+          >
+            <div className="flex items-start justify-between gap-3 border-b border-stone-100 pb-3.5">
+              <div>
+                <h3 className="font-prata text-base font-medium text-dark">{user.name ?? "User"}</h3>
+                <p className="font-lato text-xs text-stone-500 mt-0.5">{user.email}</p>
+              </div>
+              <Badge variant={user.role === "ADMIN" ? "default" : "secondary"}>
+                {user.role}
+              </Badge>
+            </div>
+
+            <div className="flex items-center justify-between text-xs font-lato text-stone-500">
+              <span>Phone: <strong className="text-dark font-medium">{user.phone ?? "—"}</strong></span>
+              <span>Joined: {user.createdAt.toLocaleDateString()}</span>
+            </div>
+
+            <div className="flex justify-end border-t border-stone-100 pt-3">
+              <Link
+                href={`/admin/users/${user.id}`}
+                className="font-lato text-xs font-semibold text-brown hover:underline"
+              >
+                View Details →
+              </Link>
+            </div>
+          </Card>
+        ))}
+        {users.length === 0 && (
+          <div className="rounded-2xl border border-dashed border-stone-300 bg-white/60 p-10 text-center font-lato text-sm text-stone-500">
+            No users found matching your search.
+          </div>
+        )}
+      </div>
+
+      {/* Desktop User Table View */}
+      <div className="hidden md:block border border-border overflow-hidden rounded-2xl bg-white shadow-xs">
         <Table>
           <TableHeader>
             <TableRow>
