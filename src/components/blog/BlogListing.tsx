@@ -187,29 +187,60 @@ export default function BlogListing({
             {gridPosts.length > 0 && (
               <div className="bl-grid">
                 {gridPosts.map((post) => (
-                  <Link key={post.id} href={`/blog/${post.slug}`} className="bl-card" style={{ textDecoration: "none" }}>
-                    <div className="bl-card-img">
-                      <Image
-                        src={post.coverImage}
-                        alt={post.title}
-                        fill
-                        sizes="(max-width: 767px) 100vw, 33vw"
-                        style={{ objectFit: "cover" }}
-                      />
-                    </div>
-                    <div className="bl-card-body">
-                      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                        <h3 className="font-prata" style={{
-                          fontSize: "20px", lineHeight: "28px", color: "#0B0404", margin: 0,
-                        }}>
-                          {post.title}
-                        </h3>
-                        <p className="font-lato" style={{
-                          fontSize: "16px", lineHeight: "150%", color: "#44403C", margin: 0,
-                        }}>
-                          {post.excerpt}
-                        </p>
+                  <Link
+                    key={post.id}
+                    href={`/blog/${post.slug}`}
+                    className="bl-card group rounded-2xl border border-stone-200/90 bg-white p-5 sm:p-6 shadow-xs hover:shadow-xl hover:-translate-y-1 hover:border-brown/40 transition-all duration-300 flex flex-col justify-between"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <div>
+                      {/* Image container */}
+                      <div className="bl-card-img relative overflow-hidden rounded-xl bg-stone-100 mb-4">
+                        <Image
+                          src={post.coverImage}
+                          alt={post.title}
+                          fill
+                          sizes="(max-width: 767px) 100vw, 33vw"
+                          style={{ objectFit: "cover" }}
+                          className="group-hover:scale-105 transition-transform duration-500"
+                        />
+                        {post.category && (
+                          <span className="absolute top-3 left-3 rounded-full border border-stone-200/80 bg-white/95 px-3 py-1 font-lato text-[11px] font-bold text-dark shadow-2xs backdrop-blur-xs">
+                            {post.category.name}
+                          </span>
+                        )}
                       </div>
+
+                      {/* Body */}
+                      <div className="bl-card-body flex flex-col gap-3">
+                        <div className="flex flex-col gap-2">
+                          <h3
+                            className="font-prata group-hover:text-brown transition-colors"
+                            style={{
+                              fontSize: "20px",
+                              lineHeight: "28px",
+                              color: "#0B0404",
+                              margin: 0,
+                            }}
+                          >
+                            {post.title}
+                          </h3>
+                          <p
+                            className="font-lato line-clamp-2"
+                            style={{
+                              fontSize: "15px",
+                              lineHeight: "150%",
+                              color: "#44403C",
+                              margin: 0,
+                            }}
+                          >
+                            {post.excerpt}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 mt-4 border-t border-stone-100">
                       <AuthorRow author={post.author} date={formatPostDate(post.publishedAt, post.readTimeMinutes)} />
                     </div>
                   </Link>

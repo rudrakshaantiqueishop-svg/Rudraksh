@@ -141,39 +141,40 @@ export default function AdminOrdersView({ orders }: AdminOrdersViewProps) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4.5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filteredOrders.map((order) => {
             const isAbandoned = order.status === "PENDING";
             return (
               <Link
                 key={order.id}
                 href={`/admin/orders/${order.id}`}
-                className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
+                className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border bg-white p-6 sm:p-7 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
                   isAbandoned
-                    ? "border-amber-200/90 hover:border-amber-400"
-                    : "border-stone-200/90 hover:border-amber-900/30"
+                    ? "border-amber-200/90 hover:border-amber-400 bg-linear-to-b from-amber-50/20 to-white"
+                    : "border-stone-200/90 hover:border-brown/40"
                 }`}
               >
-                <div>
+                <div className="flex flex-col gap-4">
                   {/* Card Header: Order Number & Date */}
-                  <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                  <div className="flex items-center justify-between border-b border-stone-100/90 pb-4">
                     <div className="flex items-center gap-2">
-                      <span className="rounded-lg bg-secondary/80 px-2.5 py-1 font-prata text-sm font-semibold text-dark group-hover:bg-brown group-hover:text-cream transition-colors">
+                      <span className="rounded-xl bg-amber-100/70 px-3 py-1 font-prata text-sm font-semibold text-stone-900 group-hover:bg-brown group-hover:text-cream transition-all duration-200 shadow-2xs">
                         {orderNumber(order.id)}
                       </span>
                     </div>
-                    <span className="font-lato text-xs text-stone-500">
-                      {formatOrderDateTime(order.createdAt)}
-                    </span>
+                    <div className="flex items-center gap-1.5 text-stone-500 font-lato text-xs">
+                      <Clock size={13} className="text-stone-400" />
+                      <span>{formatOrderDateTime(order.createdAt)}</span>
+                    </div>
                   </div>
 
                   {/* Customer Details */}
-                  <div className="mt-3.5 flex items-start gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-stone-100 font-lato text-xs font-bold text-stone-700">
-                      {order.user.name ? order.user.name.charAt(0).toUpperCase() : <User size={16} />}
+                  <div className="flex items-center gap-3.5 py-1">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-stone-100 font-lato text-sm font-bold text-stone-700 ring-2 ring-stone-100/80 group-hover:ring-brown/30 transition-all">
+                      {order.user.name ? order.user.name.charAt(0).toUpperCase() : <User size={18} />}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate font-lato text-sm font-semibold text-dark">
+                      <p className="truncate font-lato text-sm font-semibold text-dark group-hover:text-brown transition-colors">
                         {order.user.name ?? "Customer"}
                       </p>
                       <p className="truncate font-lato text-xs text-stone-500">{order.user.email}</p>
@@ -181,22 +182,22 @@ export default function AdminOrdersView({ orders }: AdminOrdersViewProps) {
                   </div>
 
                   {/* Status Badges */}
-                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2 pt-1">
                     <span
-                      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-lato text-[11px] font-bold uppercase tracking-wider ${paymentBadgeClasses(
+                      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-lato text-xs font-bold uppercase tracking-wider ${paymentBadgeClasses(
                         order.status
                       )}`}
                     >
-                      <CreditCard size={11} />
+                      <CreditCard size={12} />
                       {paymentLabel(order.status)}
                     </span>
                     {order.status === "PAID" && (
                       <span
-                        className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-lato text-[11px] font-bold uppercase tracking-wider ${fulfillmentBadgeClasses(
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-lato text-xs font-bold uppercase tracking-wider ${fulfillmentBadgeClasses(
                           order.fulfillmentStatus
                         )}`}
                       >
-                        <Package size={11} />
+                        <Package size={12} />
                         {fulfillmentLabel(order.fulfillmentStatus)}
                       </span>
                     )}
@@ -204,19 +205,19 @@ export default function AdminOrdersView({ orders }: AdminOrdersViewProps) {
                 </div>
 
                 {/* Card Footer: Items, Total & Action */}
-                <div className="mt-5 flex items-center justify-between border-t border-stone-100 pt-3.5">
-                  <div className="flex items-center gap-1.5 font-lato text-xs text-stone-500">
-                    <Package size={14} className="text-stone-400" />
+                <div className="mt-6 flex items-center justify-between border-t border-stone-100/90 pt-4">
+                  <div className="flex items-center gap-2 font-lato text-xs font-medium text-stone-600 bg-stone-50 px-2.5 py-1 rounded-lg border border-stone-100">
+                    <Package size={14} className="text-stone-500" />
                     <span>
                       {order._count.items} {order._count.items === 1 ? "item" : "items"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-prata text-base font-semibold text-dark">
+                  <div className="flex items-center gap-2.5">
+                    <span className="font-prata text-lg font-bold text-dark">
                       {formatPrice(order.totalCents, "INR")}
                     </span>
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-100 text-stone-600 transition-colors group-hover:bg-brown group-hover:text-cream">
-                      <ChevronRight size={16} />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-stone-100 text-stone-600 transition-all duration-200 group-hover:bg-brown group-hover:text-cream group-hover:scale-105">
+                      <ChevronRight size={18} />
                     </div>
                   </div>
                 </div>

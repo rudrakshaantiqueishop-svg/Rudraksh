@@ -25,7 +25,16 @@ export async function getRecentBlogs(limit = 3) {
     where: { status: "PUBLISHED" },
     orderBy: { publishedAt: "desc" },
     take: limit,
-    select: { id: true, slug: true, title: true, excerpt: true, coverImage: true },
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      excerpt: true,
+      coverImage: true,
+      author: true,
+      readTimeMinutes: true,
+      category: { select: { id: true, name: true, slug: true } },
+    },
   });
 }
 
