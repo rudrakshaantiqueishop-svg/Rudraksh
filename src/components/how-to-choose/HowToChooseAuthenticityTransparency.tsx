@@ -10,7 +10,7 @@ const bullets = [
 
 export default function HowToChooseAuthenticityTransparency() {
   return (
-    <section className="section-pad" style={{ background: "#FEF9F2", paddingBottom: 0, overflow: "hidden" }}>
+    <section className="section-pad py-[60px] lg:py-[80px]" style={{ background: "#FEF9F2", overflow: "hidden" }}>
       <div className="ab-row flex flex-col lg:flex-row items-start justify-between">
 
         {/* Left — text content */}

@@ -23,26 +23,20 @@ const PAGE_SIZE = 10;
 
 function formatPostDate(date: Date, readTimeMinutes: number) {
   const formatted = new Date(date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
-  return `${formatted}  —  ${readTimeMinutes} mins Read`;
+  return `${formatted} - ${readTimeMinutes} mins Read`;
 }
 
 function AuthorRow({ author, date }: { author: string; date: string }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-      <div style={{
-        width: "48px", height: "48px", borderRadius: "48px", overflow: "hidden",
-        background: "linear-gradient(180deg, #552912 0%, #BB5A28 100%)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        flexShrink: 0,
-
-      }}>
-        <span className="font-prata" style={{ fontSize: "16px", color: "#FFF", lineHeight: 1 }}>R</span>
+    <div className="flex items-center gap-2.5">
+      <div className="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-br from-[#552912] to-[#BB5A28] flex items-center justify-center text-white shrink-0 shadow-xs">
+        <span className="font-prata text-xs leading-none">{author.charAt(0).toUpperCase()}</span>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-        <span className="font-lato" style={{ fontWeight: 500, fontSize: "16px", lineHeight: "24px", letterSpacing: "-0.0113em", color: "#0B0404" }}>
+      <div className="flex flex-col">
+        <span className="font-lato text-xs font-bold text-[#0B0404] leading-tight">
           {author}
         </span>
-        <span className="font-lato" style={{ fontWeight: 400, fontSize: "16px", lineHeight: "24px", letterSpacing: "0.01em", color: "#44403C" }}>
+        <span className="font-lato text-[11px] text-[#78716C] leading-tight mt-0.5">
           {date}
         </span>
       </div>
@@ -183,19 +177,19 @@ export default function BlogListing({
               </div>
             </div>
 
-            {/* Small cards grid */}
+            {/* Small articles grid matching User Screenshot */}
             {gridPosts.length > 0 && (
               <div className="bl-grid">
                 {gridPosts.map((post) => (
                   <Link
                     key={post.id}
                     href={`/blog/${post.slug}`}
-                    className="bl-card group rounded-2xl border border-stone-200/90 bg-white p-5 sm:p-6 shadow-xs hover:shadow-xl hover:-translate-y-1 hover:border-brown/40 transition-all duration-300 flex flex-col justify-between"
+                    className="group flex flex-col justify-between"
                     style={{ textDecoration: "none" }}
                   >
                     <div>
                       {/* Image container */}
-                      <div className="bl-card-img relative overflow-hidden rounded-xl bg-stone-100 mb-4">
+                      <div className="relative overflow-hidden aspect-[16/10] w-full bg-stone-100 mb-3">
                         <Image
                           src={post.coverImage}
                           alt={post.title}
@@ -204,43 +198,24 @@ export default function BlogListing({
                           style={{ objectFit: "cover" }}
                           className="group-hover:scale-105 transition-transform duration-500"
                         />
-                        {post.category && (
-                          <span className="absolute top-3 left-3 rounded-full border border-stone-200/80 bg-white/95 px-3 py-1 font-lato text-[11px] font-bold text-dark shadow-2xs backdrop-blur-xs">
-                            {post.category.name}
-                          </span>
-                        )}
                       </div>
 
                       {/* Body */}
-                      <div className="bl-card-body flex flex-col gap-3">
-                        <div className="flex flex-col gap-2">
-                          <h3
-                            className="font-prata group-hover:text-brown transition-colors"
-                            style={{
-                              fontSize: "20px",
-                              lineHeight: "28px",
-                              color: "#0B0404",
-                              margin: 0,
-                            }}
-                          >
-                            {post.title}
-                          </h3>
-                          <p
-                            className="font-lato line-clamp-2"
-                            style={{
-                              fontSize: "15px",
-                              lineHeight: "150%",
-                              color: "#44403C",
-                              margin: 0,
-                            }}
-                          >
-                            {post.excerpt}
-                          </p>
-                        </div>
+                      <div className="flex flex-col gap-2">
+                        <h3
+                          className="font-prata text-xl leading-[1.3] text-[#0B0404] m-0 group-hover:text-[#BB5A28] transition-colors"
+                        >
+                          {post.title}
+                        </h3>
+                        <p
+                          className="font-lato text-xs sm:text-sm leading-[1.5] text-[#44403C] m-0 line-clamp-4"
+                        >
+                          {post.excerpt}
+                        </p>
                       </div>
                     </div>
 
-                    <div className="pt-4 mt-4 border-t border-stone-100">
+                    <div className="mt-4">
                       <AuthorRow author={post.author} date={formatPostDate(post.publishedAt, post.readTimeMinutes)} />
                     </div>
                   </Link>
@@ -263,7 +238,6 @@ export default function BlogListing({
             )}
           </div>
         )}
-
       </div>
     </section>
   );

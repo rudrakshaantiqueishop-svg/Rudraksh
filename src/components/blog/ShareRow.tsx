@@ -6,7 +6,7 @@ type ShareRowProps = {
   title: string;
 };
 
-function shareUrl(kind: "facebook" | "twitter" | "whatsapp" | "email", url: string, title: string) {
+function shareUrl(kind: "facebook" | "twitter" | "instagram" | "whatsapp" | "email", url: string, title: string) {
   const u = encodeURIComponent(url);
   const t = encodeURIComponent(title);
   switch (kind) {
@@ -14,6 +14,8 @@ function shareUrl(kind: "facebook" | "twitter" | "whatsapp" | "email", url: stri
       return `https://www.facebook.com/sharer/sharer.php?u=${u}`;
     case "twitter":
       return `https://twitter.com/intent/tweet?url=${u}&text=${t}`;
+    case "instagram":
+      return `https://www.instagram.com/`;
     case "whatsapp":
       return `https://api.whatsapp.com/send?text=${t}%20${u}`;
     case "email":
@@ -28,6 +30,13 @@ const ICONS = {
   twitter: (
     <path d="M18 7.2c-.44.2-.92.33-1.42.4.51-.31.9-.79 1.09-1.37-.48.28-1.01.49-1.58.6A2.48 2.48 0 0 0 11.3 9.1a7.03 7.03 0 0 1-5.1-2.59 2.48 2.48 0 0 0 .77 3.31c-.4-.01-.78-.12-1.11-.3v.03c0 1.2.85 2.2 1.98 2.43-.36.1-.75.11-1.12.04a2.48 2.48 0 0 0 2.31 1.72A4.98 4.98 0 0 1 5 14.78 7.02 7.02 0 0 0 8.79 15.9c4.55 0 7.04-3.77 7.04-7.04v-.32c.48-.35.9-.79 1.23-1.29Z" fill="currentColor" />
   ),
+  instagram: (
+    <g stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none">
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+    </g>
+  ),
   whatsapp: (
     <path d="M12 5.5a6.5 6.5 0 0 0-5.6 9.79L5.5 18.5l3.32-.86A6.5 6.5 0 1 0 12 5.5Zm3.55 9.03c-.15.42-.87.8-1.2.83-.31.03-.6.16-2.01-.42-1.7-.7-2.77-2.44-2.85-2.55-.08-.11-.68-.9-.68-1.71 0-.82.43-1.22.58-1.39a.6.6 0 0 1 .44-.2h.32c.1 0 .24-.04.38.28.15.36.5 1.24.54 1.33.04.09.07.2.01.31-.06.11-.09.18-.18.28-.09.1-.19.23-.27.31-.09.09-.18.18-.08.36.1.18.44.73.95 1.18.65.58 1.2.76 1.38.85.18.09.28.08.38-.05.11-.12.44-.51.55-.69.11-.18.23-.15.38-.09.15.05 1 .47 1.17.56.17.09.28.13.32.2.05.08.05.43-.1.85Z" fill="currentColor" />
   ),
@@ -41,6 +50,14 @@ export default function ShareRow({ title }: ShareRowProps) {
 
   function open(kind: keyof typeof ICONS) {
     const url = typeof window !== "undefined" ? window.location.href : "";
+    if (kind === "instagram") {
+      // Copy URL to clipboard for Instagram sharing & open Instagram
+      navigator.clipboard?.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+      window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
+      return;
+    }
     const href = shareUrl(kind, url, title);
     if (kind === "email") {
       window.location.assign(href);

@@ -101,12 +101,17 @@ export default function ConsultationForm() {
                       folder: "Rudraksh/Kundali",
                       multiple: false,
                       clientAllowedFormats: ["jpg", "jpeg", "png", "webp", "pdf"],
-                      maxFileSize: 10000000,
+                      maxFileSize: 5000000,
+                      maxImageWidth: 1600,
+                      maxImageHeight: 1600,
                     }}
                     onSuccess={(result) => {
                       if (result.event === "success" && typeof result.info === "object" && result.info !== null) {
                         const info = result.info as { secure_url: string };
-                        setKundaliUrl(info.secure_url);
+                        const optimizedUrl = info.secure_url.includes("res.cloudinary.com") && !info.secure_url.endsWith(".pdf")
+                          ? info.secure_url.replace("/upload/", "/upload/f_auto,q_auto,w_1600,c_limit/")
+                          : info.secure_url;
+                        setKundaliUrl(optimizedUrl);
                         setError("");
                       }
                     }}
