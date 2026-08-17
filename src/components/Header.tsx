@@ -52,6 +52,7 @@ const iconMap: Record<string, string> = {
 };
 
 const aboutLinks = [
+  { name: "About Us", href: "/about" },
   { name: "Authenticity & Certification", href: "/authenticity" },
   { name: "Energisation Process", href: "/energisation-process" },
   { name: "How to Choose", href: "/how-to-choose" },
@@ -69,7 +70,13 @@ export default function Header({ activePage }: { activePage?: string }) {
   const staffHref = isAdmin ? "/admin" : "/admin/blog";
   const staffLabel = isAdmin ? "ADMIN" : "WRITER";
   const accountHref = isLoggedIn ? "/account" : "/login";
-  const currentPage = activePage ?? (pathname === "/" ? "home" : pathname === "/about" ? "about" : pathname === "/contact" ? "contact" : pathname?.startsWith("/products") ? "products" : "home");
+  const isHomeActive = pathname === "/";
+  const isProductsActive = pathname?.startsWith("/products") || pathname?.startsWith("/consultation");
+  const isAboutActive = pathname === "/about" || pathname?.startsWith("/blog") || pathname?.startsWith("/authenticity") || pathname?.startsWith("/how-to-choose") || pathname?.startsWith("/energisation-process") || pathname?.startsWith("/testimonial");
+  const isContactActive = pathname === "/contact";
+  const isWishlistActive = pathname === "/account/wishlist";
+  const isCartActive = pathname === "/cart" || pathname === "/checkout";
+  const isUserActive = (pathname?.startsWith("/account") && pathname !== "/account/wishlist") || pathname === "/login" || pathname === "/signup";
   const [productColumns, setProductColumns] = useState(DEFAULT_PRODUCT_COLUMNS);
 
   useEffect(() => {
@@ -166,19 +173,19 @@ export default function Header({ activePage }: { activePage?: string }) {
         <div className="header-nav-center absolute inset-x-0 h-full flex justify-center pointer-events-none">
           <nav className={`flex items-center gap-4 lg:gap-5 xl:gap-8 h-full transition-opacity duration-300 ${isDesktopSearchOpen ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"}`}>
 
-            <Link href="/" className={`font-lato text-[13px] xl:text-base font-normal flex items-center h-full transition-colors ${currentPage === "home" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}>
+            <Link href="/" className={`font-lato text-[13px] xl:text-base flex items-center h-full transition-colors ${isHomeActive ? "text-[#BB5A28] font-bold" : "font-normal text-[#0B0404] hover:text-[#BB5A28]"}`}>
               HOME
             </Link>
 
             {/* Products trigger */}
             <div
-              className={`relative flex items-center gap-1.5 xl:gap-2 font-lato text-[13px] xl:text-base font-normal h-full transition-colors cursor-pointer ${activeDropdown === "products" || currentPage === "products" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
+              className={`relative flex items-center gap-1.5 xl:gap-2 font-lato text-[13px] xl:text-base h-full transition-colors cursor-pointer ${activeDropdown === "products" || isProductsActive ? "text-[#BB5A28] font-bold" : "font-normal text-[#0B0404] hover:text-[#BB5A28]"}`}
               onMouseEnter={() => setActiveDropdown("products")}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <Link href="/products" className="flex items-center h-full">
+              <span className="flex items-center h-full">
                 PRODUCTS
-              </Link>
+              </span>
               <ChevronDown
                 size={15}
                 strokeWidth={1.5}
@@ -188,13 +195,13 @@ export default function Header({ activePage }: { activePage?: string }) {
 
             {/* About Us trigger */}
             <div
-              className={`relative flex items-center gap-1.5 xl:gap-2 font-lato text-[13px] xl:text-base font-normal h-full transition-colors cursor-pointer ${activeDropdown === "about" || currentPage === "about" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}
+              className={`relative flex items-center gap-1.5 xl:gap-2 font-lato text-[13px] xl:text-base h-full transition-colors cursor-pointer ${activeDropdown === "about" || isAboutActive ? "text-[#BB5A28] font-bold" : "font-normal text-[#0B0404] hover:text-[#BB5A28]"}`}
               onMouseEnter={() => setActiveDropdown("about")}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <Link href="/about" className="flex items-center h-full">
+              <span className="flex items-center h-full">
                 ABOUT US
-              </Link>
+              </span>
               <ChevronDown
                 size={15}
                 strokeWidth={1.5}
@@ -207,20 +214,27 @@ export default function Header({ activePage }: { activePage?: string }) {
                   className="absolute left-1/2 -translate-x-1/2 bg-[#FEF9F2] flex flex-col min-w-[260px] py-3 rounded-b-md z-50 pointer-events-auto"
                   style={{ boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", top: "100%" }}
                 >
-                  {aboutLinks.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="px-6 py-3 font-lato font-medium text-[#44403C] hover:text-[#BB5A28] hover:bg-black/5 transition-colors whitespace-nowrap text-[13px] xl:text-base"
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
+                  {aboutLinks.map((item) => {
+                    const isSubActive = pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className={`px-6 py-3 font-lato text-[13px] xl:text-base transition-colors whitespace-nowrap block ${
+                          isSubActive
+                            ? "text-[#BB5A28] font-bold"
+                            : "font-medium text-[#44403C] hover:text-[#BB5A28] hover:bg-black/5"
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    );
+                  })}
                 </div>
               )}
             </div>
 
-            <Link href="/contact" className={`font-lato text-[13px] xl:text-base font-normal flex items-center h-full uppercase transition-colors ${currentPage === "contact" ? "text-[#BB5A28]" : "text-[#0B0404] hover:text-[#BB5A28]"}`}>
+            <Link href="/contact" className={`font-lato text-[13px] xl:text-base flex items-center h-full uppercase transition-colors ${isContactActive ? "text-[#BB5A28] font-bold" : "font-normal text-[#0B0404] hover:text-[#BB5A28]"}`}>
               CONTACT US
             </Link>
 
@@ -236,7 +250,7 @@ export default function Header({ activePage }: { activePage?: string }) {
         {/* Right actions — desktop */}
         <div className="header-actions-desktop flex items-center gap-3 xl:gap-6">
           <DesktopSearch onToggle={setIsDesktopSearchOpen} />
-          <Link href="/account/wishlist" aria-label="Wishlist" className="relative text-[#44403C] hover:text-[#BB5A28] transition-colors">
+          <Link href="/account/wishlist" aria-label="Wishlist" className={`relative transition-colors ${isWishlistActive ? "text-[#BB5A28]" : "text-[#44403C] hover:text-[#BB5A28]"}`}>
             <Heart size={20} className="xl:w-6 xl:h-6" strokeWidth={1.5} />
             {wishlistIds.size > 0 && (
               <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#BB5A28] text-white font-lato text-[10px] font-bold leading-none">
@@ -244,7 +258,7 @@ export default function Header({ activePage }: { activePage?: string }) {
               </span>
             )}
           </Link>
-          <button onClick={openCart} aria-label="Open cart" className="relative text-[#44403C] hover:text-[#BB5A28] transition-colors">
+          <button onClick={openCart} aria-label="Open cart" className={`relative transition-colors ${isCartActive ? "text-[#BB5A28]" : "text-[#44403C] hover:text-[#BB5A28]"}`}>
             <ShoppingCart size={20} className="xl:w-6 xl:h-6" strokeWidth={1.5} />
             {itemCount > 0 && (
               <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#BB5A28] text-white font-lato text-[10px] font-bold leading-none">
@@ -253,13 +267,13 @@ export default function Header({ activePage }: { activePage?: string }) {
             )}
           </button>
           {isLoggedIn ? (
-            <Link href={accountHref} className="text-[#44403C] hover:text-[#BB5A28] transition-colors" aria-label="My Account">
+            <Link href={accountHref} className={`transition-colors ${isUserActive ? "text-[#BB5A28]" : "text-[#44403C] hover:text-[#BB5A28]"}`} aria-label="My Account">
               <User size={20} className="xl:w-6 xl:h-6" strokeWidth={1.5} />
             </Link>
           ) : (
             <button
               onClick={() => setIsAuthModalOpen(true)}
-              className="text-[#44403C] hover:text-[#BB5A28] transition-colors"
+              className={`transition-colors ${isUserActive ? "text-[#BB5A28]" : "text-[#44403C] hover:text-[#BB5A28]"}`}
               aria-label="Sign in"
             >
               <User size={20} className="xl:w-6 xl:h-6" strokeWidth={1.5} />
@@ -300,7 +314,7 @@ export default function Header({ activePage }: { activePage?: string }) {
           <button onClick={() => setIsSearchOpen(true)} aria-label="Open search" className="text-[#44403C]">
             <Search size={20} strokeWidth={1.5} />
           </button>
-          <Link href="/account/wishlist" aria-label="Wishlist" className="relative text-[#44403C]">
+          <Link href="/account/wishlist" aria-label="Wishlist" className={`relative transition-colors ${isWishlistActive ? "text-[#BB5A28]" : "text-[#44403C]"}`}>
             <Heart size={20} strokeWidth={1.5} />
             {wishlistIds.size > 0 && (
               <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[16px] h-[16px] px-1 rounded-full bg-[#BB5A28] text-white font-lato text-[9px] font-bold leading-none">
@@ -308,7 +322,7 @@ export default function Header({ activePage }: { activePage?: string }) {
               </span>
             )}
           </Link>
-          <button onClick={openCart} aria-label="Open cart" className="relative text-[#44403C]">
+          <button onClick={openCart} aria-label="Open cart" className={`relative transition-colors ${isCartActive ? "text-[#BB5A28]" : "text-[#44403C]"}`}>
             <ShoppingCart size={20} strokeWidth={1.5} />
             {itemCount > 0 && (
               <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[16px] h-[16px] px-1 rounded-full bg-[#BB5A28] text-white font-lato text-[9px] font-bold leading-none">
@@ -465,13 +479,14 @@ export default function Header({ activePage }: { activePage?: string }) {
             </Link>
 
             <div className="flex flex-col">
-              <div className="flex justify-between items-center font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase">
-                <Link href="/products" onClick={() => setIsMobileMenuOpen(false)}>
-                  PRODUCTS
-                </Link>
+              <div
+                className="flex justify-between items-center font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase cursor-pointer"
+                onClick={() => setIsMobileProductsOpen(!isMobileProductsOpen)}
+              >
+                <span>PRODUCTS</span>
                 <button
                   aria-label="Toggle products menu"
-                  onClick={() => setIsMobileProductsOpen(!isMobileProductsOpen)}
+                  type="button"
                 >
                   {isMobileProductsOpen ? (
                     <Minus size={16} strokeWidth={1.5} />
@@ -506,13 +521,14 @@ export default function Header({ activePage }: { activePage?: string }) {
             </div>
 
             <div className="flex flex-col">
-              <div className="flex justify-between items-center font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase">
-                <Link href="/about" onClick={() => setIsMobileMenuOpen(false)}>
-                  ABOUT US
-                </Link>
+              <div
+                className="flex justify-between items-center font-lato font-medium text-[#0B0404] text-[15px] tracking-wide uppercase cursor-pointer"
+                onClick={() => setIsMobileAboutOpen(!isMobileAboutOpen)}
+              >
+                <span>ABOUT US</span>
                 <button
                   aria-label="Toggle about menu"
-                  onClick={() => setIsMobileAboutOpen(!isMobileAboutOpen)}
+                  type="button"
                 >
                   {isMobileAboutOpen ? (
                     <Minus size={16} strokeWidth={1.5} />
@@ -524,16 +540,21 @@ export default function Header({ activePage }: { activePage?: string }) {
 
               {isMobileAboutOpen && (
                 <div className="flex flex-col gap-6 mt-6 pl-4">
-                  {aboutLinks.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="font-lato font-normal text-[#44403C] text-[15px] hover:text-[#BB5A28] transition-colors uppercase"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
+                  {aboutLinks.map((item) => {
+                    const isSubActive = pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className={`font-lato text-[15px] transition-colors uppercase block ${
+                          isSubActive ? "text-[#BB5A28] font-bold" : "font-normal text-[#44403C] hover:text-[#BB5A28]"
+                        }`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    );
+                  })}
                 </div>
               )}
             </div>

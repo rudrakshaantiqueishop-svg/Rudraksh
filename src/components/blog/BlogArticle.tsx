@@ -73,7 +73,7 @@ export default function BlogArticle({
       </div>
 
       {/* Cover image */}
-      <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-[#F0E8DD] mb-10">
+      <div className="relative w-full aspect-[2/1] max-h-[380px] rounded-none overflow-hidden bg-[#F0E8DD] mb-10">
         <Image
           src={coverImage}
           alt={coverImageAlt || title}
@@ -87,7 +87,7 @@ export default function BlogArticle({
       {/* Body */}
       {isHtml ? (
         <div
-          className="blog-article-content font-lato text-base leading-relaxed text-[#44403C] [&_p]:my-4 [&_h2]:font-prata [&_h2]:text-2xl [&_h2]:text-dark [&_h2]:font-normal [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:leading-snug [&_h3]:font-bold [&_h3]:text-lg [&_h3]:text-dark [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:leading-snug [&_h4]:font-bold [&_h4]:text-base [&_h4]:text-dark [&_h4]:mt-5 [&_h4]:mb-2 [&_strong]:font-bold [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-3 [&_li]:my-1.5 [&_blockquote]:bg-[#FFF5E6] [&_blockquote]:border-l-4 [&_blockquote]:border-brown [&_blockquote]:text-[#3D2214] [&_blockquote]:rounded-r-xl [&_blockquote]:rounded-l-xs [&_blockquote]:px-6 [&_blockquote]:py-5 [&_blockquote]:my-6 [&_blockquote]:font-prata [&_blockquote]:text-lg [&_blockquote]:italic [&_blockquote]:leading-relaxed [&_blockquote]:shadow-2xs [&_a]:text-brown [&_a]:underline [&_a]:underline-offset-2 [&_img]:w-full [&_img]:rounded-xl [&_img]:my-6 [&_table]:w-full [&_table]:my-5 [&_table]:border-collapse [&_th]:border [&_th]:border-[#E7DFD6] [&_th]:bg-[#FFF5E6] [&_th]:p-2.5 [&_th]:text-left [&_td]:border [&_td]:border-[#E7DFD6] [&_td]:p-2.5 [&_hr]:border-[#E7DFD6] [&_hr]:my-8 [&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:rounded-xl [&_iframe]:my-6"
+          className="blog-article-content font-lato text-base leading-relaxed text-[#44403C] [&_p]:my-4 [&_h2]:font-prata [&_h2]:text-2xl [&_h2]:text-dark [&_h2]:font-normal [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:leading-snug [&_h3]:font-bold [&_h3]:text-lg [&_h3]:text-dark [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:leading-snug [&_h4]:font-bold [&_h4]:text-base [&_h4]:text-dark [&_h4]:mt-5 [&_h4]:mb-2 [&_strong]:font-bold [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-3 [&_li]:my-1.5 [&_blockquote]:bg-[#FFF5E6] [&_blockquote]:border-l-4 [&_blockquote]:border-brown [&_blockquote]:text-[#3D2214] [&_blockquote]:rounded-r-xl [&_blockquote]:rounded-l-xs [&_blockquote]:px-6 [&_blockquote]:py-5 [&_blockquote]:my-6 [&_blockquote]:font-prata [&_blockquote]:text-lg [&_blockquote]:italic [&_blockquote]:leading-relaxed [&_blockquote]:shadow-2xs [&_a]:text-brown [&_a]:underline [&_a]:underline-offset-2 [&_img]:max-w-full [&_img]:max-h-[480px] [&_img]:mx-auto [&_img]:object-contain [&_img]:rounded-none [&_img]:my-6 [&_table]:w-full [&_table]:my-5 [&_table]:border-collapse [&_th]:border [&_th]:border-[#E7DFD6] [&_th]:bg-[#FFF5E6] [&_th]:p-2.5 [&_th]:text-left [&_td]:border [&_td]:border-[#E7DFD6] [&_td]:p-2.5 [&_hr]:border-[#E7DFD6] [&_hr]:my-8 [&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:rounded-none [&_iframe]:my-6"
           dangerouslySetInnerHTML={{ __html: body }}
         />
       ) : (

@@ -78,20 +78,20 @@ export default function AccountSidebar({
       </div>
 
       <div className="fixed bottom-4 left-3 right-3 z-50 max-w-xl mx-auto md:static md:z-auto md:w-full md:max-w-none md:mx-0">
-        <div className="relative flex items-center rounded-2xl border border-stone-200/90 bg-white/95 p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.16)] backdrop-blur-xl md:border-none md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none md:flex-col md:items-stretch">
+        <div className="relative flex items-center rounded-none border border-stone-200/90 bg-white/95 p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.16)] backdrop-blur-xl md:border-none md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none md:flex-col md:items-stretch">
           {canScrollLeft && (
             <button
               type="button"
               onClick={() => scrollByAmount("left")}
               aria-label="Scroll left"
-              className="absolute left-1 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-white/95 text-stone-700 shadow-md transition-all hover:bg-white hover:text-dark active:scale-90 md:hidden"
+              className="absolute left-1 z-20 flex h-7 w-7 items-center justify-center rounded-none bg-white/95 text-stone-700 shadow-md transition-all hover:bg-white hover:text-dark active:scale-90 md:hidden"
             >
               <ChevronLeft size={16} strokeWidth={2} />
             </button>
           )}
 
           <div
-            className={`pointer-events-none absolute left-0 bottom-0 top-0 z-10 w-7 rounded-l-2xl bg-gradient-to-r from-white via-white/80 to-transparent transition-opacity duration-200 md:hidden ${
+            className={`pointer-events-none absolute left-0 bottom-0 top-0 z-10 w-7 rounded-none bg-gradient-to-r from-white via-white/80 to-transparent transition-opacity duration-200 md:hidden ${
               canScrollLeft ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -107,9 +107,9 @@ export default function AccountSidebar({
                   key={href}
                   href={href}
                   ref={isActive ? activeItemRef : null}
-                  className={`flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2 font-lato text-xs font-semibold uppercase tracking-[0.05em] transition-all duration-200 md:w-full md:justify-start md:gap-3 md:rounded-xl md:px-4 md:py-3 md:text-sm ${
+                  className={`flex shrink-0 items-center gap-2 rounded-none px-3.5 py-2 font-lato text-xs font-semibold uppercase tracking-[0.05em] transition-all duration-200 md:w-full md:justify-start md:gap-3 md:rounded-none md:px-4 md:py-3 md:text-sm ${
                     isActive
-                      ? "bg-brown text-cream shadow-sm shadow-brown/25 scale-[1.01] ring-1 ring-brown/30"
+                      ? "bg-brown text-cream shadow-sm shadow-brown/25 scale-[1.01]"
                       : "text-stone-600 hover:bg-secondary/80 hover:text-dark active:scale-95"
                   }`}
                   aria-label={label}
@@ -122,7 +122,7 @@ export default function AccountSidebar({
           </nav>
 
           <div
-            className={`pointer-events-none absolute right-0 bottom-0 top-0 z-10 w-7 rounded-r-2xl bg-gradient-to-l from-white via-white/80 to-transparent transition-opacity duration-200 md:hidden ${
+            className={`pointer-events-none absolute right-0 bottom-0 top-0 z-10 w-7 rounded-none bg-gradient-to-l from-white via-white/80 to-transparent transition-opacity duration-200 md:hidden ${
               canScrollRight ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -132,7 +132,7 @@ export default function AccountSidebar({
               type="button"
               onClick={() => scrollByAmount("right")}
               aria-label="Scroll right"
-              className="absolute right-1 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-white/95 text-stone-700 shadow-md transition-all hover:bg-white hover:text-dark active:scale-90 md:hidden"
+              className="absolute right-1 z-20 flex h-7 w-7 items-center justify-center rounded-none bg-white/95 text-stone-700 shadow-md transition-all hover:bg-white hover:text-dark active:scale-90 md:hidden"
             >
               <ChevronRight size={16} strokeWidth={2} />
             </button>
@@ -141,7 +141,7 @@ export default function AccountSidebar({
           <form action={logout} className="ml-1 shrink-0 border-l border-stone-200 pl-2 md:ml-0 md:mt-4 md:border-none md:pl-0">
             <button
               type="submit"
-              className="flex shrink-0 items-center gap-2 rounded-xl px-3 py-2 text-stone-600 transition-all duration-200 hover:bg-red-50 hover:text-destructive active:scale-95 md:w-full md:justify-start md:gap-3 md:rounded-xl md:px-4 md:py-3 font-lato text-xs md:text-sm font-semibold uppercase tracking-[0.05em]"
+              className="flex shrink-0 items-center gap-2 rounded-none px-3 py-2 text-stone-600 transition-all duration-200 hover:bg-red-50 hover:text-destructive active:scale-95 md:w-full md:justify-start md:gap-3 md:rounded-none md:px-4 md:py-3 font-lato text-xs md:text-sm font-semibold uppercase tracking-[0.05em]"
               aria-label="Sign Out"
             >
               <LogOut size={18} strokeWidth={1.75} className="shrink-0 md:h-[18px] md:w-[18px]" />

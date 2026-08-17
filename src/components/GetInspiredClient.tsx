@@ -81,7 +81,7 @@ const ProductCard = memo(function ProductCard({
       }}
     >
       {/* Card Media Container */}
-      <div className="relative overflow-hidden mb-3 h-[451px] rounded-lg bg-black">
+      <div className="relative overflow-hidden mb-3 h-[451px] rounded-none bg-black">
         {videoId && isPlaying ? (
           /* Playing YouTube Short */
           <div className="relative w-full h-full overflow-hidden">
@@ -158,31 +158,6 @@ const ProductCard = memo(function ProductCard({
             )}
           </div>
         )}
-
-        {/* Top-Left Inset Box: Product Image for the Review */}
-        <div
-          style={{
-            position: "absolute",
-            top: "10px",
-            left: "10px",
-            width: "76px",
-            height: "76px",
-            overflow: "hidden",
-            border: "2px solid rgba(255,255,255,0.9)",
-            borderRadius: "6px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.35)",
-            zIndex: 20,
-          }}
-        >
-          <Image
-            src={p.productImageUrl || p.imageUrl}
-            alt="Product Review"
-            fill
-            sizes="76px"
-            style={{ objectFit: "cover" }}
-            unoptimized={(p.productImageUrl || p.imageUrl).startsWith("http")}
-          />
-        </div>
       </div>
 
       {/* Info */}

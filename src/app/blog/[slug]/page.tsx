@@ -49,9 +49,9 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   ]);
 
   return (
-    <div style={{ background: "#FEF9F2", overflowX: "hidden" }}>
+    <div style={{ background: "#FEF9F2" }}>
       <div className="h-px-section py-10 lg:py-14">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] gap-10 lg:gap-14">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] gap-10 lg:gap-14 items-start">
           <BlogArticle
             title={blog.title}
             excerpt={blog.excerpt}

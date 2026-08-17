@@ -26,8 +26,8 @@ export default function BlogSidebar({
   popularPosts: PopularPost[];
 }) {
   return (
-    <aside className="hidden lg:block">
-      <div className="sticky top-[96px] flex flex-col gap-8">
+    <aside className="hidden lg:block sticky top-24 self-start">
+      <div className="flex flex-col gap-8">
         {/* Related Products */}
         <RelatedProductsCard products={relatedProducts} />
 

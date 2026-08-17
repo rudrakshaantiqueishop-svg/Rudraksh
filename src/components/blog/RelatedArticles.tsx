@@ -36,7 +36,7 @@ export default function RelatedArticles({ posts }: { posts: RelatedPost[] }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {posts.map((post) => (
             <Link key={post.id} href={`/blog/${post.slug}`} className="group/rel flex flex-col">
-              <div className="relative w-full aspect-[3/2] rounded-xl overflow-hidden bg-[#F0E8DD] mb-4">
+              <div className="relative w-full aspect-[3/2] rounded-none overflow-hidden bg-[#F0E8DD] mb-4">
                 <Image
                   src={post.coverImage}
                   alt={post.title}
