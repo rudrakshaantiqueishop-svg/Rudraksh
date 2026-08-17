@@ -158,6 +158,31 @@ const ProductCard = memo(function ProductCard({
             )}
           </div>
         )}
+
+        {/* Top-Left Inset Box: Product Image for the Review */}
+        <div
+          style={{
+            position: "absolute",
+            top: "10px",
+            left: "10px",
+            width: "76px",
+            height: "76px",
+            overflow: "hidden",
+            border: "2px solid rgba(255,255,255,0.9)",
+            borderRadius: "0px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.35)",
+            zIndex: 20,
+          }}
+        >
+          <Image
+            src={p.productImageUrl || p.imageUrl}
+            alt="Product Review"
+            fill
+            sizes="76px"
+            style={{ objectFit: "cover" }}
+            unoptimized={(p.productImageUrl || p.imageUrl).startsWith("http")}
+          />
+        </div>
       </div>
 
       {/* Info */}
