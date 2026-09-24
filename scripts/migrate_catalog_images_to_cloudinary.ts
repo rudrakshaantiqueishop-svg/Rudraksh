@@ -11,7 +11,7 @@
 import "dotenv/config";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join, parse } from "node:path";
-import { PrismaClient } from "../src/generated/prisma/client";
+import { PrismaClient, ProductImageRole } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
@@ -256,7 +256,7 @@ async function main() {
         productId,
         url: img.url,
         alt: img.alt || slug,
-        role: img.role || "MAIN",
+        role: (img.role as ProductImageRole) || ProductImageRole.MAIN,
         sortOrder: img.sortOrder ?? 0,
       })),
     });

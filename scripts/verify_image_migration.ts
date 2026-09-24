@@ -30,8 +30,8 @@ async function verify() {
   let remainingLocalInCats = 0;
   for (const c of categories) {
     const pc = (c.pageContent as any) || {};
-    if (c.bannerImage && replacedLocalRefs.has(c.bannerImage)) {
-      console.log(`❌ Category [${c.slug}].bannerImage still has local ref: ${c.bannerImage}`);
+    if (c.image && replacedLocalRefs.has(c.image)) {
+      console.log(`❌ Category [${c.slug}].image still has local ref: ${c.image}`);
       remainingLocalInCats++;
     }
     if (pc.introImage && replacedLocalRefs.has(pc.introImage)) {
@@ -81,7 +81,7 @@ async function verify() {
   console.log("\n--- 3. Verifying Updated Cloudinary Asset URLs (HTTP HEAD / GET) ---");
   const uniqueCloudinaryUrls = new Set<string>();
   for (const c of categories) {
-    if (c.bannerImage?.startsWith("https://res.cloudinary.com")) uniqueCloudinaryUrls.add(c.bannerImage);
+    if (c.image?.startsWith("https://res.cloudinary.com")) uniqueCloudinaryUrls.add(c.image);
     const pc = (c.pageContent as any) || {};
     if (pc.introImage?.startsWith("https://res.cloudinary.com")) uniqueCloudinaryUrls.add(pc.introImage);
     if (pc.fitCheckImage?.startsWith("https://res.cloudinary.com")) uniqueCloudinaryUrls.add(pc.fitCheckImage);
