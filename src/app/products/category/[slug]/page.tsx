@@ -5,6 +5,8 @@ import { getCategoryWithSubcategories, getPageContent, getCategories } from "@/l
 import ProductsHero from "@/components/products/ProductsHero";
 import CategoryIntro from "@/components/products/CategoryIntro";
 import SubcategoryGrid from "@/components/products/SubcategoryGrid";
+import SubcategoryProductListing from "@/components/products/SubcategoryProductListing";
+import { computeFacets, filterProducts, parseFilters, getPriceBounds } from "@/lib/product-utils";
 
 const VerificationChecklist = dynamic(() => import("@/components/products/VerificationChecklist"));
 const CategoryFitCheck = dynamic(() => import("@/components/products/CategoryFitCheck"));
@@ -13,8 +15,16 @@ const GetMoreInsights = dynamic(() => import("@/components/products/GetMoreInsig
 const ProductsFAQ = dynamic(() => import("@/components/products/ProductsFAQ"));
 const BlogStillUnsure = dynamic(() => import("@/components/blog/BlogStillUnsure"));
 
-export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function CategoryPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const { slug: rawSlug } = await params;
+  const sp = await searchParams;
+  const slug = decodeURIComponent(rawSlug).replace(/\s+/g, '-');
   const category = await getCategoryWithSubcategories(slug);
 
   if (!category) {
@@ -34,16 +44,37 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   }
 
   const pageContent = getPageContent(category);
+  // Use the DB displayType to decide: PRODUCT_LISTING = direct listing, everything else = subcategory grid.
+  const isDirectListing = category.displayType === "PRODUCT_LISTING" ||
+    (category.subcategories && category.subcategories.length === 0);
+
+  // Only fetch these if we need to render the direct product listing
+  const allProducts = isDirectListing
+    ? await import("@/lib/products").then(m => m.getProductsByCategory(category.slug))
+    : [];
+
+  const filters = parseFilters(sp);
+  const facets = computeFacets(allProducts);
+  const filtered = filterProducts(allProducts, filters);
+  const priceBounds = getPriceBounds(allProducts);
 
   return (
     <div style={{ background: "#FEF9F2", overflowX: "hidden" }}>
       <ProductsHero pageContent={pageContent} />
-      <CategoryIntro pageContent={pageContent} />
-      <SubcategoryGrid
-        categorySlug={category.slug}
-        categoryName={category.name}
-        subcategories={category.subcategories}
-      />
+      <CategoryIntro pageContent={pageContent} fallbackImage={category.image} />
+      {isDirectListing ? (
+        <SubcategoryProductListing
+          products={filtered}
+          facets={facets}
+          priceBounds={priceBounds}
+        />
+      ) : (
+        <SubcategoryGrid
+          categorySlug={category.slug}
+          categoryName={category.name}
+          subcategories={category.subcategories}
+        />
+      )}
       <VerificationChecklist pageContent={pageContent} />
       <CategoryFitCheck pageContent={pageContent} />
       <JourneyHighlights />

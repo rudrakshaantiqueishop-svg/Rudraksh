@@ -58,15 +58,13 @@ export default function ProductCard({
   return (
     <Link href={`/products/${product.slug}`} className={`flex flex-col gap-3 group/card ${className}`}>
       <div className={`relative overflow-hidden bg-[#F0E8DD] ${imageClassName}`}>
-        {image && (
-          <SmartImage
-            src={image.url}
-            alt={image.alt}
-            fill
-            sizes="(max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover/card:scale-105"
-          />
-        )}
+        <SmartImage
+          src={image?.url || "/assets/images/home/rudraksh.png"}
+          alt={image?.alt || product.name}
+          fill
+          sizes="(max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 group-hover/card:scale-105"
+        />
 
         {/* Top Right Action Icons: Add to Cart + Wishlist */}
         <div className="absolute top-3 right-3 flex items-center gap-2 z-10" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>

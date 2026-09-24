@@ -30,6 +30,8 @@ export type CategorySeed = {
   sortOrder: number;
   pageContent: CategoryPageContent;
   subcategories: SubcategorySeed[];
+  /** When "PRODUCT_LISTING", the category page shows products directly instead of a subcategory grid. */
+  displayType?: "SUBCATEGORY_LANDING" | "PRODUCT_LISTING";
 };
 
 // Keep this shape in sync with src/lib/product-utils.ts CategoryPageContent.
@@ -254,11 +256,8 @@ export const CATALOG: CategorySeed[] = [
       image: IMG.sacred1,
       altImage: IMG.necklace,
     }),
-    subcategories: subs(
-      ["Siddha Mala Collection", "Customized Siddha Mala", "Energized Siddha Mala"],
-      undefined,
-      2
-    ),
+    subcategories: [],
+    displayType: "PRODUCT_LISTING",
   },
   {
     name: "Rudraksha Kavach",
@@ -358,18 +357,8 @@ export const CATALOG: CategorySeed[] = [
       image: IMG.god,
       altImage: IMG.p04,
     }),
-    subcategories: [
-      ...subs(
-        ["Ganesha", "Shiva", "Lakshmi", "Saraswati", "Hanuman", "Buddha", "Nandi", "Other Deities"],
-        "Divine Idols",
-        0
-      ).map((s) => ({ ...s, slug: `${s.slug}-idol` })),
-      ...subs(
-        ["Handmade Singing Bowls", "Machine Made Singing Bowls", "Singing Bowl Sets"],
-        "Tibetan Singing Bowls",
-        8
-      ),
-    ],
+    subcategories: [],
+    displayType: "PRODUCT_LISTING",
   },
   {
     name: "Gemstones",
@@ -412,19 +401,8 @@ export const CATALOG: CategorySeed[] = [
       image: IMG.p02,
       altImage: IMG.gem,
     }),
-    subcategories: subs(
-      [
-        "Sphatik Mala",
-        "Sphatik Bracelets",
-        "Sphatik Shivling",
-        "Sphatik Shree Yantra",
-        "Sphatik Tortoise",
-        "Sphatik Pyramid",
-        "Sphatik Idols",
-      ],
-      undefined,
-      6
-    ),
+    subcategories: [],
+    displayType: "PRODUCT_LISTING",
   },
   {
     name: "Shree Yantra & Shivling",
@@ -471,18 +449,7 @@ export const CATALOG: CategorySeed[] = [
       image: IMG.p04,
       altImage: IMG.sacred1,
     }),
-    subcategories: subs(
-      [
-        "Dakshinavarti Shankh",
-        "Vamavarti Shankh",
-        "Gomukhi Shankh",
-        "Lakshmi Shankh",
-        "Ganesh Shankh",
-        "Moti Shankh",
-        "Puja Shankh",
-      ],
-      undefined,
-      0
-    ),
+    subcategories: [],
+    displayType: "PRODUCT_LISTING",
   },
 ];

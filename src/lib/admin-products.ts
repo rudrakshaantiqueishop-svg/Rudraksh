@@ -46,6 +46,9 @@ export async function getProductForAdmin(id: string) {
       collections: true,
       category: true,
       subcategory: true,
+      product_category_assignments: {
+        select: { categoryId: true },
+      },
     },
   });
 }

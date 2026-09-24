@@ -195,6 +195,7 @@ async function main() {
         slug: c.slug,
         image: c.image,
         sortOrder: c.sortOrder,
+        displayType: c.displayType ?? "SUBCATEGORY_LANDING",
         pageContent: c.pageContent as unknown as Prisma.InputJsonValue,
       },
     });

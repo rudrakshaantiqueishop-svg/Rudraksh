@@ -72,6 +72,7 @@ export const productSchema = z.object({
   stockCount: z.coerce.number().int().min(0, { error: "Stock cannot be negative." }),
   isBestseller: z.boolean(),
   collectionIds: z.array(z.string()),
+  extraCategoryIds: z.array(z.string()).optional().default([]),
   images: z.array(productImageSchema).min(1, { error: "At least one image is required." }),
   variants: z.array(productVariantSchema),
   addOns: z.array(productAddOnSchema),
