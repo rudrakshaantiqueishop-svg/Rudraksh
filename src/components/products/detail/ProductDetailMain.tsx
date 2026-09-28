@@ -14,6 +14,102 @@ import type { getProductBySlug } from "@/lib/products";
 
 type Product = NonNullable<Awaited<ReturnType<typeof getProductBySlug>>>;
 
+function ZoomableImage({
+  src,
+  alt,
+  fill,
+  sizes,
+  className,
+  priority,
+  lensSize,
+}: {
+  src: string;
+  alt: string;
+  fill?: boolean;
+  sizes?: string;
+  className?: string;
+  priority?: boolean;
+  lensSize: number;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [zoomActive, setZoomActive] = useState(false);
+  const [zoomLens, setZoomLens] = useState({ x: 0, y: 0, w: 0, h: 0 });
+
+  const ZOOM = 1.6;
+  const radius = lensSize / 2;
+
+  const trackZoom = (clientX: number, clientY: number) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = clientX - r.left;
+    const y = clientY - r.top;
+    if (x < 0 || y < 0 || x > r.width || y > r.height) {
+      setZoomActive(false);
+      return;
+    }
+    setZoomActive(true);
+    setZoomLens({ x, y, w: r.width, h: r.height });
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      onMouseEnter={(e) => trackZoom(e.clientX, e.clientY)}
+      onMouseMove={(e) => trackZoom(e.clientX, e.clientY)}
+      onMouseLeave={() => setZoomActive(false)}
+      onTouchStart={(e) => {
+        const t = e.touches[0];
+        trackZoom(t.clientX, t.clientY);
+      }}
+      onTouchMove={(e) => {
+        const t = e.touches[0];
+        trackZoom(t.clientX, t.clientY);
+      }}
+      onTouchEnd={() => setZoomActive(false)}
+      onTouchCancel={() => setZoomActive(false)}
+      className="relative w-full h-full overflow-hidden bg-secondary"
+      style={{ cursor: "zoom-in", touchAction: "none" }}
+    >
+      <SmartImage src={src} alt={alt} fill={fill} sizes={sizes} className={className} priority={priority} />
+
+      {zoomActive && zoomLens.w > 0 && (
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: `${zoomLens.x - radius}px`,
+            top: `${zoomLens.y - radius}px`,
+            width: `${lensSize}px`,
+            height: `${lensSize}px`,
+            borderRadius: "50%",
+            overflow: "hidden",
+            border: "2px solid rgba(255,255,255,0.85)",
+            boxShadow: "0 4px 18px rgba(0,0,0,0.35)",
+            pointerEvents: "none",
+            zIndex: 10,
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src}
+            alt=""
+            style={{
+              position: "absolute",
+              width: `${zoomLens.w * ZOOM}px`,
+              height: `${zoomLens.h * ZOOM}px`,
+              maxWidth: "none",
+              objectFit: "cover",
+              left: `${radius - zoomLens.x * ZOOM}px`,
+              top: `${radius - zoomLens.y * ZOOM}px`,
+            }}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ProductDetailMain({ product }: { product: Product }) {
   const router = useRouter();
   const { formatPrice } = useCurrency();
@@ -26,12 +122,8 @@ export default function ProductDetailMain({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
   const [openSection, setOpenSection] = useState(0);
 
-  const mainImageRef = useRef<HTMLDivElement>(null);
-  const [zoomActive, setZoomActive] = useState(false);
-  const [zoomLens, setZoomLens] = useState({ x: 0, y: 0, w: 0, h: 0 });
   const [lensSize, setLensSize] = useState(240);
 
-  const ZOOM = 1.6;
   const DEFAULT_LENS = 240;
   const MOBILE_LENS = 120;
 
@@ -48,24 +140,13 @@ export default function ProductDetailMain({ product }: { product: Product }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const trackZoom = (clientX: number, clientY: number) => {
-    const el = mainImageRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const x = clientX - r.left;
-    const y = clientY - r.top;
-    if (x < 0 || y < 0 || x > r.width || y > r.height) {
-      setZoomActive(false);
-      return;
-    }
-    setZoomActive(true);
-    setZoomLens({ x, y, w: r.width, h: r.height });
-  };
-
-  const radius = lensSize / 2;
-
   const images = product.images;
-  const mainImage = getMainImage(images);
+  const defaultFallback = {
+    url: "/assets/images/og-default.webp",
+    alt: product.name,
+    role: "MAIN",
+  };
+  const mainImage = getMainImage(images) ?? defaultFallback;
   const leftImage = images.find((i) => i.role === "GALLERY_LEFT") ?? mainImage;
   const topRightImage = images.find((i) => i.role === "GALLERY_TOP_RIGHT") ?? mainImage;
   const bottomRightImage = images.find((i) => i.role === "GALLERY_BOTTOM_RIGHT") ?? mainImage;
@@ -129,73 +210,55 @@ export default function ProductDetailMain({ product }: { product: Product }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
         {/* Gallery */}
         <div className="flex flex-col gap-3">
-          <div
-            ref={mainImageRef}
-            onMouseEnter={(e) => trackZoom(e.clientX, e.clientY)}
-            onMouseMove={(e) => trackZoom(e.clientX, e.clientY)}
-            onMouseLeave={() => setZoomActive(false)}
-            onTouchStart={(e) => {
-              const t = e.touches[0];
-              trackZoom(t.clientX, t.clientY);
-            }}
-            onTouchMove={(e) => {
-              const t = e.touches[0];
-              trackZoom(t.clientX, t.clientY);
-            }}
-            onTouchEnd={() => setZoomActive(false)}
-            onTouchCancel={() => setZoomActive(false)}
-            className="relative aspect-square overflow-hidden bg-secondary"
-            style={{ cursor: "zoom-in", touchAction: "none" }}
-          >
+          <div className="relative aspect-square overflow-hidden bg-secondary">
             {mainImage && (
-              <SmartImage src={mainImage.url} alt={mainImage.alt} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" priority />
-            )}
-
-            {/* Magnifier lens — a small circle that follows the cursor */}
-            {zoomActive && zoomLens.w > 0 && mainImage && (
-              <div
-                aria-hidden
-                style={{
-                  position: "absolute",
-                  left: `${zoomLens.x - radius}px`,
-                  top: `${zoomLens.y - radius}px`,
-                  width: `${lensSize}px`,
-                  height: `${lensSize}px`,
-                  borderRadius: "50%",
-                  overflow: "hidden",
-                  border: "2px solid rgba(255,255,255,0.85)",
-                  boxShadow: "0 4px 18px rgba(0,0,0,0.35)",
-                  pointerEvents: "none",
-                  zIndex: 10,
-                }}
-              >
-                {/* Enlarged copy, shifted so the cursor point sits at the lens centre */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={mainImage.url}
-                  alt=""
-                  style={{
-                    position: "absolute",
-                    width: `${zoomLens.w * ZOOM}px`,
-                    height: `${zoomLens.h * ZOOM}px`,
-                    maxWidth: "none",
-                    objectFit: "cover",
-                    left: `${radius - zoomLens.x * ZOOM}px`,
-                    top: `${radius - zoomLens.y * ZOOM}px`,
-                  }}
-                />
-              </div>
+              <ZoomableImage
+                src={mainImage.url}
+                alt={mainImage.alt}
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+                priority
+                lensSize={lensSize}
+              />
             )}
           </div>
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-[330px_1fr] lg:grid-rows-2 lg:h-[576px]">
             <div className="order-1 relative overflow-hidden aspect-square lg:aspect-auto lg:row-span-2 bg-secondary">
-              {leftImage && <SmartImage src={leftImage.url} alt={leftImage.alt} fill sizes="(max-width: 1024px) 50vw, 330px" className="object-cover" />}
+              {leftImage && (
+                <ZoomableImage
+                  src={leftImage.url}
+                  alt={leftImage.alt}
+                  fill
+                  sizes="(max-width: 1024px) 50vw, 330px"
+                  className="object-cover"
+                  lensSize={lensSize}
+                />
+              )}
             </div>
             <div className="order-3 col-span-2 relative overflow-hidden aspect-[16/9] lg:order-2 lg:col-span-1 lg:aspect-auto bg-secondary">
-              {topRightImage && <SmartImage src={topRightImage.url} alt={topRightImage.alt} fill sizes="(max-width: 1024px) 100vw, 25vw" className="object-cover" />}
+              {topRightImage && (
+                <ZoomableImage
+                  src={topRightImage.url}
+                  alt={topRightImage.alt}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 25vw"
+                  className="object-cover"
+                  lensSize={lensSize}
+                />
+              )}
             </div>
             <div className="order-2 relative overflow-hidden aspect-square lg:order-3 lg:aspect-auto bg-secondary">
-              {bottomRightImage && <SmartImage src={bottomRightImage.url} alt={bottomRightImage.alt} fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover" />}
+              {bottomRightImage && (
+                <ZoomableImage
+                  src={bottomRightImage.url}
+                  alt={bottomRightImage.alt}
+                  fill
+                  sizes="(max-width: 1024px) 50vw, 25vw"
+                  className="object-cover"
+                  lensSize={lensSize}
+                />
+              )}
             </div>
           </div>
 
