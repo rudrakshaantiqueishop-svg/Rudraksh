@@ -284,9 +284,16 @@ export async function initiateCheckout(addressId: string): Promise<InitiateCheck
     };
   } catch (err: unknown) {
     console.error("Razorpay order creation failed:", err);
+    const description =
+      err && typeof err === "object" && "error" in err && typeof (err as { error: unknown }).error === "object"
+        ? (err as { error: { description?: string } }).error?.description
+        : undefined;
+
     return {
       success: false,
-      error: "Failed to initiate payment with Razorpay. Please check API keys and try again.",
+      error: description
+        ? `Razorpay error (${description}). Please check your API keys and try again.`
+        : "Failed to initiate payment with Razorpay. Please check API keys and try again.",
     };
   }
 }

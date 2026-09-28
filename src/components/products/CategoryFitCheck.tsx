@@ -35,7 +35,7 @@ export default function CategoryFitCheck({ pageContent }: { pageContent: Categor
             {pageContent.fitCheckRightLabel}
           </span>
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {pageContent.fitCheckRightItems.map((item) => (
+            {(pageContent.fitCheckRightItems || []).map((item) => (
               <div key={item} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <CheckIcon />
                 <span className="font-lato" style={{ fontSize: "16px", fontWeight: 500, lineHeight: "160%", color: "#44403C" }}>{item}</span>
@@ -53,7 +53,9 @@ export default function CategoryFitCheck({ pageContent }: { pageContent: Categor
             backgroundOrigin: "border-box", backgroundClip: "padding-box, border-box",
           }}>
             <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
-              <Image src={pageContent.fitCheckImage} alt="Category fit check" fill sizes="(max-width: 1023px) 90vw, 320px" style={{ objectFit: "cover" }} />
+              {pageContent.fitCheckImage && (
+                <Image src={pageContent.fitCheckImage} alt="Category fit check" fill sizes="(max-width: 1023px) 90vw, 320px" style={{ objectFit: "cover" }} />
+              )}
             </div>
           </div>
         </div>
@@ -64,7 +66,7 @@ export default function CategoryFitCheck({ pageContent }: { pageContent: Categor
             {pageContent.fitCheckWrongLabel}
           </span>
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {pageContent.fitCheckWrongItems.map((item) => (
+            {(pageContent.fitCheckWrongItems || []).map((item) => (
               <div key={item} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <CrossIcon />
                 <span className="font-lato" style={{ fontSize: "16px", fontWeight: 500, lineHeight: "160%", color: "#44403C" }}>{item}</span>

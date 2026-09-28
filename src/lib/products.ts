@@ -89,11 +89,29 @@ export async function getRelatedProducts(categoryId: string | null, limit = 3) {
 }
 
 export async function getProductsByCategory(categorySlug: string) {
-  return prisma.product.findMany({
-    where: { category: { slug: categorySlug } },
+  // Find the category id first.
+  const cat = await prisma.category.findUnique({ where: { slug: categorySlug }, select: { id: true } });
+  if (!cat) return [];
+
+  // Fetch products where this is their PRIMARY category.
+  const primary = await prisma.product.findMany({
+    where: { categoryId: cat.id },
     orderBy: { createdAt: "asc" },
     include: { images: { orderBy: { sortOrder: "asc" } }, sizes: { orderBy: { sortOrder: "asc" } } },
   });
+
+  // Fetch products that have an extra assignment to this category.
+  const assignments = await prisma.product_category_assignments.findMany({
+    where: { categoryId: cat.id, productId: { notIn: primary.map((p) => p.id) } },
+    include: {
+      products: {
+        include: { images: { orderBy: { sortOrder: "asc" } }, sizes: { orderBy: { sortOrder: "asc" } } },
+      },
+    },
+  });
+  const extra = assignments.map((a) => a.products);
+
+  return [...primary, ...extra];
 }
 
 // ── Subcategories ──────────────────────────────────────────────────────

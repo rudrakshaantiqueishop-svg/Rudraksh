@@ -1,14 +1,14 @@
 import Image from "next/image";
 import type { CategoryPageContent } from "@/lib/product-utils";
 
-export default function CategoryIntro({ pageContent }: { pageContent: CategoryPageContent }) {
+export default function CategoryIntro({ pageContent, fallbackImage }: { pageContent: CategoryPageContent, fallbackImage?: string | null }) {
   return (
     <section className="h-px-section py-14 lg:py-20" style={{ background: "#FEF9F2" }}>
       <div className="flex flex-col-reverse sm:flex-row gap-8 lg:gap-12 items-start sm:items-center">
         <div className="hidden sm:block relative w-[240px] h-[240px] md:w-[280px] md:h-[280px] lg:w-[300px] lg:h-[300px] shrink-0 border border-[#BB5A28] p-1.5 self-center sm:self-auto">
           <div className="relative w-full h-full overflow-hidden">
             <Image
-              src={pageContent.introImage}
+              src={pageContent.introImage || fallbackImage || "/assets/images/about/about-sacred-1.png"}
               alt={pageContent.introHeading}
               fill
               sizes="(max-width: 768px) 240px, (max-width: 1024px) 280px, 300px"

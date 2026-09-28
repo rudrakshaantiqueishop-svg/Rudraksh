@@ -55,6 +55,9 @@ export default function ProductForm({ product, categories, subcategories, collec
 
   const [categoryId, setCategoryId] = useState(product?.categoryId ?? categories[0]?.id ?? "");
   const [subcategoryId, setSubcategoryId] = useState(product?.subcategoryId ?? "");
+  const [extraCategoryIds, setExtraCategoryIds] = useState<string[]>(
+    product?.product_category_assignments?.map((a) => a.categoryId) ?? []
+  );
 
   const categorySubs = subcategories.filter((s) => s.categoryId === categoryId);
 
@@ -168,6 +171,39 @@ export default function ProductForm({ product, categories, subcategories, collec
             <p className="font-lato text-xs text-gray-text">
               The type this product belongs to (e.g. &quot;5 Mukhi Rudraksha&quot;). Changes with the selected category.
             </p>
+          </div>
+        </div>
+        {/* ── Extra Categories ── */}
+        <div className="flex flex-col gap-2">
+          <Label>Also appears in (extra categories)</Label>
+          <p className="font-lato text-xs text-gray-text">
+            Tag this product into additional categories so it appears in their listings too.
+          </p>
+          <input type="hidden" name="extraCategoryIds" value={JSON.stringify(extraCategoryIds)} />
+          <div className="flex flex-wrap gap-3 mt-1">
+            {categories
+              .filter((c) => c.id !== categoryId)
+              .map((c) => (
+                <label key={c.id} className="flex items-center gap-2 cursor-pointer">
+                  <span
+                    className={`w-4 h-4 border flex items-center justify-center shrink-0 ${
+                      extraCategoryIds.includes(c.id) ? "bg-brown border-brown" : "border-[#D6CFC4]"
+                    }`}
+                    onClick={() =>
+                      setExtraCategoryIds((prev) =>
+                        prev.includes(c.id) ? prev.filter((id) => id !== c.id) : [...prev, c.id]
+                      )
+                    }
+                  >
+                    {extraCategoryIds.includes(c.id) && (
+                      <svg viewBox="0 0 12 12" className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <polyline points="1.5,6 4.5,9 10.5,3" />
+                      </svg>
+                    )}
+                  </span>
+                  <span className="font-lato text-sm text-gray-text">{c.name}</span>
+                </label>
+              ))}
           </div>
         </div>
       </section>

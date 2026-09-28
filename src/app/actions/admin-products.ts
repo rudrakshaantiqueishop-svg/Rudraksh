@@ -77,6 +77,7 @@ function parseProductFormData(formData: FormData) {
     stockCount: formData.get("stockCount"),
     isBestseller: formData.get("isBestseller") === "on",
     collectionIds: JSON.parse(String(formData.get("collectionIds") || "[]")),
+    extraCategoryIds: JSON.parse(String(formData.get("extraCategoryIds") || "[]")),
     images: JSON.parse(String(formData.get("images") || "[]")),
     variants,
     addOns,
@@ -107,11 +108,11 @@ export async function createProduct(
     return { errors: result.error.flatten().fieldErrors, message: "Please fix the errors below." };
   }
 
-  const { images, variants, addOns, sizes, collectionIds, ...data } = result.data;
+  const { images, variants, addOns, sizes, collectionIds, extraCategoryIds, ...data } = result.data;
   await reconcileCategory(data);
 
   try {
-    await prisma.product.create({
+    const product = await prisma.product.create({
       data: {
         ...data,
         images: { create: images },
@@ -121,6 +122,17 @@ export async function createProduct(
         collections: { connect: collectionIds.map((id) => ({ id })) },
       },
     });
+    // Extra category assignments
+    if (extraCategoryIds && extraCategoryIds.length > 0) {
+      await prisma.product_category_assignments.createMany({
+        data: extraCategoryIds.map((catId: string) => ({
+          id: `${product.id}-${catId}`,
+          productId: product.id,
+          categoryId: catId,
+        })),
+        skipDuplicates: true,
+      });
+    }
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
       return { message: "A product with this slug already exists." };
@@ -145,7 +157,7 @@ export async function updateProduct(
     return { errors: result.error.flatten().fieldErrors, message: "Please fix the errors below." };
   }
 
-  const { images, variants, addOns, sizes, collectionIds, ...data } = result.data;
+  const { images, variants, addOns, sizes, collectionIds, extraCategoryIds, ...data } = result.data;
   await reconcileCategory(data);
 
   try {
@@ -154,6 +166,7 @@ export async function updateProduct(
       prisma.productVariant.deleteMany({ where: { productId: id } }),
       prisma.productAddOn.deleteMany({ where: { productId: id } }),
       prisma.productSize.deleteMany({ where: { productId: id } }),
+      prisma.product_category_assignments.deleteMany({ where: { productId: id } }),
       prisma.product.update({
         where: { id },
         data: {
@@ -166,6 +179,17 @@ export async function updateProduct(
         },
       }),
     ]);
+    // Re-create extra category assignments
+    if (extraCategoryIds && extraCategoryIds.length > 0) {
+      await prisma.product_category_assignments.createMany({
+        data: extraCategoryIds.map((catId: string) => ({
+          id: `${id}-${catId}`,
+          productId: id,
+          categoryId: catId,
+        })),
+        skipDuplicates: true,
+      });
+    }
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
       return { message: "A product with this slug already exists." };
