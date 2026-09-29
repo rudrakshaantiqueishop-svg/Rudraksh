@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import SmartImage from "@/components/ui/SmartImage";
 import Link from "next/link";
 import { Star, Eye, Heart, ShieldCheck, Lock, Award, Truck, Mail, ChevronDown, Plus, Minus } from "lucide-react";
@@ -112,8 +113,9 @@ function ZoomableImage({
 
 export default function ProductDetailMain({ product }: { product: Product }) {
   const router = useRouter();
+  const { status } = useSession();
   const { formatPrice } = useCurrency();
-  const { addItem } = useCart();
+  const { addItem, closeCart } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
   const wishlisted = isWishlisted(product.id);
   const [selectedVariant, setSelectedVariant] = useState(0);
@@ -184,7 +186,12 @@ export default function ProductDetailMain({ product }: { product: Product }) {
 
   const handleBuyNow = () => {
     handleAddToCart();
-    router.push("/checkout");
+    closeCart();
+    if (status === "authenticated") {
+      router.push("/checkout");
+    } else {
+      router.push(`/login?callbackUrl=${encodeURIComponent("/checkout")}`);
+    }
   };
 
   const accordionSections = [
