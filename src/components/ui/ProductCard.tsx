@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import SmartImage from "@/components/ui/SmartImage";
 import Link from "next/link";
 import { Heart, ShoppingBag } from "lucide-react";
@@ -30,8 +31,9 @@ export default function ProductCard({
   imageClassName?: string;
 }) {
   const router = useRouter();
+  const { status } = useSession();
   const { formatPrice } = useCurrency();
-  const { addItem } = useCart();
+  const { addItem, closeCart } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
   const [quantity, setQuantity] = useState(1);
   const image = getMainImage(product.images);
@@ -52,7 +54,12 @@ export default function ProductCard({
       quantity
     );
     setQuantity(1);
-    router.push("/checkout");
+    closeCart();
+    if (status === "authenticated") {
+      router.push("/checkout");
+    } else {
+      router.push(`/login?callbackUrl=${encodeURIComponent("/checkout")}`);
+    }
   };
 
   return (

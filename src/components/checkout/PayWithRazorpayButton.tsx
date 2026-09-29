@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { initiateCheckout, verifyRazorpayPayment, abandonCheckout } from "@/app/actions/checkout";
 import OrderSuccessModal from "@/components/checkout/OrderSuccessModal";
+import { useCart } from "@/components/CartProvider";
 
 type RazorpayInstance = { open: () => void };
 type RazorpayConstructor = new (options: Record<string, unknown>) => RazorpayInstance;
@@ -57,6 +58,7 @@ export default function PayWithRazorpayButton({
   customerPhone?: string | null;
 }) {
   const router = useRouter();
+  const { clearCart } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [paidOrder, setPaidOrder] = useState<{ orderId: string; totalCents: number } | null>(null);
@@ -134,6 +136,8 @@ export default function PayWithRazorpayButton({
               // Stays true: once paid, the dismiss that follows Razorpay
               // closing itself must never be read as an abandoned checkout.
               setPaidOrder({ orderId: verification.orderId, totalCents: verification.totalCents });
+              // Clear the cart (local state + DB) after successful payment.
+              clearCart();
               // Refresh so the header cart count drops to zero behind the modal.
               router.refresh();
             } else {
@@ -202,7 +206,14 @@ export default function PayWithRazorpayButton({
       )}
 
       {paidOrder && (
-        <OrderSuccessModal orderId={paidOrder.orderId} totalCents={paidOrder.totalCents} />
+        <OrderSuccessModal
+          orderId={paidOrder.orderId}
+          totalCents={paidOrder.totalCents}
+          onClose={() => {
+            setPaidOrder(null);
+            router.push("/cart");
+          }}
+        />
       )}
     </div>
   );

@@ -2,18 +2,22 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { formatPrice } from "@/lib/currency";
 import { orderNumber } from "@/lib/orders";
+
+const AUTO_CLOSE_MS = 5_000;
 
 export default function OrderSuccessModal({
   orderId,
   totalCents,
+  onClose,
 }: {
   orderId: string;
   totalCents: number;
+  onClose?: () => void;
 }) {
-  // The page underneath is the now-empty checkout; stop it scrolling behind the modal.
+  // Lock body scroll while the modal is up.
   useEffect(() => {
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -22,6 +26,13 @@ export default function OrderSuccessModal({
     };
   }, []);
 
+  // Auto-close after 5 seconds — user can still dismiss earlier via the ✕.
+  useEffect(() => {
+    if (!onClose) return;
+    const id = setTimeout(onClose, AUTO_CLOSE_MS);
+    return () => clearTimeout(id);
+  }, [onClose]);
+
   return (
     <div
       role="dialog"
@@ -29,7 +40,19 @@ export default function OrderSuccessModal({
       aria-labelledby="order-success-title"
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4"
     >
-      <div className="w-full max-w-md rounded-lg bg-white p-8 text-center shadow-xl">
+      <div className="relative w-full max-w-md rounded-lg bg-white p-8 text-center shadow-xl">
+        {/* Close (X) button — always visible and clickable */}
+        {onClose && (
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={onClose}
+            className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-gray-100 hover:text-dark"
+          >
+            <X size={20} strokeWidth={2} />
+          </button>
+        )}
+
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
           <Check size={32} strokeWidth={3} className="text-emerald-700" />
         </div>
@@ -75,3 +98,4 @@ export default function OrderSuccessModal({
     </div>
   );
 }
+
