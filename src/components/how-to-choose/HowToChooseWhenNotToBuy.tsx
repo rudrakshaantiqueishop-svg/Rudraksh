@@ -23,7 +23,7 @@ export default function HowToChooseWhenNotToBuy() {
         {/* Left — image */}
         <div className="htcwn-image-wrap">
           <Image
-            src="/assets/images/about/about-p01-3021a5.png"
+            src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156042/rudraksh/products/japa-mala/5-mukhi-rudraksha-japa-mala/role_6.webp"
             alt="Sacred rudraksha and gemstone items"
             fill
             sizes="(max-width: 1023px) 100vw, 46vw"

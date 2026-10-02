@@ -73,8 +73,8 @@ export default function HowToChooseAuthenticityTransparency() {
         <div className="ab-images flex w-full lg:w-auto gap-4 lg:gap-5 items-start mt-8 lg:mt-0">
           <div className="ab-img1 flex-1 lg:flex-none lg:w-[356px] relative overflow-hidden h-[70vw] md:h-[40vw] lg:h-[560px]" style={{ marginTop: 0 }}>
             <Image
-              src="/assets/images/about/about-founding-1.png"
-              alt="Rudraksha mala with flowers"
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790155948/rudraksh/inspect_loose/dsc_3268.jpg"
+              alt="Rudraksha bead inspection"
               fill
               sizes="(max-width: 1024px) 50vw, 356px"
               style={{ objectFit: "cover" }}
@@ -82,8 +82,8 @@ export default function HowToChooseAuthenticityTransparency() {
           </div>
           <div className="ab-img2 flex-1 lg:flex-none lg:w-[356px] relative overflow-hidden h-[70vw] md:h-[40vw] lg:h-[560px]" style={{ marginTop: "12%" }}>
             <Image
-              src="/assets/images/about/about-p04.png"
-              alt="Rudraksha mala on wood"
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156005/rudraksh/products/gemstones/pure-amethyst-japa-mala/role_0.webp"
+              alt="Pure Amethyst Japa Mala"
               fill
               sizes="(max-width: 1024px) 50vw, 356px"
               style={{ objectFit: "cover" }}

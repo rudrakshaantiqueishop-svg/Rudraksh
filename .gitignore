@@ -43,3 +43,12 @@ next-env.d.ts
 .mcp.json
 
 /src/generated/prisma
+temp_check/
+temp_drive_thumbs/
+cleanup_plan.md
+scripts/audit_results.json
+scripts/cloudinary_assets_cache.json
+scripts/inspect_drive_download.js
+public/assets/images/1008 MALA/
+public/assets/images/DSC_3402.jpg
+public/assets/images/DSC_3403.jpg

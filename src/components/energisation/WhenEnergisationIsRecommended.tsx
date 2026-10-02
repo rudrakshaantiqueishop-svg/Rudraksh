@@ -60,7 +60,13 @@ export default function WhenEnergisationIsRecommended() {
         {/* Center – image */}
         <div className="shrink-0 w-[280px] h-[280px] lg:w-[340px] lg:h-[340px] border border-[#BB5A28] p-[10px] lg:p-[14px] relative">
           <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
-            <Image src="/assets/images/products/category-necklace.png" alt="Rudraksha mala" fill sizes="(max-width: 1024px) 280px, 340px" style={{ objectFit: "cover" }} />
+            <Image
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790969864/rudraksh/energisation/when-energisation-recommended.webp"
+              alt="Rudraksha mala"
+              fill
+              sizes="(max-width: 1024px) 280px, 340px"
+              style={{ objectFit: "cover", objectPosition: "center" }}
+            />
           </div>
         </div>
 

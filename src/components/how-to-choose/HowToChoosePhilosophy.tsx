@@ -62,8 +62,8 @@ export default function HowToChoosePhilosophy() {
             overflow: "hidden", zIndex: 1,
           }}>
             <Image
-              src="/assets/images/about/about-p02.png"
-              alt="Rudraksha tradition"
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156008/rudraksh/products/gemstones/vedic-blue-sapphire-astrological-silver-ring/role_1.webp"
+              alt="Vedic Blue Sapphire Astrological Silver Ring"
               fill
               sizes="(max-width: 1023px) 79vw, 415px"
               style={{ objectFit: "cover" }}
@@ -77,8 +77,8 @@ export default function HowToChoosePhilosophy() {
             overflow: "hidden", zIndex: 1,
           }}>
             <Image
-              src="/assets/images/about/about-p04.png"
-              alt="Gemstone selection"
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790155993/rudraksh/products/gemstones/amethyst-gemstone-necklace/role_ls_4.webp"
+              alt="Amethyst Gemstone Necklace"
               fill
               sizes="(max-width: 1023px) 79vw, 415px"
               style={{ objectFit: "cover" }}

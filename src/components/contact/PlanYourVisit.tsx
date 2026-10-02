@@ -27,11 +27,23 @@ export default function PlanYourVisit() {
           }} />
           {/* Top-right image */}
           <div className="pyv-img1" style={{ position: "absolute", left: "125px", top: 0, width: "475px", height: "258px", overflow: "hidden", zIndex: 1 }}>
-            <Image src="/assets/images/common/common.png" alt="Plan your visit" fill sizes="475px" style={{ objectFit: "cover" }} />
+            <Image
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790976029/rudraksh/contact/plan-visit-rishikesh-bridge.webp"
+              alt="Walking across suspension bridge in Rishikesh"
+              fill
+              sizes="475px"
+              style={{ objectFit: "cover" }}
+            />
           </div>
           {/* Bottom-left image */}
           <div className="pyv-img2" style={{ position: "absolute", left: 0, top: "292px", width: "475px", height: "258px", overflow: "hidden", zIndex: 1 }}>
-            <Image src="/assets/images/common/common.png" alt="Store visit" fill sizes="475px" style={{ objectFit: "cover" }} />
+            <Image
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790976030/rudraksh/contact/plan-visit-ganges-meditation.webp"
+              alt="Meditation beside the Ganges in Rishikesh"
+              fill
+              sizes="475px"
+              style={{ objectFit: "cover" }}
+            />
           </div>
         </div>
 

@@ -68,7 +68,7 @@ export default function HowToChooseIsThisRight() {
           }}>
             <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
               <Image
-                src="/assets/images/about/about-sacred-1.png"
+                src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156049/rudraksh/products/japa-mala/7-mukhi-rudraksha-japa-mala/role_ls_0.webp"
                 alt="Praying hands with rudraksha mala"
                 fill
                 sizes="(max-width: 1023px) 90vw, 320px"

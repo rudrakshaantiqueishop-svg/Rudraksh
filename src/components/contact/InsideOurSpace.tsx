@@ -4,12 +4,11 @@ import { useRef } from "react";
 import Image from "next/image";
 
 const images = [
-  "/assets/images/common/common.png",
-  "/assets/images/common/common.png",
-  "/assets/images/common/common.png",
-  "/assets/images/common/common.png",
-  "/assets/images/common/common.png",
-  "/assets/images/common/common.png",
+  "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790977583/rudraksh/store/inside/store-inside-showroom-view.webp",
+  "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790977585/rudraksh/store/inside/store-inside-wooden-showcase.webp",
+  "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790977586/rudraksh/store/inside/store-inside-hanging-malas-rack.webp",
+  "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790977587/rudraksh/store/inside/store-inside-gemstone-shelves.webp",
+  "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790977588/rudraksh/store/inside/store-inside-silver-jewelry-display.webp",
 ];
 
 export default function InsideOurSpace() {
