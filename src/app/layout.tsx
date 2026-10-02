@@ -71,7 +71,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${lato.variable} ${prata.variable}`}>
+    <html
+      lang="en"
+      className={`${lato.variable} ${prata.variable}`}
+      suppressHydrationWarning
+    >
       <body suppressHydrationWarning>
         <SessionProviderWrapper>
           <CurrencyProvider>

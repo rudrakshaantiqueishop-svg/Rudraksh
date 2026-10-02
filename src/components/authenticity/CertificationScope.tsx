@@ -69,7 +69,7 @@ export default function CertificationScope() {
             backgroundOrigin: "border-box", backgroundClip: "padding-box, border-box",
           }}>
             <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
-              <Image src="/assets/images/common/common.png" alt="Certified Rudraksha" fill sizes="(max-width: 1023px) 90vw, 320px" style={{ objectFit: "cover" }} />
+              <Image src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790892446/rudraksh/authenticity/what-certification-does-and-does-not.webp" alt="Certified authentic sacred bead" fill sizes="(max-width: 1023px) 90vw, 320px" style={{ objectFit: "cover" }} />
             </div>
           </div>
         </div>

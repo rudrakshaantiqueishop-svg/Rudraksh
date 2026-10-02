@@ -62,14 +62,14 @@ export default function IdentifyCertification() {
             </div>
           </div>
           <div className="ic-img" style={{ flex: 1, width: "100%", maxWidth: "420px", aspectRatio: "420 / 320", position: "relative", overflow: "hidden" }}>
-            <Image src="/assets/images/common/common.png" alt="Trustworthy certification" fill sizes="(max-width: 767px) 100vw, 420px" style={{ objectFit: "cover" }} />
+            <Image src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790893029/rudraksh/authenticity/identify-certification-1.webp" alt="Trustworthy certification" fill sizes="(max-width: 767px) 100vw, 420px" style={{ objectFit: "cover" }} />
           </div>
         </div>
 
         {/* Row 2 — image LEFT, text RIGHT */}
         <div className="ic-row" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "clamp(32px, 6vw, 100px)" }}>
           <div className="ic-img ic-img-left" style={{ flex: 1, width: "100%", maxWidth: "420px", aspectRatio: "420 / 320", position: "relative", overflow: "hidden" }}>
-            <Image src="/assets/images/common/common.png" alt="Caution certificates" fill sizes="(max-width: 767px) 100vw, 420px" style={{ objectFit: "cover" }} />
+            <Image src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790893031/rudraksh/authenticity/identify-certification-2.webp" alt="Caution certificates" fill sizes="(max-width: 767px) 100vw, 420px" style={{ objectFit: "cover" }} />
           </div>
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "20px" }}>
             <span className="font-lato" style={{ fontSize: "16px", fontWeight: 500, lineHeight: "140%", color: "#44403C" }}>

@@ -34,30 +34,30 @@ export default function WhyChooseUs() {
             zIndex: 0,
           }} />
 
-          {/* Image 1 — top-left (bracelets) */}
+          {/* Image 1 — top-left */}
           <div style={{
             position: "absolute", left: 0, top: 0,
             width: "60%", height: "60%",
             overflow: "hidden", zIndex: 1,
           }}>
             <Image
-              src="/assets/images/about/about-sacred-2.png"
-              alt="Gemstone bracelets"
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156047/rudraksh/products/japa-mala/7-chakra-rudraksha-gemstone-mala/role_ls_5.webp"
+              alt="7 Chakra Rudraksha Gemstone Mala"
               fill
               sizes="(max-width: 1024px) 50vw, 310px"
               style={{ objectFit: "cover" }}
             />
           </div>
 
-          {/* Image 2 — bottom-right (hand with bracelet) */}
+          {/* Image 2 — bottom-right */}
           <div style={{
             position: "absolute", right: 0, bottom: 0,
             width: "60%", height: "60%",
             overflow: "hidden", zIndex: 2,
           }}>
             <Image
-              src="/assets/images/about/who-we-are.png"
-              alt="Rudraksha bracelet"
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790155982/rudraksh/products/bracelets/multi-wrap-rudraksha-tassel-wrist-mala/role_ls_0.webp"
+              alt="Multi Wrap Rudraksha Tassel Wrist Mala"
               fill
               sizes="(max-width: 1024px) 60vw, 328px"
               style={{ objectFit: "cover" }}

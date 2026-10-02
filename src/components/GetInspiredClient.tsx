@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useRef, memo } from "react";
 import { Volume2, VolumeX, Play, Pause } from "lucide-react";
 import type { InspiredItemData } from "@/lib/inspired";
@@ -160,45 +161,106 @@ const ProductCard = memo(function ProductCard({
         )}
 
         {/* Top-Left Inset Box: Product Image for the Review */}
-        <div
-          style={{
-            position: "absolute",
-            top: "10px",
-            left: "10px",
-            width: "76px",
-            height: "76px",
-            overflow: "hidden",
-            border: "2px solid rgba(255,255,255,0.9)",
-            borderRadius: "0px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.35)",
-            zIndex: 20,
-          }}
-        >
-          <Image
-            src={p.productImageUrl || p.imageUrl}
-            alt="Product Review"
-            fill
-            sizes="76px"
-            style={{ objectFit: "cover" }}
-            unoptimized={(p.productImageUrl || p.imageUrl).startsWith("http")}
-          />
-        </div>
+        {p.productSlug ? (
+          <Link
+            href={`/products/${p.productSlug}`}
+            onClick={(e) => e.stopPropagation()}
+            className="group/thumb block hover:opacity-90 transition-opacity"
+            title="View product"
+            style={{
+              position: "absolute",
+              top: "10px",
+              left: "10px",
+              width: "76px",
+              height: "76px",
+              overflow: "hidden",
+              border: "2px solid rgba(255,255,255,0.9)",
+              borderRadius: "0px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.35)",
+              zIndex: 25,
+            }}
+          >
+            <Image
+              src={p.productImageUrl || p.imageUrl}
+              alt={p.title}
+              fill
+              sizes="76px"
+              style={{ objectFit: "cover" }}
+              unoptimized={(p.productImageUrl || p.imageUrl).startsWith("http")}
+              className="group-hover/thumb:scale-105 transition-transform duration-300"
+            />
+          </Link>
+        ) : (
+          <div
+            style={{
+              position: "absolute",
+              top: "10px",
+              left: "10px",
+              width: "76px",
+              height: "76px",
+              overflow: "hidden",
+              border: "2px solid rgba(255,255,255,0.9)",
+              borderRadius: "0px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.35)",
+              zIndex: 20,
+            }}
+          >
+            <Image
+              src={p.productImageUrl || p.imageUrl}
+              alt="Product Review"
+              fill
+              sizes="76px"
+              style={{ objectFit: "cover" }}
+              unoptimized={(p.productImageUrl || p.imageUrl).startsWith("http")}
+            />
+          </div>
+        )}
       </div>
 
       {/* Info */}
-      <p className="font-prata" style={{ fontSize: "16px", lineHeight: "140%", color: "#0B0404", margin: "0 0 6px 0" }}>
-        {p.title}
-      </p>
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        {p.price && (
-          <span className="font-lato" style={{ fontSize: "15px", fontWeight: 500, color: "#0B0404" }}>
-            {p.price}
-          </span>
-        )}
-        {p.originalPrice && (
-          <span className="font-lato" style={{ fontSize: "13px", color: "#A8A29E", textDecoration: "line-through" }}>
-            {p.originalPrice}
-          </span>
+      {p.productSlug ? (
+        <Link
+          href={`/products/${p.productSlug}`}
+          onClick={(e) => e.stopPropagation()}
+          className="block group/title"
+        >
+          <p
+            className="font-prata group-hover/title:text-[#BB5A28] transition-colors"
+            style={{ fontSize: "16px", lineHeight: "140%", color: "#0B0404", margin: "0 0 6px 0" }}
+          >
+            {p.title}
+          </p>
+        </Link>
+      ) : (
+        <p className="font-prata" style={{ fontSize: "16px", lineHeight: "140%", color: "#0B0404", margin: "0 0 6px 0" }}>
+          {p.title}
+        </p>
+      )}
+
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          {p.price && (
+            <span className="font-lato" style={{ fontSize: "15px", fontWeight: 500, color: "#0B0404" }}>
+              {p.price}
+            </span>
+          )}
+          {p.originalPrice && (
+            <span className="font-lato" style={{ fontSize: "13px", color: "#A8A29E", textDecoration: "line-through" }}>
+              {p.originalPrice}
+            </span>
+          )}
+        </div>
+        {p.productSlug && (
+          <Link
+            href={`/products/${p.productSlug}`}
+            onClick={(e) => e.stopPropagation()}
+            className="font-lato text-xs font-semibold text-[#BB5A28] hover:underline flex items-center gap-1"
+          >
+            <span>View</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
         )}
       </div>
     </div>

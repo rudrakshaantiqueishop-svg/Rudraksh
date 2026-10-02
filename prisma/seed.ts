@@ -194,6 +194,7 @@ async function main() {
         name: c.name,
         slug: c.slug,
         image: c.image,
+        bannerImage: c.bannerImage,
         sortOrder: c.sortOrder,
         displayType: c.displayType ?? "SUBCATEGORY_LANDING",
         pageContent: c.pageContent as unknown as Prisma.InputJsonValue,

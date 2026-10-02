@@ -39,13 +39,26 @@ export default function GoogleOneTap() {
       src="https://accounts.google.com/gsi/client"
       strategy="afterInteractive"
       onLoad={() => {
-        window.google?.accounts.id.initialize({
-          client_id: GOOGLE_CLIENT_ID,
-          callback: handleCredentialResponse,
-          auto_select: false,
-          cancel_on_tap_outside: true,
-        });
-        window.google?.accounts.id.prompt();
+        try {
+          window.google?.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleCredentialResponse,
+            auto_select: false,
+            cancel_on_tap_outside: true,
+            use_fedcm_for_prompt: true,
+          });
+          window.google?.accounts.id.prompt((notification) => {
+            if (notification.isNotDisplayed()) {
+              // Not displayed (e.g. FedCM disabled, user opted out, origin not authorized)
+            } else if (notification.isSkippedMoment()) {
+              // Skipped (e.g. user dismissed or clicked away)
+            } else if (notification.isDismissedMoment()) {
+              // Dismissed by user
+            }
+          });
+        } catch {
+          // Ignore GSI initialization failures in environments where GSI/FedCM is restricted
+        }
       }}
     />
   );

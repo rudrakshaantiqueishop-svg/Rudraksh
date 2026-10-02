@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 
-const SRC = "/assets/images/products/category-bracelets.png";
+const SRC = "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156084/rudraksh/products/siddha-mala/siddha-mala-hero.webp";
 const ZOOM = 1.6; // magnification inside the lens
 const DEFAULT_LENS = 240; // default lens diameter in px
 const MOBILE_LENS = 120; // mobile lens diameter in px
@@ -80,11 +80,12 @@ export default function ProductZoomShowcase() {
           {/* Base image — stays at normal size */}
           <Image
             src={SRC}
-            alt="Handcrafted Rudraksha and gemstone bracelets"
+            alt="Siddha Mala Showcase"
             fill
             sizes="(max-width: 1024px) 100vw, 1300px"
             style={{ objectFit: "cover" }}
-            priority={false}
+            unoptimized
+            priority
           />
 
           {/* Magnifier lens — a small circle that follows the cursor */}

@@ -25,10 +25,10 @@ export default function WhatAuthenticityMeans() {
             zIndex: 0,
           }} />
           <div className="wam-img1" style={{ position: "absolute", left: "20.83%", top: 0, width: "79.16%", height: "46.9%", overflow: "hidden", zIndex: 1 }}>
-            <Image src="/assets/images/common/common.png" alt="Rudraksha beads" fill sizes="(max-width: 1023px) 90vw, 475px" style={{ objectFit: "cover" }} />
+            <Image src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790890892/rudraksh/authenticity/what-authenticity-means-1.webp" alt="Authentic Rudraksha verification" fill sizes="(max-width: 1023px) 90vw, 475px" style={{ objectFit: "cover" }} />
           </div>
           <div className="wam-img2" style={{ position: "absolute", left: 0, top: "53.09%", width: "79.16%", height: "46.9%", overflow: "hidden", zIndex: 1 }}>
-            <Image src="/assets/images/common/common.png" alt="Gemstone mala" fill sizes="(max-width: 1023px) 90vw, 475px" style={{ objectFit: "cover" }} />
+            <Image src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790890893/rudraksh/authenticity/what-authenticity-means-2.webp" alt="Authentic sacred mala verification" fill sizes="(max-width: 1023px) 90vw, 475px" style={{ objectFit: "cover" }} />
           </div>
         </div>
 

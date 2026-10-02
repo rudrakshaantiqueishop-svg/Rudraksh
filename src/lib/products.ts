@@ -118,15 +118,34 @@ export async function getProductsByCategory(categorySlug: string) {
 
 // Category + its subcategories (for the category landing page grid).
 export async function getCategoryWithSubcategories(slug: string) {
-  return prisma.category.findUnique({
+  const cat = await prisma.category.findUnique({
     where: { slug },
     include: {
       subcategories: {
         orderBy: { sortOrder: "asc" },
-        include: { _count: { select: { products: true } } },
+        include: {
+          _count: {
+            select: {
+              products: true,
+              product_category_assignments: true,
+            },
+          },
+        },
       },
     },
   });
+
+  if (!cat) return null;
+
+  return {
+    ...cat,
+    subcategories: cat.subcategories.map((sub) => ({
+      ...sub,
+      _count: {
+        products: sub._count.products + sub._count.product_category_assignments,
+      },
+    })),
+  };
 }
 
 // Flat list of every subcategory with its parent category id — used by the
@@ -159,8 +178,22 @@ export async function getSubcategoryBySlug(categorySlug: string, subSlug: string
 // All products in a subcategory, with the data the listing + facet helpers
 // need (images, sizes, collections). Filtering/faceting happens in memory.
 export async function getProductsBySubcategory(categorySlug: string, subSlug: string) {
-  return prisma.product.findMany({
-    where: { category: { slug: categorySlug }, subcategory: { slug: subSlug } },
+  const subcategory = await getSubcategoryBySlug(categorySlug, subSlug);
+  if (!subcategory) {
+    return prisma.product.findMany({
+      where: { category: { slug: categorySlug }, subcategory: { slug: subSlug } },
+      orderBy: { createdAt: "asc" },
+      include: {
+        images: { orderBy: { sortOrder: "asc" } },
+        sizes: { orderBy: { sortOrder: "asc" } },
+        collections: { select: { slug: true, name: true } },
+      },
+    });
+  }
+
+  // Primary products belonging directly to this category and subcategory
+  const primary = await prisma.product.findMany({
+    where: { categoryId: subcategory.categoryId, subcategoryId: subcategory.id },
     orderBy: { createdAt: "asc" },
     include: {
       images: { orderBy: { sortOrder: "asc" } },
@@ -168,6 +201,29 @@ export async function getProductsBySubcategory(categorySlug: string, subSlug: st
       collections: { select: { slug: true, name: true } },
     },
   });
+
+  // Also include products assigned via product_category_assignments
+  const assignments = await prisma.product_category_assignments.findMany({
+    where: {
+      OR: [
+        { subcategoryId: subcategory.id },
+        { categoryId: subcategory.categoryId, subcategories: { slug: subSlug } },
+      ],
+      productId: { notIn: primary.map((p) => p.id) },
+    },
+    include: {
+      products: {
+        include: {
+          images: { orderBy: { sortOrder: "asc" } },
+          sizes: { orderBy: { sortOrder: "asc" } },
+          collections: { select: { slug: true, name: true } },
+        },
+      },
+    },
+  });
+
+  const extra = assignments.map((a) => a.products);
+  return [...primary, ...extra];
 }
 
 export async function getCategoriesWithProductCounts() {

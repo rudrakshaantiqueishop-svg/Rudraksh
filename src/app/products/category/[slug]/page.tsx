@@ -60,7 +60,7 @@ export default async function CategoryPage({
 
   return (
     <div style={{ background: "#FEF9F2", overflowX: "hidden" }}>
-      <ProductsHero pageContent={pageContent} />
+      <ProductsHero pageContent={pageContent} bannerImage={category.bannerImage} />
       <CategoryIntro pageContent={pageContent} fallbackImage={category.image} />
       {isDirectListing ? (
         <SubcategoryProductListing

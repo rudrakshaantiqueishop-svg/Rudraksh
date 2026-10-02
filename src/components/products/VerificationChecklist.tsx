@@ -1,7 +1,19 @@
 import Image from "next/image";
 import type { CategoryPageContent } from "@/lib/product-utils";
 
+const DEFAULT_CHECKLIST_TOP = "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790884867/rudraksh/verification/rudraksha-branch-authenticity.webp";
+const DEFAULT_CHECKLIST_BOT = "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790884868/rudraksh/verification/rudraksha-palm-authenticity.webp";
+
+function resolveChecklistImage(src: string | undefined, defaultSrc: string): string {
+  if (!src || src === "/assets/images/about/about-sacred-1.png") return defaultSrc;
+  if (src === "/assets/images/about/about-sacred-2.png") return defaultSrc;
+  return src;
+}
+
 export default function VerificationChecklist({ pageContent }: { pageContent: CategoryPageContent }) {
+  const topImage = resolveChecklistImage(pageContent.checklistImages?.[0], DEFAULT_CHECKLIST_TOP);
+  const botImage = resolveChecklistImage(pageContent.checklistImages?.[1], DEFAULT_CHECKLIST_BOT);
+
   return (
     <section className="fi-section" style={{ background: "#FEF9F2" }}>
       <div className="fi-row">
@@ -46,13 +58,13 @@ export default function VerificationChecklist({ pageContent }: { pageContent: Ca
             zIndex: 0,
           }} />
           <div className="fi-img-top" style={{ position: "absolute", left: "20.83%", top: 0, width: "79.16%", height: "46.9%", overflow: "hidden", zIndex: 1 }}>
-            {pageContent.checklistImages?.[0] && (
-              <Image src={pageContent.checklistImages[0]} alt="Verification process" fill sizes="(max-width: 767px) 100vw, 475px" style={{ objectFit: "cover" }} />
+            {topImage && (
+              <Image src={topImage} alt="Authentic Rudraksha branch" fill sizes="(max-width: 767px) 100vw, 475px" style={{ objectFit: "cover" }} />
             )}
           </div>
           <div className="fi-img-bot" style={{ position: "absolute", left: 0, top: "53.09%", width: "79.16%", height: "46.9%", overflow: "hidden", zIndex: 1 }}>
-            {pageContent.checklistImages?.[1] && (
-              <Image src={pageContent.checklistImages[1]} alt="Verification process" fill sizes="(max-width: 767px) 100vw, 475px" style={{ objectFit: "cover" }} />
+            {botImage && (
+              <Image src={botImage} alt="Genuine Rudraksha beads" fill sizes="(max-width: 767px) 100vw, 475px" style={{ objectFit: "cover" }} />
             )}
           </div>
         </div>

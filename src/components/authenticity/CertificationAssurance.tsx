@@ -39,10 +39,10 @@ export default function CertificationAssurance() {
         {/* Right — two overlapping images */}
         <div className="ca-images" style={{ flexShrink: 0, width: "100%", maxWidth: "530px", aspectRatio: "530 / 560", position: "relative" }}>
           <div style={{ position: "absolute", right: 0, top: 0, width: "64.15%", height: "53.57%", overflow: "hidden", zIndex: 1 }}>
-            <Image src="/assets/images/common/common.png" alt="Certification" fill sizes="(max-width: 1023px) 60vw, 340px" style={{ objectFit: "cover" }} />
+            <Image src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790892144/rudraksh/authenticity/certification-assurance-1.webp" alt="Certification document verification" fill sizes="(max-width: 1023px) 60vw, 340px" style={{ objectFit: "cover" }} />
           </div>
           <div style={{ position: "absolute", left: 0, bottom: 0, width: "64.15%", height: "53.57%", overflow: "hidden", zIndex: 2 }}>
-            <Image src="/assets/images/common/common.png" alt="Certified piece" fill sizes="(max-width: 1023px) 60vw, 340px" style={{ objectFit: "cover" }} />
+            <Image src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790892146/rudraksh/authenticity/certification-assurance-2.webp" alt="Certified authentic item" fill sizes="(max-width: 1023px) 60vw, 340px" style={{ objectFit: "cover" }} />
           </div>
         </div>
 

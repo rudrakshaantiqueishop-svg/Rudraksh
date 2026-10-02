@@ -27,6 +27,7 @@ export type CategorySeed = {
   name: string;
   slug: string;
   image: string;
+  bannerImage?: string;
   sortOrder: number;
   pageContent: CategoryPageContent;
   subcategories: SubcategorySeed[];
@@ -38,6 +39,7 @@ export type CategorySeed = {
 export type CategoryPageContent = {
   heroTitle: string;
   heroSubtitle: string;
+  heroBanner?: string;
   introHeading: string;
   introDescription: string;
   introImage: string;
@@ -66,6 +68,8 @@ const IMG = {
   necklace: "/assets/images/products/category-necklace.png",
   sacred1: "/assets/images/about/about-sacred-1.png",
   sacred2: "/assets/images/about/about-sacred-2.png",
+  verificationBranch: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790884867/rudraksh/verification/rudraksha-branch-authenticity.webp",
+  verificationPalm: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790884868/rudraksh/verification/rudraksha-palm-authenticity.webp",
   founding1: "/assets/images/about/about-founding-1.png",
   founding2: "/assets/images/about/about-founding-2.png",
   gem: "/assets/images/about/about-p01-3021a5.png",
@@ -88,6 +92,8 @@ function buildPageContent(opts: {
   name: string;
   heroTitle: string;
   heroSubtitle: string;
+  heroBanner?: string;
+  checklistImages?: [string, string];
   introHeading: string;
   introDescription: string;
   image: string;
@@ -97,6 +103,7 @@ function buildPageContent(opts: {
   return {
     heroTitle: opts.heroTitle,
     heroSubtitle: opts.heroSubtitle,
+    heroBanner: opts.heroBanner,
     introHeading: opts.introHeading,
     introDescription: opts.introDescription,
     introImage: opts.image,
@@ -108,7 +115,7 @@ function buildPageContent(opts: {
       "Provided with certification where applicable",
       "Final-checked and cleansed before dispatch",
     ],
-    checklistImages: [IMG.sacred1, IMG.sacred2],
+    checklistImages: opts.checklistImages ?? [IMG.verificationBranch, IMG.verificationPalm],
     fitCheckRightLabel: `${opts.name} May Be Right for You If:`,
     fitCheckRightItems: [
       "You value authenticity over appearance",
@@ -215,7 +222,7 @@ export const CATALOG: CategorySeed[] = [
   {
     name: "Antique Collection",
     slug: "antique-collection",
-    image: IMG.founding2,
+    image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790155950/rudraksh/products/antique-collection/1008-beads-nepali-rudraksha-maha-kanthi-mala/role_0.webp",
     sortOrder: 1,
     pageContent: buildPageContent({
       name: "Antique Collection",
@@ -291,12 +298,18 @@ export const CATALOG: CategorySeed[] = [
     name: "Japa Mala",
     slug: "japa-mala",
     image: IMG.necklace,
+    bannerImage: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790157050/rudraksh/real-product-images/new_products_co2/dsc_5214.jpg",
     sortOrder: 4,
     pageContent: buildPageContent({
       name: "Japa Mala",
       heroTitle: "Japa Mala for Daily Practice",
       heroSubtitle:
         "108-bead malas in Rudraksha, tulsi, sandalwood, lotus seed, crystal, and gemstone—crafted for comfortable, consistent japa.",
+      heroBanner: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790157050/rudraksh/real-product-images/new_products_co2/dsc_5214.jpg",
+      checklistImages: [
+        "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156049/rudraksh/products/japa-mala/7-mukhi-rudraksha-japa-mala/role_ls_0.webp",
+        "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156048/rudraksh/products/japa-mala/7-mukhi-rudraksha-japa-mala/role_3.webp",
+      ],
       introHeading: "Japa Mala Collection",
       introDescription:
         "A japa mala supports mantra repetition and meditation. Choose the material that suits your practice—each mala is knotted for durability and counted for accuracy.",
@@ -320,12 +333,18 @@ export const CATALOG: CategorySeed[] = [
     name: "Bracelets",
     slug: "bracelets",
     image: IMG.bracelet,
+    bannerImage: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790157047/rudraksh/real-product-images/new_products_co2/dsc_5200.jpg",
     sortOrder: 5,
     pageContent: buildPageContent({
       name: "Bracelets",
       heroTitle: "Sacred Bracelets, Worn with Intention",
       heroSubtitle:
         "Rudraksha and gemstone bracelets—checked for quality and energised on request, so they feel personal, not generic.",
+      heroBanner: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790157047/rudraksh/real-product-images/new_products_co2/dsc_5200.jpg",
+      checklistImages: [
+        "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790888485/rudraksh/verification/bracelets-authenticity-gemstone.webp",
+        "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790888486/rudraksh/verification/bracelets-authenticity-rudraksha.webp",
+      ],
       introHeading: "Rudraksha & Gemstone Bracelets",
       introDescription:
         "Bracelets keep Rudraksha and gemstone energy close through the day. Choose single-mukhi, combination, and designer Rudraksha bracelets, or crystal, chakra, zodiac, and healing gemstone bracelets.",
@@ -345,12 +364,18 @@ export const CATALOG: CategorySeed[] = [
     name: "Idols & Singing Bowls",
     slug: "idols-singing-bowls",
     image: IMG.god,
+    bannerImage: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790889287/rudraksh/products/idols-singing-bowls/idols-singing-bowls-hero-banner.webp",
     sortOrder: 6,
     pageContent: buildPageContent({
       name: "Idols & Singing Bowls",
       heroTitle: "Divine Idols & Tibetan Singing Bowls",
       heroSubtitle:
         "Hand-finished deity idols and resonant Tibetan singing bowls for your altar, meditation, and sound practice.",
+      heroBanner: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790889287/rudraksh/products/idols-singing-bowls/idols-singing-bowls-hero-banner.webp",
+      checklistImages: [
+        "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156020/rudraksh/products/idols-singing-bowls/handcrafted-golden-tibetan-singing-bowl/role_ls_1.webp",
+        "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790889622/rudraksh/verification/idols-singing-bowls-authenticity-idol.webp",
+      ],
       introHeading: "Divine Idols & Singing Bowls",
       introDescription:
         "Bring presence to your space with deity idols—Ganesha, Shiva, Lakshmi, and more—and Tibetan singing bowls, handmade or machine made, sold individually or as sets.",
@@ -364,12 +389,18 @@ export const CATALOG: CategorySeed[] = [
     name: "Gemstones",
     slug: "gemstones",
     image: IMG.gem,
+    bannerImage: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790155995/rudraksh/products/gemstones/gemstones-hero.webp",
     sortOrder: 7,
     pageContent: buildPageContent({
       name: "Gemstones",
       heroTitle: "Certified Gemstones, Chosen with Care",
       heroSubtitle:
         "Loose Navaratna gemstones and gemstone jewelry—lab-certified and selected for authenticity and astrological suitability.",
+      heroBanner: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790155995/rudraksh/products/gemstones/gemstones-hero.webp",
+      checklistImages: [
+        "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790155992/rudraksh/products/gemstones/amethyst-gemstone-necklace/role_3.webp",
+        "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156047/rudraksh/products/japa-mala/7-chakra-rudraksha-gemstone-mala/role_ls_4.webp",
+      ],
       introHeading: "Loose Gemstones & Jewelry",
       introDescription:
         "Explore the nine Navaratna gemstones as loose stones, or set into rings, pendants, bracelets, chains, necklaces, and earrings. Each stone is graded and certified.",
@@ -377,12 +408,21 @@ export const CATALOG: CategorySeed[] = [
       altImage: IMG.necklace,
     }),
     subcategories: [
-      ...GEMSTONE_LOOSE,
-      ...subs(
-        ["Rings", "Pendants", "Bracelets", "Chains", "Necklaces", "Earrings"],
-        "Gemstone Jewelry",
-        3
-      ).map((s) => ({ ...s, slug: `gemstone-${s.slug}` })),
+      {
+        name: "Gemstone Necklaces & Malas",
+        slug: "gemstone-necklaces",
+        image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790155999/rudraksh/products/gemstones/multi-tourmaline-mala/role_0.webp",
+      },
+      {
+        name: "Gemstone Bracelets",
+        slug: "gemstone-bracelets",
+        image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156000/rudraksh/products/gemstones/navratan-gemstone-bracelet/role_0.webp",
+      },
+      {
+        name: "Gemstone Rings",
+        slug: "gemstone-rings",
+        image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790155997/rudraksh/products/gemstones/vedic-blue-sapphire-astrological-silver-ring/role_0.webp",
+      },
     ],
   },
   {
@@ -395,6 +435,10 @@ export const CATALOG: CategorySeed[] = [
       heroTitle: "Sphatik (Crystal Quartz) Collection",
       heroSubtitle:
         "Natural crystal quartz malas, bracelets, shivlings, yantras, and idols—prized for clarity and cooling energy.",
+      checklistImages: [
+        "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790889785/rudraksh/verification/sphatik-collection-authenticity-1.webp",
+        "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790889785/rudraksh/verification/sphatik-collection-authenticity-2.webp",
+      ],
       introHeading: "Sphatik Collection",
       introDescription:
         "Sphatik (clear quartz) is valued for purity and calm. Explore sphatik malas, bracelets, shivlings, shree yantras, tortoises, pyramids, and idols.",
@@ -437,12 +481,18 @@ export const CATALOG: CategorySeed[] = [
     name: "Shankh Collection",
     slug: "shankh-collection",
     image: IMG.p04,
+    bannerImage: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790890319/rudraksh/verification/shankh-collection-authenticity-1.webp",
     sortOrder: 10,
     pageContent: buildPageContent({
       name: "Shankh Collection",
       heroTitle: "Sacred Shankh (Conch) Collection",
       heroSubtitle:
         "Dakshinavarti, Vamavarti, Gomukhi, Lakshmi, and other conches—selected for authenticity and used in puja and prosperity rituals.",
+      heroBanner: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790890319/rudraksh/verification/shankh-collection-authenticity-1.webp",
+      checklistImages: [
+        "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790890319/rudraksh/verification/shankh-collection-authenticity-1.webp",
+        "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790890320/rudraksh/verification/shankh-collection-authenticity-2.webp",
+      ],
       introHeading: "Shankh Collection",
       introDescription:
         "The shankh is central to Hindu ritual and is believed to invite auspicious energy. Explore Dakshinavarti, Vamavarti, Gomukhi, Lakshmi, Ganesh, Moti, and puja shankhs.",

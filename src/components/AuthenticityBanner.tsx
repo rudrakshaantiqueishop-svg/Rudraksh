@@ -70,8 +70,8 @@ export default function AuthenticityBanner() {
           {/* Image 1 — starts from top */}
           <div className="ab-img1 flex-1 lg:flex-none lg:w-[356px] relative overflow-hidden h-[70vw] md:h-[40vw] lg:h-[560px]" style={{ marginTop: 0 }}>
             <Image
-              src="/assets/images/about/about-sacred-1.png"
-              alt="Rudraksha malas"
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156056/rudraksh/products/japa-mala/rudraksha-karungali-dual-protection-mala/role_ls_2.webp"
+              alt="Rudraksha Karungali Dual Protection Mala"
               fill
               sizes="(max-width: 1024px) 50vw, 356px"
               style={{ objectFit: "cover" }}
@@ -81,8 +81,8 @@ export default function AuthenticityBanner() {
           {/* Image 2 — offset down */}
           <div className="ab-img2 flex-1 lg:flex-none lg:w-[356px] relative overflow-hidden h-[70vw] md:h-[40vw] lg:h-[560px]" style={{ marginTop: "12%" }}>
             <Image
-              src="/assets/images/about/about-founding-2.png"
-              alt="Sacred offering"
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156043/rudraksh/products/japa-mala/5-mukhi-rudraksha-japa-mala/role_ls_0.webp"
+              alt="5 Mukhi Rudraksha Japa Mala"
               fill
               sizes="(max-width: 1024px) 50vw, 356px"
               style={{ objectFit: "cover" }}
