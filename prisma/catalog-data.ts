@@ -222,7 +222,7 @@ export const CATALOG: CategorySeed[] = [
   {
     name: "Antique Collection",
     slug: "antique-collection",
-    image: IMG.founding2,
+    image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790155950/rudraksh/products/antique-collection/1008-beads-nepali-rudraksha-maha-kanthi-mala/role_0.webp",
     sortOrder: 1,
     pageContent: buildPageContent({
       name: "Antique Collection",
