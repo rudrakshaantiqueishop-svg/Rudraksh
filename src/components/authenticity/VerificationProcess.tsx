@@ -5,6 +5,7 @@ const steps = [
     number: 1,
     title: "Physical Examination",
     imageLeft: true,
+    image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790891628/rudraksh/authenticity/verification-step-1-physical-examination.webp",
     lines: [
       { type: "text", content: "Each piece is first examined by hand." },
       { type: "text", content: "We assess:" },
@@ -18,6 +19,7 @@ const steps = [
     number: 2,
     title: "Scientific Testing",
     imageLeft: false,
+    image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790891629/rudraksh/authenticity/verification-step-2-scientific-testing.webp",
     lines: [
       { type: "text", content: "We use established testing methods to examine internal structure and material integrity." },
       { type: "text", content: "This may include:" },
@@ -31,6 +33,7 @@ const steps = [
     number: 3,
     title: "Mukhi & Structure Confirmation",
     imageLeft: true,
+    image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790891632/rudraksh/authenticity/verification-step-3-structure-confirmation.webp",
     lines: [
       { type: "text", content: "The mukhi count and structural features are confirmed using:" },
       { type: "bullet", content: "Manual examination" },
@@ -42,6 +45,7 @@ const steps = [
     number: 4,
     title: "Certification",
     imageLeft: false,
+    image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790891633/rudraksh/authenticity/verification-step-4-certification.webp",
     lines: [
       { type: "text", content: "Once verification is complete, certification is prepared." },
       { type: "text", content: "Depending on the item, this may be:" },
@@ -54,6 +58,7 @@ const steps = [
     number: 5,
     title: "Final Review",
     imageLeft: true,
+    image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790891641/rudraksh/authenticity/verification-step-5-final-review.webp",
     lines: [
       { type: "text", content: "Before dispatch, each piece is reviewed once more. Only items that pass all verification steps move forward. Anything uncertain is set aside—never sold." },
     ],
@@ -88,7 +93,7 @@ export default function VerificationProcess() {
           const isLast = i === steps.length - 1;
           const imageBlock = (
             <div className={`vp-img${!step.imageLeft ? " vp-img-even" : ""}`} style={{ flexShrink: 0, width: "226px", height: "226px", position: "relative", overflow: "hidden" }}>
-              <Image src="/assets/images/common/common.png" alt={`Step ${step.number}`} fill sizes="(max-width: 767px) 100vw, 226px" style={{ objectFit: "cover" }} />
+              <Image src={step.image} alt={`Step ${step.number} — ${step.title}`} fill sizes="(max-width: 767px) 100vw, 226px" style={{ objectFit: "cover" }} />
             </div>
           );
 

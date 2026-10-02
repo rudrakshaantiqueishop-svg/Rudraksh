@@ -11,7 +11,7 @@ export default async function ShopByCategory() {
       id: "consultancy",
       name: "Consultancy",
       slug: "/consultation", // This will be handled specially in CategoryGrid to use absolute URL
-      image: "/assets/images/about/still-have-questions.png"
+      image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790540006/rudraksh/home/consultancy-hero.webp"
     }
   ];
 

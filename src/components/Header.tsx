@@ -22,6 +22,7 @@ const DEFAULT_PRODUCT_COLUMNS = [
     { name: "Antique Collection",     slug: "antique-collection",    icon: "/assets/icons/icon-antiques.svg" },
     { name: "Siddha Mala",            slug: "siddha-mala",           icon: "/assets/icons/icon-siddha-mala.svg" },
     { name: "Rudraksha Kavach",       slug: "rudraksha-kavach",      icon: "/assets/icons/icon-combinations.svg" },
+    { name: "Consultancy",            href: "/consultation",         icon: "/assets/icons/icon-combinations.svg" },
   ],
   [
     { name: "Japa Mala",              slug: "japa-mala",             icon: "/assets/icons/icon-necklaces.svg" },
@@ -33,7 +34,6 @@ const DEFAULT_PRODUCT_COLUMNS = [
     { name: "Sphatik Collection",     slug: "sphatik-collection",    icon: "/assets/icons/icon-gemstones.svg" },
     { name: "Shree Yantra & Shivling", slug: "shree-yantra-shivling", icon: "/assets/icons/icon-murtis.svg" },
     { name: "Shankh Collection",      slug: "shankh-collection",     icon: "/assets/icons/icon-singing-bowls.svg" },
-    { name: "Consultancy",            href: "/consultation",         icon: "/assets/icons/icon-combinations.svg" },
   ],
 ];
 
@@ -93,7 +93,7 @@ export default function Header({ activePage }: { activePage?: string }) {
           items.forEach((item, index) => {
             cols[index % 3].push(item);
           });
-          cols[2].push({
+          cols[0].push({
             name: "Consultancy",
             href: "/consultation",
             icon: "/assets/icons/icon-combinations.svg",

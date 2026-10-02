@@ -14,7 +14,7 @@ export default function SourcingAndResponsibility() {
       {/* Row 1 — Image LEFT, Text RIGHT */}
       <div className="sar-row" style={{ display: "flex", flexDirection: "row", alignItems: "stretch" }}>
         <div className="sar-img" style={{ flex: 1, minHeight: "700px", position: "relative", overflow: "hidden" }}>
-          <Image src="/assets/images/common/common.png" alt="Sourcing and origin" fill sizes="(max-width: 1023px) 100vw, 50vw" style={{ objectFit: "cover" }} />
+          <Image src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790893387/rudraksh/authenticity/sourcing-and-origin.webp" alt="Sourcing and origin" fill sizes="(max-width: 1023px) 100vw, 50vw" style={{ objectFit: "cover" }} />
         </div>
         <div className="sar-text" style={{ flex: 1, display: "flex", alignItems: "center" }}>
           <div className="sar-text-inner" style={{ marginLeft: "64px", display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -41,14 +41,14 @@ export default function SourcingAndResponsibility() {
           </div>
         </div>
         <div className="sar-img" style={{ flex: 1, minHeight: "700px", position: "relative", overflow: "hidden" }}>
-          <Image src="/assets/images/common/common.png" alt="Handling with respect" fill sizes="(max-width: 1023px) 100vw, 50vw" style={{ objectFit: "cover" }} />
+          <Image src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790893394/rudraksh/authenticity/handling-with-respect.webp" alt="Handling with respect" fill sizes="(max-width: 1023px) 100vw, 50vw" style={{ objectFit: "cover" }} />
         </div>
       </div>
 
       {/* Row 3 — Image LEFT, Text RIGHT */}
       <div className="sar-row" style={{ display: "flex", flexDirection: "row", alignItems: "stretch" }}>
         <div className="sar-img" style={{ flex: 1, minHeight: "700px", position: "relative", overflow: "hidden" }}>
-          <Image src="/assets/images/common/common.png" alt="Our responsibility" fill sizes="(max-width: 1023px) 100vw, 50vw" style={{ objectFit: "cover" }} />
+          <Image src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790893399/rudraksh/authenticity/our-responsibility.webp" alt="Our responsibility" fill sizes="(max-width: 1023px) 100vw, 50vw" style={{ objectFit: "cover" }} />
         </div>
         <div className="sar-text" style={{ flex: 1, display: "flex", alignItems: "center" }}>
           <div className="sar-text-inner" style={{ marginLeft: "64px", display: "flex", flexDirection: "column", gap: "48px" }}>

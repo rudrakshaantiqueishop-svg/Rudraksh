@@ -13,6 +13,7 @@ export type ExploreDesignItem = {
 export type CategoryPageContent = {
   heroTitle: string;
   heroSubtitle: string;
+  heroBanner?: string;
   introHeading: string;
   introDescription: string;
   introImage: string;

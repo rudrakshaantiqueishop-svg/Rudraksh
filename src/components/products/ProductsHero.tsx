@@ -1,11 +1,27 @@
 import Image from "next/image";
 import type { CategoryPageContent } from "@/lib/product-utils";
 
-export default function ProductsHero({ pageContent }: { pageContent: CategoryPageContent }) {
+export default function ProductsHero({
+  pageContent,
+  bannerImage,
+}: {
+  pageContent: CategoryPageContent;
+  bannerImage?: string | null;
+}) {
+  const isGemstones =
+    pageContent.heroTitle?.toLowerCase().includes("gemstone") ||
+    pageContent.introHeading?.toLowerCase().includes("gemstone");
+
+  const defaultBanner = isGemstones
+    ? "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790155995/rudraksh/products/gemstones/gemstones-hero.webp"
+    : "/assets/images/common/comman banner.png";
+
+  const bannerSrc = bannerImage || pageContent.heroBanner || defaultBanner;
+
   return (
     <section className="ph-section">
       <Image
-        src="/assets/images/common/comman banner.png"
+        src={bannerSrc}
         alt={pageContent.heroTitle}
         fill
         sizes="100vw"

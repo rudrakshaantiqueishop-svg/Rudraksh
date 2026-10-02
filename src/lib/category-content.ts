@@ -8,13 +8,14 @@ export type CategoryContentInput = {
   image: string;
   heroTitle?: string;
   heroSubtitle?: string;
+  heroBanner?: string;
   introHeading?: string;
   introDescription?: string;
 };
 
 const DEFAULT_CHECKLIST_IMAGES: [string, string] = [
-  "/assets/images/about/about-sacred-1.png",
-  "/assets/images/about/about-sacred-2.png",
+  "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790884867/rudraksh/verification/rudraksha-branch-authenticity.webp",
+  "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790884868/rudraksh/verification/rudraksha-palm-authenticity.webp",
 ];
 
 // Landing-page copy generated from the category name alone. Shown as
@@ -42,6 +43,7 @@ export function buildPageContent(
   return {
     heroTitle: input.heroTitle ?? existing?.heroTitle ?? fallback.heroTitle,
     heroSubtitle: input.heroSubtitle ?? existing?.heroSubtitle ?? fallback.heroSubtitle,
+    heroBanner: input.heroBanner ?? existing?.heroBanner,
     introHeading: input.introHeading ?? existing?.introHeading ?? fallback.introHeading,
     introDescription:
       input.introDescription ?? existing?.introDescription ?? fallback.introDescription,
