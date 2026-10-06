@@ -4,14 +4,15 @@ export default function ContactHero() {
   return (
     <section className="contact-hero" style={{ position: "relative", width: "100%", height: "480px", overflow: "hidden" }}>
       <Image
-        src="/assets/images/common/comman banner.png"
-        alt="We're Here to Help"
+        src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790976936/rudraksh/contact/contact-hero-rudraksha-mala.webp"
+        alt="We're Here to Help - Rudraksha Japa Mala"
         fill
         sizes="100vw"
         style={{ objectFit: "cover", objectPosition: "center" }}
         priority
         loading="eager"
       />
+      <div style={{ position: "absolute", inset: 0, background: "rgba(10,5,2,0.45)" }} />
       <div style={{
         position: "absolute", inset: 0,
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",

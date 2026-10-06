@@ -36,7 +36,7 @@ export default function HowToChooseConfusion() {
             overflow: "hidden", zIndex: 1,
           }}>
             <Image
-              src="/assets/images/about/about-p03.png"
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156052/rudraksh/products/japa-mala/indonesian-sarva-siddha-mala-silver-capped/role_2.webp"
               alt="Rudraksha selection"
               fill
               sizes="(max-width: 1023px) 82vw, 430px"

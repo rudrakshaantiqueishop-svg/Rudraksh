@@ -4,8 +4,8 @@ export default function ProductGuidanceBanner() {
   return (
     <section className="pgb-section" style={{ position: "relative", width: "100%", height: "480px", overflow: "hidden" }}>
       <Image
-        src="/assets/images/common/comman banner.png"
-        alt="Need Product-Specific Guidance?"
+        src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156020/rudraksh/products/idols-singing-bowls/handcrafted-golden-tibetan-singing-bowl/role_ls_1.webp"
+        alt="Handcrafted Golden Tibetan Singing Bowl"
         fill
         sizes="100vw"
         style={{ objectFit: "cover", objectPosition: "center" }}

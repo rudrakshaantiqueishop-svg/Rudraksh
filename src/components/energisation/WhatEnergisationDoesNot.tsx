@@ -14,7 +14,13 @@ export default function WhatEnergisationDoesNot() {
       {/* Row 1 — Image LEFT, Text RIGHT */}
       <div className="wedn-row" style={{ display: "flex", flexDirection: "row", alignItems: "stretch" }}>
         <div className="wedn-img" style={{ flex: 1, minHeight: "700px", position: "relative", overflow: "hidden" }}>
-          <Image src="/assets/images/common/common.png" alt="What energisation does not do" fill sizes="(max-width: 1023px) 100vw, 50vw" style={{ objectFit: "cover" }} />
+          <Image
+            src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790972079/rudraksh/energisation/energisation-what-it-does-not.webp"
+            alt="What energisation does not do"
+            fill
+            sizes="(max-width: 1023px) 100vw, 50vw"
+            style={{ objectFit: "cover", objectPosition: "center" }}
+          />
         </div>
         <div className="wedn-text" style={{ flex: 1, display: "flex", alignItems: "center" }}>
           <div className="wedn-text-inner" style={{ marginLeft: "64px", display: "flex", flexDirection: "column", gap: "24px" }}>
@@ -54,7 +60,13 @@ export default function WhatEnergisationDoesNot() {
           </div>
         </div>
         <div className="wedn-img" style={{ flex: 1, minHeight: "700px", position: "relative", overflow: "hidden" }}>
-          <Image src="/assets/images/common/common.png" alt="Choice and consent" fill sizes="(max-width: 1023px) 100vw, 50vw" style={{ objectFit: "cover" }} />
+          <Image
+            src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790972080/rudraksh/energisation/energisation-choice-and-consent.webp"
+            alt="Choice and consent"
+            fill
+            sizes="(max-width: 1023px) 100vw, 50vw"
+            style={{ objectFit: "cover", objectPosition: "center" }}
+          />
         </div>
       </div>
 

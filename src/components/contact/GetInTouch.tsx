@@ -112,8 +112,8 @@ export default function GetInTouch() {
           {/* Image */}
           <div className="git-img" style={{ width: "100%", height: "320px", position: "relative", overflow: "hidden" }}>
             <Image
-              src="/assets/images/common/common.png"
-              alt="Contact"
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790975711/rudraksh/contact/rishikesh-bridge-night.webp"
+              alt="Rishikesh suspension bridge at night with Lord Shiva illumination"
               fill
               sizes="(max-width: 767px) 100vw, 553px"
               style={{ objectFit: "cover" }}

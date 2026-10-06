@@ -41,11 +41,23 @@ export default function BeyondRishikesh() {
         <div className="br-images" style={{ flexShrink: 0, width: "541px", height: "655px", position: "relative" }}>
           {/* Top-right image */}
           <div className="br-img1" style={{ position: "absolute", left: "151px", top: 0, width: "390px", height: "403px", overflow: "hidden" }}>
-            <Image src="/assets/images/common/common.png" alt="Beyond Rishikesh" fill sizes="390px" style={{ objectFit: "cover" }} />
+            <Image
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790976224/rudraksh/contact/beyond-rishikesh-parmarth-niketan.webp"
+              alt="Parmarth Niketan Ashram and Ghat in Rishikesh"
+              fill
+              sizes="390px"
+              style={{ objectFit: "cover" }}
+            />
           </div>
           {/* Bottom-left image */}
           <div className="br-img2" style={{ position: "absolute", left: 0, top: "252px", width: "390px", height: "403px", overflow: "hidden" }}>
-            <Image src="/assets/images/common/common.png" alt="Global delivery" fill sizes="390px" style={{ objectFit: "cover" }} />
+            <Image
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790976225/rudraksh/contact/beyond-rishikesh-ganga-aarti-ghat.webp"
+              alt="Meditation at Ganga Ghat overlooking Shiva statue in Rishikesh"
+              fill
+              sizes="390px"
+              style={{ objectFit: "cover" }}
+            />
           </div>
         </div>
 

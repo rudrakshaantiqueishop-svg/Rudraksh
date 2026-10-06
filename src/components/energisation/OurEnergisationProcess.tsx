@@ -5,30 +5,35 @@ const steps = [
     number: 1,
     title: "Verification First",
     imageLeft: true,
+    image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790891629/rudraksh/authenticity/verification-step-2-scientific-testing.webp",
     desc: "Only verified Rudraksha or gemstones are considered for energisation. Authenticity is established before any preparation begins.",
   },
   {
     number: 2,
     title: "Cleansing & Handling",
     imageLeft: false,
+    image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790971264/rudraksh/energisation/energisation-step-2-cleansing-handling.webp",
     desc: "The piece is gently cleaned and handled with care. This step focuses on respectful preparation, not forceful treatment.",
   },
   {
     number: 3,
     title: "Traditional Preparation",
     imageLeft: true,
+    image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790971523/rudraksh/energisation/energisation-step-3-traditional-preparation.webp",
     desc: "Mantras or intentions are applied according to traditional practices. The process is quiet, focused, and never rushed.",
   },
   {
     number: 4,
     title: "Quiet Rest Period",
     imageLeft: false,
+    image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790157044/rudraksh/real-product-images/new_products_co2/dsc_5185.jpg",
     desc: "After preparation, the piece is allowed to rest. This pause is intentional, allowing the process to complete naturally.",
   },
   {
     number: 5,
     title: "Final Review",
     imageLeft: true,
+    image: "https://res.cloudinary.com/dkbr33fcx/image/upload/v1790156056/rudraksh/products/japa-mala/rudraksha-karungali-dual-protection-mala/role_ls_2.webp",
     desc: "Prepared pieces are reviewed once more, packed carefully, and dispatched with attention.",
   },
 ];
@@ -61,7 +66,13 @@ export default function OurEnergisationProcess() {
           const isLast = i === steps.length - 1;
           const imageBlock = (
             <div className={`oep-img${!step.imageLeft ? " oep-img-even" : ""}`} style={{ flexShrink: 0, width: "226px", height: "226px", position: "relative", overflow: "hidden" }}>
-              <Image src="/assets/images/common/common.png" alt={`Step ${step.number}`} fill sizes="(max-width: 767px) 100vw, 226px" style={{ objectFit: "cover" }} />
+              <Image
+                src={step.image}
+                alt={`Step ${step.number} — ${step.title}`}
+                fill
+                sizes="(max-width: 767px) 100vw, 226px"
+                style={{ objectFit: "cover", objectPosition: "center" }}
+              />
             </div>
           );
 

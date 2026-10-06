@@ -38,11 +38,23 @@ export default function WhyEnergisationExists() {
         <div className="relative w-full max-w-[541px] aspect-[541/655] shrink-0">
           {/* Top-right image */}
           <div className="absolute right-0 top-0 w-[72%] h-[61%] overflow-hidden">
-            <Image src="/assets/images/products/category-necklace.png" alt="Energised mala" fill sizes="(max-width: 768px) 100vw, 390px" style={{ objectFit: "cover" }} />
+            <Image
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790969692/rudraksh/energisation/why-energisation-mala.webp"
+              alt="Energised mala"
+              fill
+              sizes="(max-width: 768px) 100vw, 390px"
+              style={{ objectFit: "cover", objectPosition: "center" }}
+            />
           </div>
           {/* Bottom-left image */}
           <div className="absolute left-0 bottom-0 w-[72%] h-[61%] overflow-hidden">
-            <Image src="/assets/images/home/beads.png" alt="Rudraksha beads" fill sizes="(max-width: 768px) 100vw, 390px" style={{ objectFit: "cover" }} />
+            <Image
+              src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790969693/rudraksh/energisation/why-energisation-bracelet.webp"
+              alt="Energised bracelet"
+              fill
+              sizes="(max-width: 768px) 100vw, 390px"
+              style={{ objectFit: "cover", objectPosition: "center" }}
+            />
           </div>
         </div>
 

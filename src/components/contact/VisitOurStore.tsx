@@ -36,11 +36,11 @@ export default function VisitOurStore() {
         {/* RIGHT — image */}
         <div className="vos-img" style={{ flexShrink: 0, width: "650px", height: "600px", position: "relative", overflow: "hidden" }}>
           <Image
-            src="/assets/images/common/common.png"
-            alt="Visit our store in Rishikesh"
+            src="https://res.cloudinary.com/dkbr33fcx/image/upload/v1790975336/rudraksh/store/rishikesh-storefront.webp"
+            alt="Rudraksha Antiquei store in Rishikesh"
             fill
-            sizes="(max-width: 767px) 100vw, 440px"
-            style={{ objectFit: "cover" }}
+            sizes="(max-width: 1023px) 100vw, 650px"
+            style={{ objectFit: "cover", objectPosition: "center 42%" }}
           />
         </div>
 
