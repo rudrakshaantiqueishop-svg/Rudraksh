@@ -16,8 +16,12 @@ export default function CategoryGrid({ categories }: { categories: Category[] })
     if (scrollRef.current) {
       const containerWidth = scrollRef.current.clientWidth;
       const scrollWidth = scrollRef.current.scrollWidth;
-      const numPages = Math.round(scrollWidth / containerWidth);
-      setPages(Math.max(1, numPages));
+      if (containerWidth > 0 && scrollWidth > 0) {
+        const numPages = Math.round(scrollWidth / containerWidth);
+        setPages(Number.isFinite(numPages) ? Math.max(1, numPages) : 1);
+      } else {
+        setPages(1);
+      }
     }
   }, []);
 
@@ -35,6 +39,7 @@ export default function CategoryGrid({ categories }: { categories: Category[] })
     if (scrollRef.current) {
       const scrollLeft = scrollRef.current.scrollLeft;
       const containerWidth = scrollRef.current.clientWidth;
+      if (containerWidth <= 0) return;
       
       let newIndex = Math.round(scrollLeft / containerWidth);
       if (newIndex >= pages) newIndex = pages - 1;
@@ -91,9 +96,9 @@ export default function CategoryGrid({ categories }: { categories: Category[] })
       </div>
 
       {/* Dots indicator (mobile only) */}
-      {pages > 1 && (
+      {Number.isFinite(pages) && pages > 1 && pages <= 30 && (
         <div className="flex lg:hidden justify-center items-center gap-1.5 mt-2">
-          {Array.from({ length: pages }).map((_, i) => (
+          {Array.from({ length: Math.min(Math.floor(pages), 30) }).map((_, i) => (
             <div
               key={i}
               className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${i === activeIndex ? "bg-[#BB5A28]" : "bg-black/20"}`}

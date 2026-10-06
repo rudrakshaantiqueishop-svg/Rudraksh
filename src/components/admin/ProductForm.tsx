@@ -172,6 +172,18 @@ export default function ProductForm({ product, categories, subcategories, collec
               The type this product belongs to (e.g. &quot;5 Mukhi Rudraksha&quot;). Changes with the selected category.
             </p>
           </div>
+          <div className="flex flex-col gap-1.5">
+            <FormField
+              label="YouTube Video Link"
+              name="youtubeUrl"
+              defaultValue={product?.youtubeUrl ?? ""}
+              placeholder="e.g. https://youtu.be/3u_lcqLunn4"
+              errors={state?.errors?.youtubeUrl}
+            />
+            <p className="font-lato text-xs text-gray-text">
+              Educational or product showcase video embedded on the product page.
+            </p>
+          </div>
         </div>
         {/* ── Extra Categories ── */}
         <div className="flex flex-col gap-2">

@@ -15,6 +15,9 @@ const IsThisRightForYou = dynamic(
 const AuthenticityCertification = dynamic(
   () => import("@/components/products/detail/AuthenticityCertification"),
 );
+const ProductVideoSection = dynamic(
+  () => import("@/components/products/detail/ProductVideoSection"),
+);
 const OriginSourcing = dynamic(
   () => import("@/components/products/detail/OriginSourcing"),
 );
@@ -154,6 +157,12 @@ export default async function ProductDetailPage({
       />
       <TraditionalSupport />
       <IsThisRightForYou />
+      {product.youtubeUrl ? (
+        <ProductVideoSection
+          videoUrl={product.youtubeUrl}
+          productName={product.name}
+        />
+      ) : null}
       <AuthenticityCertification />
       <OriginSourcing />
       <HowToWearCare />

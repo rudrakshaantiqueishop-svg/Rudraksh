@@ -8,6 +8,7 @@ import GoogleOneTap from "@/components/auth/GoogleOneTap";
 import CurrencyProvider from "@/components/CurrencyProvider";
 import CartProvider from "@/components/CartProvider";
 import WishlistProvider from "@/components/WishlistProvider";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const lato = Lato({
   variable: "--lato",
@@ -85,6 +86,7 @@ export default function RootLayout({
                 <Header />
                 <div style={{ paddingTop: "72px" }}>{children}</div>
                 <Footer />
+                <WhatsAppButton />
               </WishlistProvider>
             </CartProvider>
           </CurrencyProvider>

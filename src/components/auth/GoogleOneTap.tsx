@@ -47,15 +47,7 @@ export default function GoogleOneTap() {
             cancel_on_tap_outside: true,
             use_fedcm_for_prompt: true,
           });
-          window.google?.accounts.id.prompt((notification) => {
-            if (notification.isNotDisplayed()) {
-              // Not displayed (e.g. FedCM disabled, user opted out, origin not authorized)
-            } else if (notification.isSkippedMoment()) {
-              // Skipped (e.g. user dismissed or clicked away)
-            } else if (notification.isDismissedMoment()) {
-              // Dismissed by user
-            }
-          });
+          window.google?.accounts.id.prompt();
         } catch {
           // Ignore GSI initialization failures in environments where GSI/FedCM is restricted
         }

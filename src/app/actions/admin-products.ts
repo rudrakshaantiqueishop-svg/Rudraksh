@@ -68,6 +68,7 @@ function parseProductFormData(formData: FormData) {
     zodiac: str("zodiac"),
     planet: str("planet"),
     chakra: str("chakra"),
+    youtubeUrl: str("youtubeUrl"),
     description: formData.get("description"),
     shippingInfo: formData.get("shippingInfo"),
     packagingInfo: formData.get("packagingInfo"),

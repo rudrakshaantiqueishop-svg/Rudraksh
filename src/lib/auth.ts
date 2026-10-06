@@ -11,6 +11,7 @@ import { loginSchema, otpVerifySchema } from "@/lib/validations/auth";
 const googleOneTapClient = new OAuth2Client();
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  basePath: "/api/auth",
   // `prisma` is generated to a custom output path (`@/generated/prisma`), whose
   // types differ structurally from the `@prisma/client` types `@auth/prisma-adapter`
   // expects, even though the runtime client shape is identical.
