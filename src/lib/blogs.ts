@@ -21,21 +21,26 @@ export async function getBlogsByCategory(categoryId: string, limit = 3) {
 }
 
 export async function getRecentBlogs(limit = 3) {
-  return prisma.blog.findMany({
-    where: { status: "PUBLISHED" },
-    orderBy: { publishedAt: "desc" },
-    take: limit,
-    select: {
-      id: true,
-      slug: true,
-      title: true,
-      excerpt: true,
-      coverImage: true,
-      author: true,
-      readTimeMinutes: true,
-      category: { select: { id: true, name: true, slug: true } },
-    },
-  });
+  try {
+    return await prisma.blog.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: { publishedAt: "desc" },
+      take: limit,
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        excerpt: true,
+        coverImage: true,
+        author: true,
+        readTimeMinutes: true,
+        category: { select: { id: true, name: true, slug: true } },
+      },
+    });
+  } catch (error) {
+    console.error("Failed to load recent blogs:", error);
+    return [];
+  }
 }
 
 export async function getBlogBySlug(slug: string) {
