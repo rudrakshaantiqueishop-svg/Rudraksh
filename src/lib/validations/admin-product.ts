@@ -61,6 +61,7 @@ export const productSchema = z.object({
   zodiac: z.union([z.string().trim().min(1), z.null()]).optional(),
   planet: z.union([z.string().trim().min(1), z.null()]).optional(),
   chakra: z.union([z.string().trim().min(1), z.null()]).optional(),
+  youtubeUrl: z.union([z.string().trim(), z.null()]).optional(),
   description: z.string().trim().min(1, { error: "Description is required." }),
   shippingInfo: z.string().trim().min(1, { error: "Shipping info is required." }),
   packagingInfo: z.string().trim().min(1, { error: "Packaging info is required." }),
